@@ -3,11 +3,12 @@ import { ModuleId, CLASS_GROUPS, ClassGroup } from './types';
 import { HeaderNav } from './components/HeaderNav';
 import { Dashboard } from './components/Dashboard';
 import { Bloc1View } from './modules/b1_conductors/Bloc1View';
-import { Bloc2View } from './modules/b2_simbologia/Bloc2View';
-import { Bloc3View } from './modules/b3_llei_dohm/Bloc3View';
-import { Bloc4View } from './modules/b4_codi_colors/Bloc4View';
+import { Bloc2TransformationsView } from './modules/b1_transformacions/Bloc2TransformationsView';
+import { Bloc3CircuitsView } from './modules/b2_simbologia/Bloc3CircuitsView';
+import { Bloc4OhmView } from './modules/b3_llei_dohm/Bloc4OhmView';
+import { Bloc5ResistorsView } from './modules/b4_codi_colors/Bloc5ResistorsView';
 import { MultimeterLabApp } from './modules/b5_multimetre/MultimeterLabApp';
-import { User, X, CheckCircle2, Lock, AlertTriangle } from 'lucide-react';
+import { User, X, CheckCircle2 } from 'lucide-react';
 
 const App: React.FC = () => {
   const [studentName, setStudentName] = useState<string>(() => {
@@ -27,8 +28,7 @@ const App: React.FC = () => {
 
   const isRegistered = studentName.trim().length >= 3 && studentGroup.trim().length > 0;
 
-  // Compute unlocked blocks sequentially: Bloc 1 is always unlocked if registered,
-  // then block N+1 is unlocked only if block N is in completedBlocks.
+  // Sequential unlock computation (1 to 6)
   const unlockedBlocks = React.useMemo(() => {
     if (!isRegistered) return [];
     const unlocked = [1];
@@ -36,6 +36,7 @@ const App: React.FC = () => {
     if (completedBlocks.includes(2)) unlocked.push(3);
     if (completedBlocks.includes(3)) unlocked.push(4);
     if (completedBlocks.includes(4)) unlocked.push(5);
+    if (completedBlocks.includes(5)) unlocked.push(6);
     return unlocked;
   }, [isRegistered, completedBlocks]);
 
@@ -48,7 +49,6 @@ const App: React.FC = () => {
   const [modalName, setModalName] = useState<string>(studentName);
   const [modalGroup, setModalGroup] = useState<string>(studentGroup);
 
-  // Autosave student info
   const handleSaveStudentInfo = (name: string, group: string) => {
     setStudentName(name);
     setStudentGroup(group);
@@ -56,15 +56,14 @@ const App: React.FC = () => {
     localStorage.setItem('electricitat_student_group', group);
   };
 
-  // Autosave current module on change
   const handleSelectModule = (id: ModuleId) => {
-    // If attempting to enter a block
     let targetBlocNum = 0;
-    if (id.startsWith('b1')) targetBlocNum = 1;
-    else if (id.startsWith('b2')) targetBlocNum = 2;
-    else if (id.startsWith('b3')) targetBlocNum = 3;
-    else if (id.startsWith('b4')) targetBlocNum = 4;
-    else if (id.startsWith('b5')) targetBlocNum = 5;
+    if (id === 'b1-que-es-electricitat') targetBlocNum = 1;
+    else if (id === 'b2-transformacions') targetBlocNum = 2;
+    else if (id === 'b3-simbologia-circuits') targetBlocNum = 3;
+    else if (id === 'b4-llei-dohm') targetBlocNum = 4;
+    else if (id === 'b5-codi-colors') targetBlocNum = 5;
+    else if (id === 'b6-multimetre') targetBlocNum = 6;
 
     if (targetBlocNum > 0) {
       if (!isRegistered) {
@@ -84,7 +83,7 @@ const App: React.FC = () => {
   const handleModalSave = (e: React.FormEvent) => {
     e.preventDefault();
     if (modalName.trim().length < 3 || !modalGroup) {
-      alert('Si us plau, introdueix el teu nom, cognoms i selecciona el teu grup classe (1r, 2n o 3r A/B).');
+      alert('Si us plau, introdueix el teu nom, cognoms i selecciona el teu grup classe.');
       return;
     }
     handleSaveStudentInfo(modalName, modalGroup);
@@ -99,15 +98,16 @@ const App: React.FC = () => {
     }
   };
 
-  // If page loaded on a locked block without permission, reset to dashboard
+  // If user is on a locked block, fall back to dashboard
   useEffect(() => {
     if (currentModule !== 'dashboard') {
       let blocNum = 0;
-      if (currentModule.startsWith('b1')) blocNum = 1;
-      else if (currentModule.startsWith('b2')) blocNum = 2;
-      else if (currentModule.startsWith('b3')) blocNum = 3;
-      else if (currentModule.startsWith('b4')) blocNum = 4;
-      else if (currentModule.startsWith('b5')) blocNum = 5;
+      if (currentModule === 'b1-que-es-electricitat') blocNum = 1;
+      else if (currentModule === 'b2-transformacions') blocNum = 2;
+      else if (currentModule === 'b3-simbologia-circuits') blocNum = 3;
+      else if (currentModule === 'b4-llei-dohm') blocNum = 4;
+      else if (currentModule === 'b5-codi-colors') blocNum = 5;
+      else if (currentModule === 'b6-multimetre') blocNum = 6;
 
       if (!isRegistered || !unlockedBlocks.includes(blocNum)) {
         setCurrentModule('dashboard');
@@ -116,13 +116,13 @@ const App: React.FC = () => {
     }
   }, [isRegistered, unlockedBlocks, currentModule]);
 
-  // Auto-scroll to top when switching modules
+  // Scroll to top when switching modules
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentModule]);
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col font-sans selection:bg-amber-400 selection:text-slate-950">
+    <div className="min-h-screen bg-[#faf9f6] text-stone-800 flex flex-col font-sans selection:bg-amber-200 selection:text-stone-900">
       {/* Top Header Navigation */}
       <HeaderNav
         currentModule={currentModule}
@@ -152,64 +152,80 @@ const App: React.FC = () => {
           />
         )}
 
-        {(currentModule === 'b1-conductors' || currentModule === 'b1-transformacions') && (
+        {currentModule === 'b1-que-es-electricitat' && (
           <Bloc1View
             onComplete={() => markBlockCompleted(1)}
             onNext={() => {
               markBlockCompleted(1);
-              handleSelectModule('b2-simbologia');
+              handleSelectModule('b2-transformacions');
             }}
+            onBackToDashboard={() => handleSelectModule('dashboard')}
           />
         )}
 
-        {(currentModule === 'b2-simbologia' || currentModule === 'b2-circuits') && (
-          <Bloc2View
+        {currentModule === 'b2-transformacions' && (
+          <Bloc2TransformationsView
             onComplete={() => markBlockCompleted(2)}
             onNext={() => {
               markBlockCompleted(2);
-              handleSelectModule('b3-llei-dohm');
+              handleSelectModule('b3-simbologia-circuits');
             }}
+            onBackToDashboard={() => handleSelectModule('dashboard')}
           />
         )}
 
-        {(currentModule === 'b3-llei-dohm' || currentModule === 'b3-unitats') && (
-          <Bloc3View
+        {currentModule === 'b3-simbologia-circuits' && (
+          <Bloc3CircuitsView
             onComplete={() => markBlockCompleted(3)}
             onNext={() => {
               markBlockCompleted(3);
-              handleSelectModule('b4-codi-colors');
+              handleSelectModule('b4-llei-dohm');
             }}
+            onBackToDashboard={() => handleSelectModule('dashboard')}
           />
         )}
 
-        {currentModule === 'b4-codi-colors' && (
-          <Bloc4View
+        {currentModule === 'b4-llei-dohm' && (
+          <Bloc4OhmView
             onComplete={() => markBlockCompleted(4)}
             onNext={() => {
               markBlockCompleted(4);
-              handleSelectModule('b5-laboratori-multimetre');
+              handleSelectModule('b5-codi-colors');
             }}
+            onBackToDashboard={() => handleSelectModule('dashboard')}
           />
         )}
 
-        {currentModule === 'b5-laboratori-multimetre' && (
+        {currentModule === 'b5-codi-colors' && (
+          <Bloc5ResistorsView
+            onComplete={() => markBlockCompleted(5)}
+            onNext={() => {
+              markBlockCompleted(5);
+              handleSelectModule('b6-multimetre');
+            }}
+            onBackToDashboard={() => handleSelectModule('dashboard')}
+          />
+        )}
+
+        {currentModule === 'b6-multimetre' && (
           <MultimeterLabApp
             studentName={studentName}
             studentGroup={studentGroup}
+            onBackToDashboard={() => handleSelectModule('dashboard')}
           />
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="bg-slate-950 border-t border-slate-800 py-6 text-center text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+      {/* Clean, light footer */}
+      <footer className="bg-white border-t border-stone-200 py-6 text-center text-xs text-stone-500">
+        <div className="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-3">
           <p>
-            ⚡ <strong>Càpsula Didàctica d'Electricitat (3 Hores)</strong> • Seqüència d'aprenentatge guiada amb autosave.
+            ⚡ <strong>Càpsula Didàctica d'Electricitat (3 Hores)</strong> • Guia d'aprenentatge seqüencial amb autosave.
           </p>
           <div className="flex gap-4">
             <button
               onClick={() => handleSelectModule('dashboard')}
-              className="text-slate-400 hover:text-white transition"
+              className="text-stone-600 hover:text-stone-900 transition font-medium"
             >
               Panell d'Inici & Itinerari
             </button>
@@ -222,7 +238,7 @@ const App: React.FC = () => {
                   localStorage.setItem('electricitat_current_module', 'dashboard');
                 }
               }}
-              className="text-slate-500 hover:text-red-400 transition"
+              className="text-stone-400 hover:text-red-600 transition"
             >
               Reiniciar Progrés
             </button>
@@ -230,79 +246,74 @@ const App: React.FC = () => {
         </div>
       </footer>
 
-      {/* Mandatory Student Identification Modal */}
+      {/* Student Identification Modal */}
       {showStudentModal && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-800 rounded-3xl p-6 md:p-8 max-w-lg w-full border-2 border-amber-500 shadow-2xl relative text-white animate-fade-in">
+        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 md:p-8 max-w-lg w-full border border-stone-200 shadow-2xl relative text-stone-800 animate-fade-in">
             {isRegistered && (
               <button
                 onClick={() => setShowStudentModal(false)}
-                className="absolute top-5 right-5 text-slate-400 hover:text-white"
+                className="absolute top-5 right-5 text-stone-400 hover:text-stone-600"
               >
                 <X size={20} />
               </button>
             )}
 
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500 text-slate-950 font-bold flex items-center justify-center shadow-lg">
-                <User size={24} />
+              <div className="w-10 h-10 rounded-2xl bg-amber-500 text-white font-bold flex items-center justify-center">
+                <User size={20} />
               </div>
               <div>
-                <h3 className="text-xl font-black">Dades de l'Alumne/a</h3>
-                <p className="text-xs text-amber-300">
+                <h3 className="text-xl font-bold text-stone-900">Dades de l'Alumne/a</h3>
+                <p className="text-xs text-stone-500">
                   {isRegistered ? 'Modifica les teves dades' : 'Pas obligatori per començar la càpsula'}
                 </p>
               </div>
             </div>
 
-            <form onSubmit={handleModalSave} className="space-y-5">
+            <form onSubmit={handleModalSave} className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1">
-                  Nom i Cognoms: <span className="text-red-400">*</span>
+                <label className="text-xs font-bold text-stone-700 block mb-1">
+                  Nom i Cognoms <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   value={modalName}
                   onChange={(e) => setModalName(e.target.value)}
                   placeholder="Ex: Gerard Calle Reus"
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-2.5 text-sm text-stone-900 focus:bg-white focus:ring-2 focus:ring-amber-500 outline-none"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1">
-                  Grup Classe: <span className="text-red-400">*</span>
+                <label className="text-xs font-bold text-stone-700 block mb-1">
+                  Grup Classe <span className="text-red-500">*</span>
                 </label>
-                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5">
                   {CLASS_GROUPS.map((grp) => (
                     <button
                       key={grp}
                       type="button"
                       onClick={() => setModalGroup(grp)}
-                      className={`py-2 rounded-xl text-xs font-black transition border ${
+                      className={`py-2 rounded-xl text-xs font-bold transition border ${
                         modalGroup === grp
-                          ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-md font-bold'
-                          : 'bg-slate-900 hover:bg-slate-700 text-slate-300 border-slate-700'
+                          ? 'bg-amber-500 text-white border-amber-600 shadow-sm'
+                          : 'bg-stone-50 hover:bg-stone-100 text-stone-700 border-stone-200'
                       }`}
                     >
                       {grp}
                     </button>
                   ))}
                 </div>
-                {!modalGroup && (
-                  <span className="text-[11px] text-amber-400 mt-1 block">
-                    Selecciona el teu curs i grup (1r A, 1r B, 2n A, 2n B, 3r A o 3r B)
-                  </span>
-                )}
               </div>
 
-              <div className="pt-2 flex justify-end gap-2 border-t border-slate-700">
+              <div className="pt-2 flex justify-end gap-2 border-t border-stone-100">
                 {isRegistered && (
                   <button
                     type="button"
                     onClick={() => setShowStudentModal(false)}
-                    className="px-4 py-2.5 text-xs font-bold text-slate-400 hover:text-white"
+                    className="px-4 py-2 text-xs font-bold text-stone-500 hover:text-stone-700"
                   >
                     Cancel·lar
                   </button>
@@ -310,13 +321,13 @@ const App: React.FC = () => {
                 <button
                   type="submit"
                   disabled={modalName.trim().length < 3 || !modalGroup}
-                  className={`px-6 py-2.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 ${
+                  className={`px-5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                     modalName.trim().length >= 3 && modalGroup
-                      ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-lg cursor-pointer'
-                      : 'bg-slate-700 text-slate-500 cursor-not-allowed'
+                      ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-sm cursor-pointer'
+                      : 'bg-stone-200 text-stone-400 cursor-not-allowed'
                   }`}
                 >
-                  <CheckCircle2 size={16} />
+                  <CheckCircle2 size={15} />
                   <span>Desar i Continuar</span>
                 </button>
               </div>

@@ -1,13 +1,11 @@
 export type ModuleId =
   | 'dashboard'
-  | 'b1-conductors'
-  | 'b1-transformacions'
-  | 'b2-simbologia'
-  | 'b2-circuits'
-  | 'b3-unitats'
-  | 'b3-llei-dohm'
-  | 'b4-codi-colors'
-  | 'b5-laboratori-multimetre';
+  | 'b1-que-es-electricitat'
+  | 'b2-transformacions'
+  | 'b3-simbologia-circuits'
+  | 'b4-llei-dohm'
+  | 'b5-codi-colors'
+  | 'b6-multimetre';
 
 export const CLASS_GROUPS = ['1r A', '1r B', '2n A', '2n B', '3r A', '3r B'] as const;
 export type ClassGroup = typeof CLASS_GROUPS[number];
@@ -26,7 +24,7 @@ export interface ModuleInfo {
 export interface StudentProgress {
   name: string;
   group: string;
-  completedModules: string[];
+  completedBlocks: number[];
   moduleScores: Record<string, number>;
   multimeterTaskResults?: MultimeterTaskResults;
 }

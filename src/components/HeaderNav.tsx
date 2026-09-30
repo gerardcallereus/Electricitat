@@ -24,7 +24,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   isRegistered,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [timeRemainingSeconds, setTimeRemainingSeconds] = useState(180 * 60); // 3 hours
+  const [timeRemainingSeconds, setTimeRemainingSeconds] = useState(180 * 60);
   const [lockAlert, setLockAlert] = useState<string | null>(null);
 
   useEffect(() => {
@@ -41,12 +41,13 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   };
 
   const navItems: { id: ModuleId; label: string; time: string; blocNum: number }[] = [
-    { id: 'dashboard', label: 'Inici & Ruta', time: '0 min', blocNum: 0 },
-    { id: 'b1-conductors', label: 'B1: Conductors & Energia', time: '25 min', blocNum: 1 },
-    { id: 'b2-simbologia', label: 'B2: Circuits & Simbologia', time: '30 min', blocNum: 2 },
-    { id: 'b3-llei-dohm', label: 'B3: Llei d\'Ohm & Unitats', time: '40 min', blocNum: 3 },
-    { id: 'b4-codi-colors', label: 'B4: Codi de Colors', time: '35 min', blocNum: 4 },
-    { id: 'b5-laboratori-multimetre', label: 'B5: Lab Multímetre', time: '50 min', blocNum: 5 },
+    { id: 'dashboard', label: 'Inici', time: '0m', blocNum: 0 },
+    { id: 'b1-que-es-electricitat', label: '1. Què és?', time: '25m', blocNum: 1 },
+    { id: 'b2-transformacions', label: '2. Energia', time: '25m', blocNum: 2 },
+    { id: 'b3-simbologia-circuits', label: '3. Circuits', time: '30m', blocNum: 3 },
+    { id: 'b4-llei-dohm', label: '4. Llei d\'Ohm', time: '35m', blocNum: 4 },
+    { id: 'b5-codi-colors', label: '5. Resistències', time: '25m', blocNum: 5 },
+    { id: 'b6-multimetre', label: '6. Multímetre', time: '40m', blocNum: 6 },
   ];
 
   const handleNavClick = (item: typeof navItems[0]) => {
@@ -72,48 +73,41 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   };
 
   return (
-    <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-2xl">
+    <header className="bg-white/95 backdrop-blur-md border-b border-stone-200 sticky top-0 z-50 shadow-sm text-stone-800">
       {/* Lock alert toast */}
       {lockAlert && (
-        <div className="bg-amber-500 text-slate-950 px-4 py-2 text-center text-xs font-black flex items-center justify-center gap-2 animate-bounce">
+        <div className="bg-amber-500 text-stone-950 px-4 py-2 text-center text-xs font-bold flex items-center justify-center gap-2">
           <AlertCircle size={16} />
           <span>{lockAlert}</span>
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-4">
         {/* Brand & Course title */}
         <div
           onClick={() => onSelectModule('dashboard')}
-          className="flex items-center gap-3 cursor-pointer group"
+          className="flex items-center gap-3 cursor-pointer group shrink-0"
         >
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-amber-500/20 group-hover:scale-105 transition">
-            <Zap size={22} className="fill-slate-950" />
+          <div className="w-10 h-10 rounded-2xl bg-amber-500 text-white font-bold flex items-center justify-center shadow-sm group-hover:scale-105 transition">
+            <Zap size={22} className="fill-white" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-base font-black text-white tracking-tight flex items-center gap-1.5">
+              <span className="text-base font-bold text-stone-900 tracking-tight">
                 Càpsula d'Electricitat
               </span>
-              <span className="text-[10px] bg-amber-500/20 text-amber-400 font-extrabold px-2 py-0.5 rounded-full border border-amber-500/30">
+              <span className="text-[10px] bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded-full border border-amber-200">
                 3 HORES
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 font-medium">De l'Àtom al Multímetre</p>
+            <p className="text-[11px] text-stone-500">De l'Àtom al Multímetre</p>
           </div>
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1 bg-slate-950 p-1.5 rounded-2xl border border-slate-800">
+        <nav className="hidden lg:flex items-center gap-1 bg-stone-100 p-1.5 rounded-2xl border border-stone-200">
           {navItems.map((item) => {
-            const isActive =
-              currentModule === item.id ||
-              (item.blocNum === 1 && currentModule.startsWith('b1')) ||
-              (item.blocNum === 2 && currentModule.startsWith('b2')) ||
-              (item.blocNum === 3 && currentModule.startsWith('b3')) ||
-              (item.blocNum === 4 && currentModule.startsWith('b4')) ||
-              (item.blocNum === 5 && currentModule.startsWith('b5'));
-
+            const isActive = currentModule === item.id;
             const isDone = item.blocNum > 0 && completedBlocks.includes(item.blocNum);
             const isUnlocked = item.blocNum === 0 || (isRegistered && unlockedBlocks.includes(item.blocNum));
 
@@ -123,20 +117,20 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
                 onClick={() => handleNavClick(item)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                   isActive
-                    ? 'bg-amber-500 text-slate-950 shadow-md font-extrabold'
+                    ? 'bg-white text-stone-900 shadow-sm border border-stone-200/80 font-bold'
                     : isUnlocked
-                    ? 'text-slate-400 hover:text-white hover:bg-slate-800/60'
-                    : 'text-slate-600 hover:text-slate-500 opacity-60 cursor-not-allowed'
+                    ? 'text-stone-600 hover:text-stone-900 hover:bg-stone-200/60'
+                    : 'text-stone-400 opacity-60 cursor-not-allowed'
                 }`}
                 title={!isUnlocked ? `Bloc ${item.blocNum} bloquejat` : undefined}
               >
                 {isDone ? (
-                  <CheckCircle2 size={13} className="text-emerald-400" />
+                  <CheckCircle2 size={13} className="text-emerald-600" />
                 ) : !isUnlocked ? (
-                  <Lock size={12} className="text-slate-500" />
+                  <Lock size={12} className="text-stone-400" />
                 ) : null}
                 <span>{item.label}</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${isActive ? 'bg-amber-600/30 text-slate-900' : 'bg-slate-800 text-slate-400'}`}>
+                <span className={`text-[10px] px-1 py-0.2 rounded font-mono ${isActive ? 'bg-amber-100 text-amber-900' : 'text-stone-400'}`}>
                   {item.time}
                 </span>
               </button>
@@ -145,10 +139,10 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
         </nav>
 
         {/* Student Profile & 3h Timer Widget */}
-        <div className="flex items-center gap-3">
-          {/* Timer pill */}
-          <div className="hidden sm:flex items-center gap-1.5 bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-700 text-xs font-mono text-amber-300">
-            <Clock size={14} className="text-amber-400" />
+        <div className="flex items-center gap-2.5 shrink-0">
+          {/* Timer */}
+          <div className="hidden sm:flex items-center gap-1.5 bg-stone-100 px-3 py-1.5 rounded-xl border border-stone-200 text-xs font-mono text-stone-700">
+            <Clock size={14} className="text-amber-600" />
             <span className="font-bold">{formatTime(timeRemainingSeconds)}</span>
           </div>
 
@@ -157,20 +151,19 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
             onClick={onEditStudent}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-medium transition ${
               isRegistered
-                ? 'bg-slate-800 hover:bg-slate-700 text-white border-slate-700'
-                : 'bg-amber-500 text-slate-950 border-amber-400 font-extrabold animate-pulse'
+                ? 'bg-stone-50 hover:bg-stone-100 text-stone-800 border-stone-200'
+                : 'bg-amber-500 hover:bg-amber-600 text-white border-amber-600 font-bold animate-pulse'
             }`}
-            title="Prem per modificar nom o grup classe"
           >
-            <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${isRegistered ? 'bg-amber-400 text-slate-950' : 'bg-slate-950 text-white'}`}>
+            <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${isRegistered ? 'bg-amber-100 text-amber-800' : 'bg-white text-amber-800'}`}>
               <User size={12} />
             </div>
             <div className="text-left hidden sm:block max-w-[140px] truncate">
               <span className="font-bold block text-[11px] truncate leading-tight">
                 {studentName || 'Identifica\'t aquí'}
               </span>
-              <span className="text-[10px] block leading-tight truncate opacity-80">
-                {studentGroup ? `Grup: ${studentGroup}` : 'Falta grup (1,2,3 a/b)'}
+              <span className="text-[10px] block leading-tight truncate opacity-80 text-stone-500">
+                {studentGroup ? `Grup ${studentGroup}` : 'Falta grup (1,2,3 a/b)'}
               </span>
             </div>
           </button>
@@ -178,7 +171,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
           {/* Mobile menu toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white"
+            className="lg:hidden p-2 rounded-xl bg-stone-100 text-stone-600 hover:text-stone-900 border border-stone-200"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -187,7 +180,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-slate-950 border-b border-slate-800 px-4 py-4 space-y-2">
+        <div className="lg:hidden bg-white border-b border-stone-200 px-4 py-4 space-y-1.5">
           {navItems.map((item) => {
             const isUnlocked = item.blocNum === 0 || (isRegistered && unlockedBlocks.includes(item.blocNum));
             return (
@@ -197,19 +190,19 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
                   handleNavClick(item);
                   setMobileMenuOpen(false);
                 }}
-                className={`w-full text-left px-4 py-3 rounded-xl text-sm font-bold flex items-center justify-between ${
+                className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-between ${
                   currentModule === item.id
-                    ? 'bg-amber-500 text-slate-950'
+                    ? 'bg-amber-100 text-amber-900 border border-amber-200'
                     : isUnlocked
-                    ? 'text-slate-300 hover:bg-slate-800'
-                    : 'text-slate-600 opacity-60'
+                    ? 'text-stone-700 hover:bg-stone-100'
+                    : 'text-stone-400 opacity-60'
                 }`}
               >
                 <span className="flex items-center gap-2">
-                  {!isUnlocked && <Lock size={14} className="text-slate-500" />}
+                  {!isUnlocked && <Lock size={14} className="text-stone-400" />}
                   {item.label}
                 </span>
-                <span className="text-xs opacity-75 font-mono">{item.time}</span>
+                <span className="text-xs text-stone-400 font-mono">{item.time}</span>
               </button>
             );
           })}

@@ -12,7 +12,9 @@ import {
   Sparkles,
   Lock,
   FileCheck2,
-  AlertCircle
+  AlertCircle,
+  Lightbulb,
+  Cpu
 } from 'lucide-react';
 
 interface DashboardProps {
@@ -36,7 +38,6 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const [groupInput, setGroupInput] = useState(studentGroup);
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
 
-  // Sync inputs with parent state if it changes
   useEffect(() => {
     setNameInput(studentName);
   }, [studentName]);
@@ -45,14 +46,12 @@ export const Dashboard: React.FC<DashboardProps> = ({
     setGroupInput(studentGroup);
   }, [studentGroup]);
 
-  // Immediate autosave on name change
   const handleNameChange = (val: string) => {
     setNameInput(val);
     onSaveStudentInfo(val, groupInput);
     triggerAutoSaveIndicator();
   };
 
-  // Immediate autosave on group selection
   const handleGroupSelect = (grp: ClassGroup) => {
     setGroupInput(grp);
     onSaveStudentInfo(nameInput, grp);
@@ -65,181 +64,168 @@ export const Dashboard: React.FC<DashboardProps> = ({
   };
 
   const isRegistered = nameInput.trim().length >= 3 && groupInput.trim().length > 0;
-
   const highestUnlocked = Math.max(1, ...unlockedBlocks);
 
   const getStartButtonTarget = (): ModuleId => {
-    if (highestUnlocked === 1) return 'b1-conductors';
-    if (highestUnlocked === 2) return 'b2-simbologia';
-    if (highestUnlocked === 3) return 'b3-llei-dohm';
-    if (highestUnlocked === 4) return 'b4-codi-colors';
-    return 'b5-laboratori-multimetre';
+    if (highestUnlocked === 1) return 'b1-que-es-electricitat';
+    if (highestUnlocked === 2) return 'b2-transformacions';
+    if (highestUnlocked === 3) return 'b3-simbologia-circuits';
+    if (highestUnlocked === 4) return 'b4-llei-dohm';
+    if (highestUnlocked === 5) return 'b5-codi-colors';
+    return 'b6-multimetre';
   };
 
   const blocks = [
     {
       num: 1,
-      targetId: 'b1-conductors' as ModuleId,
+      targetId: 'b1-que-es-electricitat' as ModuleId,
       time: '25 minuts',
-      title: 'Bloc 1: Què és l\'Electricitat?',
-      tagline: 'Conductors, aïllants i transformacions d\'energia',
+      title: 'Bloc 1: Què és l\'Electricitat? Conductors i Aïllants',
       description:
-        'Comprèn com es mouen els electrons, quins materials condueixen el corrent i de quines maneres podem transformar l\'energia elèctrica en llum, calor, so i moviment.',
-      tools: ['ElectroConnecta (Simulador de materials)', 'ElectroTransforma (Joc de transformacions)'],
-      color: 'from-blue-600 to-cyan-600',
-      border: 'border-blue-500/30',
-      badgeBg: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+        'L\'àtom, els electrons lliures i el corrent elèctric. Experimenta quins materials permeten tancar un circuit amb el simulador ElectroConnecta.',
+      badge: 'Teoria Fonamental + Simulador',
       icon: Zap,
     },
     {
       num: 2,
-      targetId: 'b2-simbologia' as ModuleId,
-      time: '30 minuts',
-      title: 'Bloc 2: Dibuix i Esquemes de Circuits',
-      tagline: 'Simbologia normalitzada, circuits sèrie i paral·lel',
+      targetId: 'b2-transformacions' as ModuleId,
+      time: '25 minuts',
+      title: 'Bloc 2: Les Transformacions de l\'Energia Elèctrica',
       description:
-        'Aprèn a llegir esquemes elèctrics normalitzats (piles, bombetes, interruptors, motors) i descobreix les diferències clau entre circuits en sèrie i en paral·lel.',
-      tools: ['ElectroCircuit (Biblioteca & Quiz de símbols)', 'Circuit Màgic (Simulador sèrie vs paral·lel)'],
-      color: 'from-amber-600 to-yellow-600',
-      border: 'border-amber-500/30',
-      badgeBg: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-      icon: Layers,
+        'Com convertim l\'electricitat en llum, calor (efecte Joule), moviment (motors) i so. Joc interactiu de preguntes i targetes ElectroTransforma.',
+      badge: 'Joc Interactiu',
+      icon: Lightbulb,
     },
     {
       num: 3,
-      targetId: 'b3-llei-dohm' as ModuleId,
-      time: '40 minuts',
-      title: 'Bloc 3: Magnituds i la Llei d\'Ohm',
-      tagline: 'Volts, Amperes, Ohms i la fórmula fonamental V = I · R',
+      targetId: 'b3-simbologia-circuits' as ModuleId,
+      time: '30 minuts',
+      title: 'Bloc 3: Simbologia Normalitzada i Circuits (Sèrie / Paral·lel)',
       description:
-        'Practica la conversió de múltiples i submúltiples (mA, kΩ, mV) i experimenta directament amb la Llei d\'Ohm mitjançant un simulador visual amb potenciòmetres interactius.',
-      tools: ['Conversor d\'Unitats Elèctriques', 'Simulador de la Llei d\'Ohm (amb exercicis autocorregibles)'],
-      color: 'from-emerald-600 to-teal-600',
-      border: 'border-emerald-500/30',
-      badgeBg: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-      icon: Gauge,
+        'Llegeix esquemes normalitzats de circuits i descobreix el funcionament dels components en sèrie i en paral·lel amb Circuit Màgic.',
+      badge: 'Biblioteca + Simulador',
+      icon: Layers,
     },
     {
       num: 4,
-      targetId: 'b4-codi-colors' as ModuleId,
+      targetId: 'b4-llei-dohm' as ModuleId,
       time: '35 minuts',
-      title: 'Bloc 4: Resistències i Codi de Colors',
-      tagline: 'Desxifra el valor d\'una resistència amb les 4 bandes',
+      title: 'Bloc 4: Les Magnituds Elèctriques i la Llei d\'Ohm',
       description:
-        'Descobreix la funció de les resistències com a limitadors de corrent i domina la lectura del codi de colors internacional (xifres, multiplicador i tolerància).',
-      tools: ['Joc de Codi de Colors de Resistències (amb gràfics i taula interactiva)'],
-      color: 'from-purple-600 to-indigo-600',
-      border: 'border-purple-500/30',
-      badgeBg: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
-      icon: Sliders,
+        'Voltatge (V), Intensitat (I) i Resistència (R). Conversió de prefixos (mA, kΩ) i simulador visual de la Llei d\'Ohm (V = I · R).',
+      badge: 'Conversor + Simulador Matemàtic',
+      icon: Gauge,
     },
     {
       num: 5,
-      targetId: 'b5-laboratori-multimetre' as ModuleId,
-      time: '50 minuts',
-      title: 'Bloc 5: Tasca Final: Laboratori amb Multímetre',
-      tagline: 'Mesures de voltatge, resistència i càlculs de laboratori',
+      targetId: 'b5-codi-colors' as ModuleId,
+      time: '25 minuts',
+      title: 'Bloc 5: La Resistència com a Component i Codi de Colors',
       description:
-        'L\'avaluació pràctica: maneja un multímetre digital interactiu, mesura resistències reals, avalua caigudes de tensió en circuits sèrie i calcula incògnites amb la Llei d\'Ohm.',
-      tools: ['Simulador Virtual de Multímetre Digital', 'Bancs de Circuits Reals', 'Quadern de Pràctiques i Informe Final'],
-      color: 'from-orange-600 to-red-600',
-      border: 'border-orange-500/30',
-      badgeBg: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
+        'Com protegeixen les resistències els components sensibles. Desxifra els 4 anells de color abans d\'entrar al laboratori.',
+      badge: 'Pràctica de Càlcul',
+      icon: Sliders,
+    },
+    {
+      num: 6,
+      targetId: 'b6-multimetre' as ModuleId,
+      time: '40 minuts',
+      title: 'Bloc 6: Tasca Final: Laboratori Virtual amb Multímetre',
+      description:
+        'L\'avaluació pràctica: utilitza el tester per mesurar resistències i caigudes de tensió reals, resol el repte de la Llei d\'Ohm i genera el teu informe.',
+      badge: 'Avaluació de Laboratori',
       icon: FileCheck2,
-      isFinalTask: true,
+      isFinal: true,
     },
   ];
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-8 space-y-10">
-      {/* Hero Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 border border-slate-700/80 p-8 md:p-12 shadow-2xl">
-        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-        <div className="relative z-10 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-black uppercase tracking-wider mb-4">
-            <Sparkles size={14} /> Càpsula Seqüencial de 3 Hores (180 min)
+    <div className="w-full max-w-5xl mx-auto space-y-10 text-stone-800">
+      {/* Friendly Hero Banner */}
+      <div className="bg-white rounded-3xl p-8 md:p-10 border border-stone-200/90 shadow-sm relative overflow-hidden">
+        <div className="max-w-2xl space-y-4">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wide">
+            <Sparkles size={14} className="text-amber-600" /> Càpsula Formativa de 3 Hores
           </div>
-          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-stone-900 tracking-tight leading-tight">
             Aprendre Electricitat Bàsica <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-400">
-              De l'Àtom al Multímetre
-            </span>
+            <span className="text-amber-700">De l'Àtom al Multímetre</span>
           </h1>
-          <p className="text-slate-300 text-base md:text-lg leading-relaxed mb-6">
-            Aquesta càpsula és <strong>estrictament seqüencial</strong>: has de superar i completar cada bloc per desbloquejar el següent, fins a arribar a la <strong>tasca final de mesura i càlculs amb el multímetre digital</strong>.
+          <p className="text-stone-600 text-sm md:text-base leading-relaxed">
+            Una seqüència didàctica estructurada per a l'alumnat de secundària i cicles formatius. Supera cadascun dels blocs pas a pas fins a completar la pràctica final amb el multímetre digital.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="pt-2">
             {isRegistered ? (
               <button
                 onClick={() => onSelectModule(getStartButtonTarget())}
-                className="px-6 py-3.5 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black rounded-2xl shadow-xl shadow-amber-500/20 flex items-center gap-2 transition transform hover:-translate-y-0.5"
+                className="px-6 py-3.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-2xl shadow-sm flex items-center gap-2 transition"
               >
                 <span>
-                  {highestUnlocked === 1 ? 'Comença pel Bloc 1 (Conductors)' : `Continua al Bloc ${highestUnlocked}`}
+                  {highestUnlocked === 1 ? 'Començar el Bloc 1: Què és l\'electricitat?' : `Continuar al Bloc ${highestUnlocked}`}
                 </span>
                 <ArrowRight size={18} />
               </button>
             ) : (
-              <div className="px-5 py-3 bg-amber-500/20 border border-amber-500/40 rounded-2xl text-amber-300 text-xs font-bold flex items-center gap-2">
-                <AlertCircle size={18} className="text-amber-400 shrink-0" />
-                <span>Identifica't al formulari inferior per començar la càpsula.</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 text-xs font-medium">
+                <AlertCircle size={16} className="text-amber-600 shrink-0" />
+                <span>Indica el teu nom i grup classe al formulari de sota per començar.</span>
               </div>
             )}
           </div>
         </div>
       </div>
 
-      {/* Mandatory Student Registration Form with Immediate Autosave */}
+      {/* Mandatory Student Identification Card */}
       <div
-        id="student-registration"
-        className={`rounded-3xl p-6 md:p-8 border shadow-xl transition-all duration-300 ${
+        className={`rounded-3xl p-6 md:p-8 border shadow-sm transition-all ${
           isRegistered
-            ? 'bg-slate-800/80 border-slate-700'
-            : 'bg-gradient-to-br from-amber-950/40 via-slate-900 to-slate-900 border-amber-500 ring-2 ring-amber-500/50'
+            ? 'bg-white border-stone-200'
+            : 'bg-amber-50/50 border-2 border-amber-400'
         }`}
       >
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-          <div className="max-w-xl">
-            <div className="flex items-center gap-2 mb-1">
-              <Award className="text-amber-400" size={24} />
-              <h3 className="text-xl font-black text-white">
-                Identificació de l'Alumne/a (Obligatòria)
+          <div className="max-w-md space-y-1">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 font-bold flex items-center justify-center text-sm">
+                <Award size={18} />
+              </div>
+              <h3 className="text-lg font-bold text-stone-900">
+                Identificació de l'Alumne/a
               </h3>
               {!isRegistered && (
-                <span className="text-[10px] bg-red-500/20 text-red-300 border border-red-500/40 px-2 py-0.5 rounded-full font-bold uppercase">
-                  Pendent
+                <span className="text-[10px] bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full font-bold uppercase">
+                  Obligatori
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-400">
-              Per fer la càpsula és imprescindible indicar el teu nom, cognoms i grup classe (1r, 2n o 3r d'ESO, línia A o B). S'activa l'<strong>autosave automàtic</strong> de totes les teves respostes i progrés.
+            <p className="text-xs text-stone-600 leading-relaxed">
+              Necessitem el teu nom i grup per desar el teu progrés i generar l'informe final del multímetre.
             </p>
           </div>
 
-          {/* Form with inputs */}
+          {/* Form fields */}
           <div className="w-full lg:w-auto flex flex-col gap-3">
             <div className="flex flex-col sm:flex-row gap-3">
-              {/* Name input */}
-              <div className="flex-1">
-                <label className="block text-[11px] font-bold text-slate-300 uppercase mb-1">
-                  Nom i Cognoms: <span className="text-red-400">*</span>
+              {/* Name */}
+              <div>
+                <label className="block text-[11px] font-bold text-stone-700 uppercase mb-1">
+                  Nom i Cognoms <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  placeholder="Escriu el teu nom i cognoms..."
+                  placeholder="Ex: Gerard Calle Reus"
                   value={nameInput}
                   onChange={(e) => handleNameChange(e.target.value)}
-                  className="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:ring-2 focus:ring-amber-500 outline-none w-full sm:w-72"
+                  className="bg-stone-50 border border-stone-300 rounded-xl px-4 py-2.5 text-sm text-stone-900 focus:bg-white focus:ring-2 focus:ring-amber-500 outline-none w-full sm:w-64"
                   required
                 />
               </div>
 
-              {/* Class Group Selector Buttons */}
+              {/* Class group */}
               <div>
-                <label className="block text-[11px] font-bold text-slate-300 uppercase mb-1">
-                  Grup Classe: <span className="text-red-400">*</span>
+                <label className="block text-[11px] font-bold text-stone-700 uppercase mb-1">
+                  Grup Classe <span className="text-red-500">*</span>
                 </label>
                 <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5">
                   {CLASS_GROUPS.map((grp) => {
@@ -249,10 +235,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
                         key={grp}
                         type="button"
                         onClick={() => handleGroupSelect(grp)}
-                        className={`px-3 py-2 rounded-xl text-xs font-black transition border ${
+                        className={`px-3 py-2 rounded-xl text-xs font-bold transition border ${
                           isSelected
-                            ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-md transform scale-105'
-                            : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border-slate-700'
+                            ? 'bg-amber-500 text-white border-amber-600 shadow-sm'
+                            : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border-stone-200'
                         }`}
                       >
                         {grp}
@@ -263,15 +249,15 @@ export const Dashboard: React.FC<DashboardProps> = ({
               </div>
             </div>
 
-            {/* Autosave status pill */}
-            <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
-              <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                Autosave actiu al navegador (no perdràs res si recarregues la pàgina)
+            {/* Autosave status indicator */}
+            <div className="flex items-center justify-between text-xs text-stone-500 pt-1">
+              <span className="flex items-center gap-1.5 text-[11px]">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                Autosave actiu: no perdràs les teves respostes si tanques la pestanya.
               </span>
               {saveStatus && (
-                <span className="text-emerald-400 font-bold flex items-center gap-1 animate-fade-in">
-                  <CheckCircle2 size={14} /> {saveStatus}
+                <span className="text-emerald-700 font-bold flex items-center gap-1 text-[11px]">
+                  <CheckCircle2 size={13} /> {saveStatus}
                 </span>
               )}
             </div>
@@ -279,28 +265,23 @@ export const Dashboard: React.FC<DashboardProps> = ({
         </div>
       </div>
 
-      {/* Progress & Sequential 3-Hour Itinerary */}
-      <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2 border-b border-slate-800 pb-4">
+      {/* Sequential Blocks Roadmap */}
+      <div className="space-y-4">
+        <div className="flex justify-between items-end border-b border-stone-200 pb-3">
           <div>
-            <span className="text-xs font-bold text-amber-400 uppercase tracking-widest block">
-              ITINERARI SEQÜENCIAL D'APRENENTATGE
+            <span className="text-xs font-bold text-amber-800 uppercase tracking-widest block">
+              Itinerari Seqüencial
             </span>
-            <h2 className="text-3xl font-black text-white">Els 5 Blocs Didàctics</h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Supera cada bloc per desbloquejar el següent pas a pas.
-            </p>
+            <h2 className="text-2xl font-bold text-stone-900">Els 6 Blocs d'Aprenentatge</h2>
           </div>
-          <div className="text-left sm:text-right">
-            <span className="text-xs text-slate-400 block">Progrés Seqüencial</span>
-            <span className="text-lg font-black text-amber-400">
-              {completedBlocks.length} de 5 Blocs completats ({Math.round((completedBlocks.length / 5) * 100)}%)
-            </span>
+          <div className="text-right text-xs text-stone-500">
+            <span>Completats: </span>
+            <strong className="text-stone-900">{completedBlocks.length} de 6</strong>
           </div>
         </div>
 
-        {/* Block Cards List */}
-        <div className="grid grid-cols-1 gap-5">
+        {/* List of cards */}
+        <div className="space-y-3">
           {blocks.map((block) => {
             const Icon = block.icon;
             const isCompleted = completedBlocks.includes(block.num);
@@ -310,98 +291,74 @@ export const Dashboard: React.FC<DashboardProps> = ({
             return (
               <div
                 key={block.num}
-                className={`relative overflow-hidden rounded-3xl border p-6 md:p-8 shadow-xl transition-all duration-300 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 ${
+                className={`rounded-2xl p-5 md:p-6 border transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4 ${
                   isUnlocked
-                    ? `bg-slate-800/90 ${block.border} hover:border-amber-500/50 hover:bg-slate-800`
-                    : 'bg-slate-950/60 border-slate-800/80 opacity-60'
+                    ? 'bg-white border-stone-200 hover:border-stone-300 shadow-sm'
+                    : 'bg-stone-100/60 border-stone-200/60 opacity-60'
                 }`}
               >
                 <div className="flex items-start gap-4">
-                  {/* Block Number & Icon */}
+                  {/* Icon */}
                   <div
-                    className={`w-14 h-14 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg shrink-0 transition ${
+                    className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-lg shrink-0 ${
                       isUnlocked
-                        ? `bg-gradient-to-tr ${block.color}`
-                        : 'bg-slate-800 text-slate-600'
+                        ? isCurrent
+                          ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                          : 'bg-stone-100 text-stone-700'
+                        : 'bg-stone-200 text-stone-400'
                     }`}
                   >
-                    {isUnlocked ? <Icon size={28} /> : <Lock size={26} className="text-slate-500" />}
+                    {isUnlocked ? <Icon size={22} /> : <Lock size={20} />}
                   </div>
 
                   {/* Info */}
-                  <div className="space-y-1.5">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className={`text-[11px] font-extrabold uppercase px-2.5 py-0.5 rounded-full border ${isUnlocked ? block.badgeBg : 'bg-slate-800 text-slate-500 border-slate-700'}`}>
-                        BLOC {block.num} • {block.time}
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">
+                        {block.time}
                       </span>
-                      {block.isFinalTask && (
-                        <span className="text-[11px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/30">
-                          TASCA FINAL D'AVALUACIÓ
-                        </span>
-                      )}
+                      <span className="text-[10px] font-medium bg-stone-100 text-stone-600 px-2 py-0.5 rounded-full border border-stone-200">
+                        {block.badge}
+                      </span>
                       {isCompleted && (
-                        <span className="text-[11px] font-bold text-emerald-400 flex items-center gap-1">
-                          <CheckCircle2 size={14} /> Completat
+                        <span className="text-[11px] font-bold text-emerald-700 flex items-center gap-1">
+                          <CheckCircle2 size={13} /> Completat
                         </span>
                       )}
                       {isCurrent && (
-                        <span className="text-[11px] font-bold text-amber-400 flex items-center gap-1 animate-pulse">
-                          ● Bloc Actual
-                        </span>
-                      )}
-                      {!isUnlocked && (
-                        <span className="text-[11px] font-bold text-slate-500 flex items-center gap-1">
-                          <Lock size={12} /> Bloquejat (cal completar el Bloc {block.num - 1})
+                        <span className="text-[11px] font-bold text-amber-700 flex items-center gap-1">
+                          ● Següent
                         </span>
                       )}
                     </div>
-                    <h3 className={`text-xl font-black ${isUnlocked ? 'text-white' : 'text-slate-400'}`}>
+                    <h3 className={`text-base font-bold ${isUnlocked ? 'text-stone-900' : 'text-stone-500'}`}>
                       {block.title}
                     </h3>
-                    <p className={`text-xs font-semibold ${isUnlocked ? 'text-amber-300/90' : 'text-slate-500'}`}>
-                      {block.tagline}
-                    </p>
-                    <p className={`text-xs leading-relaxed max-w-2xl pt-1 ${isUnlocked ? 'text-slate-300' : 'text-slate-500'}`}>
+                    <p className="text-xs text-stone-600 leading-relaxed max-w-2xl">
                       {block.description}
                     </p>
-
-                    <div className="flex flex-wrap gap-1.5 pt-2">
-                      {block.tools.map((tool, idx) => (
-                        <span
-                          key={idx}
-                          className="text-[11px] bg-slate-900/80 text-slate-400 px-2 py-0.5 rounded-md border border-slate-700/60 font-mono"
-                        >
-                          🕹️ {tool}
-                        </span>
-                      ))}
-                    </div>
                   </div>
                 </div>
 
-                {/* Action button */}
-                <div className="w-full lg:w-auto shrink-0 flex lg:flex-col justify-end">
+                {/* Button */}
+                <div className="shrink-0 w-full md:w-auto">
                   {isUnlocked ? (
                     <button
                       onClick={() => onSelectModule(block.targetId)}
-                      className={`w-full lg:w-auto px-5 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition ${
+                      className={`w-full md:w-auto px-4 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition ${
                         isCurrent
-                          ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-500/20'
-                          : isCompleted
-                          ? 'bg-slate-700 hover:bg-slate-600 text-slate-200'
-                          : 'bg-slate-700 hover:bg-slate-600 text-white'
+                          ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-sm'
+                          : 'bg-stone-100 hover:bg-stone-200 text-stone-800'
                       }`}
                     >
-                      <span>{isCompleted ? `Repassar Bloc ${block.num}` : `Entrar al Bloc ${block.num}`}</span>
-                      <ArrowRight size={16} />
+                      <span>{isCompleted ? 'Repassar' : 'Començar'}</span>
+                      <ArrowRight size={14} />
                     </button>
                   ) : (
-                    <button
-                      disabled
-                      className="w-full lg:w-auto px-5 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 bg-slate-900 text-slate-600 border border-slate-800 cursor-not-allowed"
-                    >
-                      <Lock size={14} />
+                    <div className="w-full md:w-auto px-4 py-2 rounded-xl text-xs font-semibold text-stone-400 bg-stone-100 border border-stone-200 flex items-center justify-center gap-1.5 cursor-not-allowed">
+                      <Lock size={12} />
                       <span>Bloquejat</span>
-                    </button>
+                    </div>
                   )}
                 </div>
               </div>

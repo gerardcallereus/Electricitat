@@ -4,16 +4,18 @@ import { MultimeterDevice } from './MultimeterDevice';
 import { CircuitBoardLab } from './CircuitBoardLab';
 import { MultimeterTasks } from './MultimeterTasks';
 import { computeMultimeterReading } from './multimeterEngine';
-import { BookOpen, Wrench, FileCheck2, Lightbulb } from 'lucide-react';
+import { BookOpen, Wrench, FileCheck2, Lightbulb, ArrowLeft } from 'lucide-react';
 
 interface MultimeterLabAppProps {
   studentName: string;
   studentGroup: string;
+  onBackToDashboard?: () => void;
 }
 
 export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
   studentName,
   studentGroup,
+  onBackToDashboard,
 }) => {
   const [activeTab, setActiveTab] = useState<'simulator' | 'theory' | 'tasks'>('simulator');
   const [activeBoard, setActiveBoard] = useState<'resistors' | 'series' | 'ohm-challenge'>('resistors');
@@ -39,7 +41,6 @@ export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
   const handleJumpToBoard = (board: 'resistors' | 'series' | 'ohm-challenge') => {
     setActiveBoard(board);
     setActiveTab('simulator');
-    // Set appropriate default probes for convenience
     if (board === 'resistors') {
       setRedProbe('TP-R1A');
       setBlackProbe('TP-R1B');
@@ -56,58 +57,58 @@ export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto flex flex-col gap-6">
+    <div className="w-full max-w-7xl mx-auto flex flex-col gap-6 text-stone-800">
       {/* Top Banner / Mode Switcher */}
-      <div className="bg-slate-800 text-white p-6 rounded-3xl border border-slate-700 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="bg-white border border-stone-200/90 rounded-3xl p-6 md:p-8 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-3 py-1 bg-amber-500 text-slate-900 text-xs font-black uppercase rounded-full tracking-wider">
-              BLOC 5: TASCA FINAL D'AVALUACIÓ
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="px-3 py-1 bg-amber-100 text-amber-900 text-xs font-bold uppercase rounded-full tracking-wide">
+              Bloc 6 de 6 • 40 minuts • Tasca Final
             </span>
-            <span className="text-xs text-slate-400 font-mono">50 minuts</span>
+            <span className="text-xs text-stone-500 font-medium">Laboratori d'Instrumentació</span>
           </div>
-          <h1 className="text-3xl font-black text-white tracking-tight">
+          <h1 className="text-2xl md:text-3xl font-bold text-stone-900 tracking-tight">
             Laboratori Virtual: Mesures i Càlculs amb Multímetre
           </h1>
-          <p className="text-sm text-slate-300 mt-1 max-w-2xl">
-            Aprèn a utilitzar el tester o polímetre digital com un autèntic professional de la tecnologia i resol els reptes de voltatge i resistència.
+          <p className="text-sm text-stone-600 mt-1 max-w-2xl leading-relaxed">
+            Maneja el tester o polímetre digital com un autèntic professional de la tecnologia i resol els reptes de voltatge i resistència.
           </p>
         </div>
 
         {/* Tab Buttons */}
-        <div className="flex flex-wrap gap-2 bg-slate-900 p-1.5 rounded-2xl border border-slate-700">
+        <div className="flex flex-wrap gap-1.5 bg-stone-100 p-1.5 rounded-2xl border border-stone-200 shrink-0">
           <button
             onClick={() => setActiveTab('simulator')}
-            className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition ${
+            className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition ${
               activeTab === 'simulator'
-                ? 'bg-amber-500 text-slate-950 shadow-lg'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                ? 'bg-white text-stone-900 shadow-sm'
+                : 'text-stone-600 hover:text-stone-900'
             }`}
           >
-            <Wrench size={16} />
-            Simulador Multímetre & Bancs
+            <Wrench size={16} className="text-amber-600" />
+            Simulador & Bancs
           </button>
           <button
             onClick={() => setActiveTab('theory')}
-            className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition ${
+            className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition ${
               activeTab === 'theory'
-                ? 'bg-amber-500 text-slate-950 shadow-lg'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                ? 'bg-white text-stone-900 shadow-sm'
+                : 'text-stone-600 hover:text-stone-900'
             }`}
           >
-            <BookOpen size={16} />
-            Guia del Multímetre
+            <BookOpen size={16} className="text-amber-600" />
+            Guia del Tester
           </button>
           <button
             onClick={() => setActiveTab('tasks')}
-            className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition ${
+            className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition ${
               activeTab === 'tasks'
-                ? 'bg-amber-500 text-slate-950 shadow-lg'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                ? 'bg-white text-stone-900 shadow-sm'
+                : 'text-stone-600 hover:text-stone-900'
             }`}
           >
-            <FileCheck2 size={16} />
-            Quadern de Pràctiques (Avaluació)
+            <FileCheck2 size={16} className="text-amber-600" />
+            Quadern d'Avaluació
           </button>
         </div>
       </div>
@@ -115,8 +116,8 @@ export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
       {/* VIEW 1: SIMULATOR & WORKBENCH */}
       {activeTab === 'simulator' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Multimeter Device (Left or Top on mobile) */}
-          <div className="lg:col-span-4 sticky top-4 z-10">
+          {/* Multimeter Device */}
+          <div className="lg:col-span-4 sticky top-20 z-10">
             <MultimeterDevice
               scale={scale}
               onScaleChange={setScale}
@@ -130,17 +131,17 @@ export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
               onClearProbes={handleClearProbes}
             />
 
-            <div className="mt-4 p-4 bg-slate-800/80 rounded-2xl border border-slate-700 text-xs text-slate-300">
-              <h4 className="font-bold text-amber-400 mb-1 flex items-center gap-1.5">
-                <Lightbulb size={16} /> Consell ràpid:
+            <div className="mt-4 p-4 bg-white rounded-2xl border border-stone-200 text-xs text-stone-600 shadow-sm">
+              <h4 className="font-bold text-stone-900 mb-1 flex items-center gap-1.5">
+                <Lightbulb size={16} className="text-amber-500" /> Consell de laboratori:
               </h4>
               <p>
-                Pots canviar l'escala fent clic als botons sota el selector (200mV, 2V, 20V, 2kΩ, etc.) o girar-lo. Després vés a la pestanya <strong>"Quadern de Pràctiques"</strong> per anotar les teves respostes!
+                Connecta les puntes fent clic als punts grocs del circuit. Després vés a la pestanya <strong>"Quadern d'Avaluació"</strong> per respondre les preguntes i obtenir la teva nota!
               </p>
             </div>
           </div>
 
-          {/* Interactive Circuit Boards (Right) */}
+          {/* Interactive Circuit Boards */}
           <div className="lg:col-span-8">
             <CircuitBoardLab
               activeBoard={activeBoard}
@@ -156,57 +157,49 @@ export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
 
       {/* VIEW 2: THEORY GUIDE */}
       {activeTab === 'theory' && (
-        <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-xl text-slate-800 max-w-4xl mx-auto space-y-8">
-          <div className="border-b pb-4">
-            <h2 className="text-3xl font-black text-slate-900">
-              Guia Completa: Com utilitzar el Multímetre Digital
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm text-stone-800 max-w-4xl mx-auto space-y-8">
+          <div className="border-b border-stone-200 pb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-stone-900">
+              Guia d'Ús del Multímetre Digital
             </h2>
-            <p className="text-sm text-slate-600 mt-1">
-              El multímetre (o tester) és l'eina fonamental per diagnosticar circuits, mesurar tensions i comprovar components.
+            <p className="text-sm text-stone-600 mt-1">
+              El multímetre (o tester) és l'eina clau per mesurar magnituds elèctriques i trobar avaries.
             </p>
           </div>
 
-          {/* Grid 2 cols */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-sky-50 p-6 rounded-2xl border border-sky-100">
-              <h3 className="text-lg font-black text-sky-900 mb-2 flex items-center gap-2">
-                ⚡ Com mesurar Voltatge (Voltímetre DCV)
+            <div className="bg-stone-50 p-6 rounded-2xl border border-stone-200 space-y-3">
+              <h3 className="text-lg font-bold text-stone-900 flex items-center gap-2">
+                ⚡ Mesura de Tensió (Voltímetre DCV)
               </h3>
-              <ul className="text-sm space-y-2 text-slate-700">
-                <li>• <strong>Connexió en PARAL·LEL:</strong> El voltímetre es col·loca abraçant el component on volem conèixer la diferència de potencial.</li>
-                <li>• <strong>Circuit en TENSIÓ:</strong> El circuit ha d'estar alimentat i funcionant.</li>
-                <li>• <strong>Puntes de prova:</strong> La punta <strong>negra a COM</strong> (massa / pol negatiu) i la punta <strong>vermella a V/Ω</strong> (potencial positiu).</li>
-                <li>• Si inverteixes les puntes, el multímetre simplement marcarà un signe negatiu <strong>(-)</strong>.</li>
+              <ul className="text-xs space-y-2 text-stone-700 leading-relaxed">
+                <li>• <strong>Connexió en PARAL·LEL:</strong> El voltímetre es col·loca abraçant els dos extrems del component on volem conèixer el voltatge.</li>
+                <li>• <strong>Circuit alimentat:</strong> El circuit ha d'estar connectat a la pila i en funcionament.</li>
+                <li>• <strong>Borns:</strong> Punta negra a <strong>COM</strong> i vermella a <strong>V/Ω</strong>.</li>
+                <li>• Si inverteixes les puntes, el multímetre mostrarà el signe negatiu <strong>(-)</strong>.</li>
               </ul>
             </div>
 
-            <div className="bg-amber-50 p-6 rounded-2xl border border-amber-100">
-              <h3 className="text-lg font-black text-amber-900 mb-2 flex items-center gap-2">
-                🏷️ Com mesurar Resistència (Ohímetre Ω)
+            <div className="bg-stone-50 p-6 rounded-2xl border border-stone-200 space-y-3">
+              <h3 className="text-lg font-bold text-stone-900 flex items-center gap-2">
+                🏷️ Mesura de Resistència (Ohímetre Ω)
               </h3>
-              <ul className="text-sm space-y-2 text-slate-700">
-                <li>• <strong>CIRCUIT DESCONNECTAT:</strong> Mai mesuris la resistència d'un component amb la pila connectada. Pots cremar el fusible de l'instrument!</li>
-                <li>• <strong>Sense polaritat:</strong> No importa quina punta és la vermella o la negra per mesurar resistència.</li>
-                <li>• <strong>Selecció d'escala:</strong> Comença per una escala superior al valor estimat. Si és massa petita, veuràs <strong>"1 ."</strong> (sobrecàrrega).</li>
-                <li>• <strong>Circuit obert:</strong> Si les puntes estan a l'aire, marca <strong>"1 ."</strong> (resistència infinita).</li>
+              <ul className="text-xs space-y-2 text-stone-700 leading-relaxed">
+                <li>• <strong>CIRCUIT DESCONNECTAT:</strong> Mai mesuris resistència amb la pila o font activada. Pots fer malbé el fusible intern!</li>
+                <li>• <strong>Sense polaritat:</strong> Per mesurar resistència és indiferent on poses la punta vermella o la negra.</li>
+                <li>• <strong>Sobrecàrrega:</strong> Si l'escala és massa petita o el circuit és obert, la pantalla mostra <strong>"1 ."</strong>.</li>
               </ul>
             </div>
           </div>
 
-          {/* Safety and scale rules */}
-          <div className="bg-slate-900 text-white p-6 rounded-2xl border border-slate-700">
-            <h3 className="text-base font-bold text-amber-400 mb-3 uppercase tracking-wider">
-              La Regla d'Or de les Escales en un Multímetre
+          {/* Scale rules */}
+          <div className="bg-amber-50/70 p-6 rounded-2xl border border-amber-200/80 space-y-3">
+            <h3 className="text-base font-bold text-stone-900">
+              Com triar l'escala adequada?
             </h3>
-            <p className="text-sm leading-relaxed text-slate-300 mb-3">
-              Els multímetres manuals disposen de diferents rangs màxims. Per exemple, l'escala <strong>20V</strong> permet mesurar de 0 a 20 Volts amb una precisió de 2 decimals. Si la tensió és de 24V, el tester indicarà sobrecàrrega (<strong>1 .</strong>) i caldrà canviar a l'escala de <strong>200V</strong>.
+            <p className="text-xs text-stone-700 leading-relaxed">
+              En un tester manual has d'escollir un rang superior al valor que vols mesurar. Per exemple, per mesurar una pila de 9V l'escala <strong>20V DCV</strong> és perfecta. Si poses 2V, sortirà sobrecàrrega (1 .).
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs font-mono text-center">
-              <div className="bg-slate-800 p-2 rounded">200mV (fins a 0,2 V)</div>
-              <div className="bg-slate-800 p-2 rounded">2V (fins a 2 V)</div>
-              <div className="bg-slate-800 p-2 rounded text-sky-400 font-bold">20V (Ideal per a piles de 9V i 4.5V)</div>
-              <div className="bg-slate-800 p-2 rounded">200V (Pila i circuits alts)</div>
-            </div>
           </div>
         </div>
       )}
@@ -218,6 +211,18 @@ export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
           studentGroup={studentGroup}
           onJumpToBoard={handleJumpToBoard}
         />
+      )}
+
+      {/* Footer navigation */}
+      {onBackToDashboard && (
+        <div className="flex justify-start pt-2">
+          <button
+            onClick={onBackToDashboard}
+            className="text-stone-600 hover:text-stone-900 font-bold text-xs flex items-center gap-1.5"
+          >
+            <ArrowLeft size={16} /> Tornar a l'Itinerari
+          </button>
+        </div>
       )}
     </div>
   );

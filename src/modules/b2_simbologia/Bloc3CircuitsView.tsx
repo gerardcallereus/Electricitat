@@ -1,88 +1,70 @@
 import React, { useState } from 'react';
-import { ElectricityIntroduction } from './ElectricityIntroduction';
-import ConductorsApp from './ConductorsApp';
-import { BookOpen, Gamepad2, ArrowRight, CheckCircle2, ArrowLeft } from 'lucide-react';
+import SimbologiaApp from './SimbologiaApp';
+import CircuitMagicApp from '../b2_circuits/CircuitMagicApp';
+import { Bookmark, CheckSquare, ArrowRight, CheckCircle2, ArrowLeft } from 'lucide-react';
 
-interface Bloc1ViewProps {
+interface Bloc3CircuitsViewProps {
   onComplete: () => void;
   onNext: () => void;
   onBackToDashboard?: () => void;
 }
 
-export const Bloc1View: React.FC<Bloc1ViewProps> = ({ onComplete, onNext, onBackToDashboard }) => {
-  const [tab, setTab] = useState<'theory' | 'simulator'>('theory');
+export const Bloc3CircuitsView: React.FC<Bloc3CircuitsViewProps> = ({
+  onComplete,
+  onNext,
+  onBackToDashboard
+}) => {
+  const [subTab, setSubTab] = useState<'simbologia' | 'circuits'>('simbologia');
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-8">
+    <div className="w-full max-w-5xl mx-auto space-y-8 text-stone-800">
       {/* Block Header Banner */}
       <div className="bg-white border border-stone-200/90 rounded-3xl p-6 md:p-8 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <span className="px-3 py-1 bg-amber-100 text-amber-900 text-xs font-bold uppercase rounded-full tracking-wide">
-              Bloc 1 de 6 • 25 minuts
+              Bloc 3 de 6 • 30 minuts
             </span>
-            <span className="text-xs text-stone-500 font-medium">Fonaments de l'Electricitat</span>
+            <span className="text-xs text-stone-500 font-medium">Dibuix Tècnic de Circuits</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-stone-900 tracking-tight">
-            Què és l'Electricitat? L'Àtom, Conductors i Aïllants
+            Simbologia Normalitzada i Circuits Sèrie / Paral·lel
           </h1>
           <p className="text-sm text-stone-600 mt-1 max-w-2xl leading-relaxed">
-            Comprèn com es mouen els electrons lliures per l'interior de la matèria i experimenta quins materials permeten tancar un circuit elèctric.
+            Aprèn a llegir esquemes de circuits amb la normativa internacional i experimenta com es connecten els components en sèrie i en paral·lel.
           </p>
         </div>
 
-        {/* Tab switch buttons */}
+        {/* Sub-activity switcher */}
         <div className="flex gap-1.5 bg-stone-100 p-1.5 rounded-2xl border border-stone-200 shrink-0">
           <button
-            onClick={() => setTab('theory')}
+            onClick={() => setSubTab('simbologia')}
             className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition ${
-              tab === 'theory'
+              subTab === 'simbologia'
                 ? 'bg-white text-stone-900 shadow-sm'
                 : 'text-stone-600 hover:text-stone-900'
             }`}
           >
-            <BookOpen size={16} className="text-amber-600" />
-            1. Teoria: L'Àtom i el Corrent
+            <Bookmark size={16} className="text-amber-600" />
+            3.1 Símbols Elèctrics
           </button>
           <button
-            onClick={() => setTab('simulator')}
+            onClick={() => setSubTab('circuits')}
             className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition ${
-              tab === 'simulator'
+              subTab === 'circuits'
                 ? 'bg-white text-stone-900 shadow-sm'
                 : 'text-stone-600 hover:text-stone-900'
             }`}
           >
-            <Gamepad2 size={16} className="text-amber-600" />
-            2. Simulador: ElectroConnecta
+            <CheckSquare size={16} className="text-amber-600" />
+            3.2 Sèrie vs Paral·lel
           </button>
         </div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="space-y-6">
-        {tab === 'theory' ? (
-          <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm">
-            <ElectricityIntroduction />
-
-            {/* Prompt to go to simulator */}
-            <div className="mt-8 pt-6 border-t border-stone-200 flex justify-end">
-              <button
-                onClick={() => {
-                  setTab('simulator');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-2xl text-sm flex items-center gap-2 transition shadow-sm"
-              >
-                <span>Molt bé! Ara prova el Simulador de Conductors</span>
-                <ArrowRight size={18} />
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="bg-white rounded-3xl p-4 md:p-6 border border-stone-200/90 shadow-sm">
-            <ConductorsApp />
-          </div>
-        )}
+      {/* Main active sub-app */}
+      <div className="rounded-3xl overflow-hidden shadow-sm bg-white border border-stone-200/90 p-4 md:p-6 text-stone-900">
+        {subTab === 'simbologia' ? <SimbologiaApp /> : <CircuitMagicApp />}
       </div>
 
       {/* Completion & Navigation Footer */}
@@ -104,7 +86,7 @@ export const Bloc1View: React.FC<Bloc1ViewProps> = ({ onComplete, onNext, onBack
           className="px-6 py-3.5 bg-stone-900 hover:bg-stone-800 text-white font-bold rounded-2xl text-sm flex items-center gap-2 shadow-md transition"
         >
           <CheckCircle2 size={18} className="text-amber-400" />
-          <span>Completar el Bloc 1 i anar al Bloc 2: Transformacions d'Energia</span>
+          <span>Completar el Bloc 3 i anar al Bloc 4: Magnituds i Llei d'Ohm</span>
           <ArrowRight size={18} />
         </button>
       </div>
