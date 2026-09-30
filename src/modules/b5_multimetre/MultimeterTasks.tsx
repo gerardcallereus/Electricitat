@@ -19,26 +19,49 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
   studentGroup,
   onJumpToBoard
 }) => {
+  // Autosave persistence in localStorage
+  const savedTasks = (() => {
+    try {
+      const raw = localStorage.getItem('electricitat_multimeter_tasks');
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  })();
+
   // State for the 6 tasks
-  const [q1, setQ1] = useState<string>('');
-  const [q1Res, setQ1Res] = useState<QuestionState>({ answered: false, isCorrect: false, userAnswer: '' });
+  const [q1, setQ1] = useState<string>(savedTasks?.q1 || '');
+  const [q1Res, setQ1Res] = useState<QuestionState>(savedTasks?.q1Res || { answered: false, isCorrect: false, userAnswer: '' });
 
-  const [q2, setQ2] = useState<string>('');
-  const [q2Res, setQ2Res] = useState<QuestionState>({ answered: false, isCorrect: false, userAnswer: '' });
+  const [q2, setQ2] = useState<string>(savedTasks?.q2 || '');
+  const [q2Res, setQ2Res] = useState<QuestionState>(savedTasks?.q2Res || { answered: false, isCorrect: false, userAnswer: '' });
 
-  const [q3, setQ3] = useState<string>('');
-  const [q3Res, setQ3Res] = useState<QuestionState>({ answered: false, isCorrect: false, userAnswer: '' });
+  const [q3, setQ3] = useState<string>(savedTasks?.q3 || '');
+  const [q3Res, setQ3Res] = useState<QuestionState>(savedTasks?.q3Res || { answered: false, isCorrect: false, userAnswer: '' });
 
-  const [q4V1, setQ4V1] = useState<string>('');
-  const [q4V2, setQ4V2] = useState<string>('');
-  const [q4Sum, setQ4Sum] = useState<string>('');
-  const [q4Res, setQ4Res] = useState<QuestionState>({ answered: false, isCorrect: false, userAnswer: '' });
+  const [q4V1, setQ4V1] = useState<string>(savedTasks?.q4V1 || '');
+  const [q4V2, setQ4V2] = useState<string>(savedTasks?.q4V2 || '');
+  const [q4Sum, setQ4Sum] = useState<string>(savedTasks?.q4Sum || '');
+  const [q4Res, setQ4Res] = useState<QuestionState>(savedTasks?.q4Res || { answered: false, isCorrect: false, userAnswer: '' });
 
-  const [q5, setQ5] = useState<string>('');
-  const [q5Res, setQ5Res] = useState<QuestionState>({ answered: false, isCorrect: false, userAnswer: '' });
+  const [q5, setQ5] = useState<string>(savedTasks?.q5 || '');
+  const [q5Res, setQ5Res] = useState<QuestionState>(savedTasks?.q5Res || { answered: false, isCorrect: false, userAnswer: '' });
 
-  const [q6, setQ6] = useState<string>('');
-  const [q6Res, setQ6Res] = useState<QuestionState>({ answered: false, isCorrect: false, userAnswer: '' });
+  const [q6, setQ6] = useState<string>(savedTasks?.q6 || '');
+  const [q6Res, setQ6Res] = useState<QuestionState>(savedTasks?.q6Res || { answered: false, isCorrect: false, userAnswer: '' });
+
+  // Autosave effect
+  useEffect(() => {
+    const dataToSave = {
+      q1, q1Res,
+      q2, q2Res,
+      q3, q3Res,
+      q4V1, q4V2, q4Sum, q4Res,
+      q5, q5Res,
+      q6, q6Res
+    };
+    localStorage.setItem('electricitat_multimeter_tasks', JSON.stringify(dataToSave));
+  }, [q1, q1Res, q2, q2Res, q3, q3Res, q4V1, q4V2, q4Sum, q4Res, q5, q5Res, q6, q6Res]);
 
   // Evaluation functions
   const checkQ1 = () => {

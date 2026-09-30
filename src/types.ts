@@ -9,6 +9,9 @@ export type ModuleId =
   | 'b4-codi-colors'
   | 'b5-laboratori-multimetre';
 
+export const CLASS_GROUPS = ['1r A', '1r B', '2n A', '2n B', '3r A', '3r B'] as const;
+export type ClassGroup = typeof CLASS_GROUPS[number];
+
 export interface ModuleInfo {
   id: ModuleId;
   blocId: number;

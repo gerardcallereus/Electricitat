@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ModuleId } from './types';
+import { ModuleId, CLASS_GROUPS, ClassGroup } from './types';
 import { HeaderNav } from './components/HeaderNav';
 import { Dashboard } from './components/Dashboard';
 import { Bloc1View } from './modules/b1_conductors/Bloc1View';
@@ -7,10 +7,9 @@ import { Bloc2View } from './modules/b2_simbologia/Bloc2View';
 import { Bloc3View } from './modules/b3_llei_dohm/Bloc3View';
 import { Bloc4View } from './modules/b4_codi_colors/Bloc4View';
 import { MultimeterLabApp } from './modules/b5_multimetre/MultimeterLabApp';
-import { User, X, CheckCircle2 } from 'lucide-react';
+import { User, X, CheckCircle2, Lock, AlertTriangle } from 'lucide-react';
 
 const App: React.FC = () => {
-  const [currentModule, setCurrentModule] = useState<ModuleId>('dashboard');
   const [studentName, setStudentName] = useState<string>(() => {
     return localStorage.getItem('electricitat_student_name') || '';
   });
@@ -25,12 +24,31 @@ const App: React.FC = () => {
       return [];
     }
   });
-  const [showStudentModal, setShowStudentModal] = useState<boolean>(false);
 
-  // Temporary inputs in modal
+  const isRegistered = studentName.trim().length >= 3 && studentGroup.trim().length > 0;
+
+  // Compute unlocked blocks sequentially: Bloc 1 is always unlocked if registered,
+  // then block N+1 is unlocked only if block N is in completedBlocks.
+  const unlockedBlocks = React.useMemo(() => {
+    if (!isRegistered) return [];
+    const unlocked = [1];
+    if (completedBlocks.includes(1)) unlocked.push(2);
+    if (completedBlocks.includes(2)) unlocked.push(3);
+    if (completedBlocks.includes(3)) unlocked.push(4);
+    if (completedBlocks.includes(4)) unlocked.push(5);
+    return unlocked;
+  }, [isRegistered, completedBlocks]);
+
+  const [currentModule, setCurrentModule] = useState<ModuleId>(() => {
+    const saved = localStorage.getItem('electricitat_current_module') as ModuleId | null;
+    return saved || 'dashboard';
+  });
+
+  const [showStudentModal, setShowStudentModal] = useState<boolean>(false);
   const [modalName, setModalName] = useState<string>(studentName);
   const [modalGroup, setModalGroup] = useState<string>(studentGroup);
 
+  // Autosave student info
   const handleSaveStudentInfo = (name: string, group: string) => {
     setStudentName(name);
     setStudentGroup(group);
@@ -38,8 +56,37 @@ const App: React.FC = () => {
     localStorage.setItem('electricitat_student_group', group);
   };
 
+  // Autosave current module on change
+  const handleSelectModule = (id: ModuleId) => {
+    // If attempting to enter a block
+    let targetBlocNum = 0;
+    if (id.startsWith('b1')) targetBlocNum = 1;
+    else if (id.startsWith('b2')) targetBlocNum = 2;
+    else if (id.startsWith('b3')) targetBlocNum = 3;
+    else if (id.startsWith('b4')) targetBlocNum = 4;
+    else if (id.startsWith('b5')) targetBlocNum = 5;
+
+    if (targetBlocNum > 0) {
+      if (!isRegistered) {
+        setShowStudentModal(true);
+        return;
+      }
+      if (!unlockedBlocks.includes(targetBlocNum)) {
+        alert(`🔒 El Bloc ${targetBlocNum} està bloquejat! Has de completar el Bloc ${targetBlocNum - 1} primer.`);
+        return;
+      }
+    }
+
+    setCurrentModule(id);
+    localStorage.setItem('electricitat_current_module', id);
+  };
+
   const handleModalSave = (e: React.FormEvent) => {
     e.preventDefault();
+    if (modalName.trim().length < 3 || !modalGroup) {
+      alert('Si us plau, introdueix el teu nom, cognoms i selecciona el teu grup classe (1r, 2n o 3r A/B).');
+      return;
+    }
     handleSaveStudentInfo(modalName, modalGroup);
     setShowStudentModal(false);
   };
@@ -52,6 +99,23 @@ const App: React.FC = () => {
     }
   };
 
+  // If page loaded on a locked block without permission, reset to dashboard
+  useEffect(() => {
+    if (currentModule !== 'dashboard') {
+      let blocNum = 0;
+      if (currentModule.startsWith('b1')) blocNum = 1;
+      else if (currentModule.startsWith('b2')) blocNum = 2;
+      else if (currentModule.startsWith('b3')) blocNum = 3;
+      else if (currentModule.startsWith('b4')) blocNum = 4;
+      else if (currentModule.startsWith('b5')) blocNum = 5;
+
+      if (!isRegistered || !unlockedBlocks.includes(blocNum)) {
+        setCurrentModule('dashboard');
+        localStorage.setItem('electricitat_current_module', 'dashboard');
+      }
+    }
+  }, [isRegistered, unlockedBlocks, currentModule]);
+
   // Auto-scroll to top when switching modules
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -62,7 +126,7 @@ const App: React.FC = () => {
       {/* Top Header Navigation */}
       <HeaderNav
         currentModule={currentModule}
-        onSelectModule={setCurrentModule}
+        onSelectModule={handleSelectModule}
         studentName={studentName}
         studentGroup={studentGroup}
         onEditStudent={() => {
@@ -71,17 +135,20 @@ const App: React.FC = () => {
           setShowStudentModal(true);
         }}
         completedBlocks={completedBlocks}
+        unlockedBlocks={unlockedBlocks}
+        isRegistered={isRegistered}
       />
 
       {/* Main Content Area */}
       <main className="flex-1 py-8 px-4 sm:px-6 lg:px-8">
         {currentModule === 'dashboard' && (
           <Dashboard
-            onSelectModule={setCurrentModule}
+            onSelectModule={handleSelectModule}
             studentName={studentName}
             studentGroup={studentGroup}
             onSaveStudentInfo={handleSaveStudentInfo}
             completedBlocks={completedBlocks}
+            unlockedBlocks={unlockedBlocks}
           />
         )}
 
@@ -90,7 +157,7 @@ const App: React.FC = () => {
             onComplete={() => markBlockCompleted(1)}
             onNext={() => {
               markBlockCompleted(1);
-              setCurrentModule('b2-simbologia');
+              handleSelectModule('b2-simbologia');
             }}
           />
         )}
@@ -100,7 +167,7 @@ const App: React.FC = () => {
             onComplete={() => markBlockCompleted(2)}
             onNext={() => {
               markBlockCompleted(2);
-              setCurrentModule('b3-llei-dohm');
+              handleSelectModule('b3-llei-dohm');
             }}
           />
         )}
@@ -110,7 +177,7 @@ const App: React.FC = () => {
             onComplete={() => markBlockCompleted(3)}
             onNext={() => {
               markBlockCompleted(3);
-              setCurrentModule('b4-codi-colors');
+              handleSelectModule('b4-codi-colors');
             }}
           />
         )}
@@ -120,7 +187,7 @@ const App: React.FC = () => {
             onComplete={() => markBlockCompleted(4)}
             onNext={() => {
               markBlockCompleted(4);
-              setCurrentModule('b5-laboratori-multimetre');
+              handleSelectModule('b5-laboratori-multimetre');
             }}
           />
         )}
@@ -137,20 +204,22 @@ const App: React.FC = () => {
       <footer className="bg-slate-950 border-t border-slate-800 py-6 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-3">
           <p>
-            ⚡ <strong>Càpsula Didàctica d'Electricitat (3 Hores)</strong> • Creat per a l'ensenyament tecnològic interactiu.
+            ⚡ <strong>Càpsula Didàctica d'Electricitat (3 Hores)</strong> • Seqüència d'aprenentatge guiada amb autosave.
           </p>
           <div className="flex gap-4">
             <button
-              onClick={() => setCurrentModule('dashboard')}
+              onClick={() => handleSelectModule('dashboard')}
               className="text-slate-400 hover:text-white transition"
             >
-              Ruta d'aprenentatge
+              Panell d'Inici & Itinerari
             </button>
             <button
               onClick={() => {
-                if (confirm('Vols reiniciar el progrés desat dels blocs?')) {
+                if (confirm('Vols reiniciar el progrés desat de tots els blocs? Aquesta acció tornarà a bloquejar els blocs avançats.')) {
                   setCompletedBlocks([]);
                   localStorage.removeItem('electricitat_completed_blocks');
+                  setCurrentModule('dashboard');
+                  localStorage.setItem('electricitat_current_module', 'dashboard');
                 }
               }}
               className="text-slate-500 hover:text-red-400 transition"
@@ -161,64 +230,94 @@ const App: React.FC = () => {
         </div>
       </footer>
 
-      {/* Student Profile Modal */}
+      {/* Mandatory Student Identification Modal */}
       {showStudentModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-800 rounded-3xl p-6 md:p-8 max-w-md w-full border border-slate-700 shadow-2xl relative text-white">
-            <button
-              onClick={() => setShowStudentModal(false)}
-              className="absolute top-5 right-5 text-slate-400 hover:text-white"
-            >
-              <X size={20} />
-            </button>
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-slate-800 rounded-3xl p-6 md:p-8 max-w-lg w-full border-2 border-amber-500 shadow-2xl relative text-white animate-fade-in">
+            {isRegistered && (
+              <button
+                onClick={() => setShowStudentModal(false)}
+                className="absolute top-5 right-5 text-slate-400 hover:text-white"
+              >
+                <X size={20} />
+              </button>
+            )}
 
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 font-bold flex items-center justify-center">
-                <User size={22} />
+              <div className="w-12 h-12 rounded-2xl bg-amber-500 text-slate-950 font-bold flex items-center justify-center shadow-lg">
+                <User size={24} />
               </div>
               <div>
                 <h3 className="text-xl font-black">Dades de l'Alumne/a</h3>
-                <p className="text-xs text-slate-400">Personalitza el teu informe de qualificació</p>
+                <p className="text-xs text-amber-300">
+                  {isRegistered ? 'Modifica les teves dades' : 'Pas obligatori per començar la càpsula'}
+                </p>
               </div>
             </div>
 
-            <form onSubmit={handleModalSave} className="space-y-4">
+            <form onSubmit={handleModalSave} className="space-y-5">
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1">Nom i Cognoms:</label>
+                <label className="text-xs font-bold text-slate-300 block mb-1">
+                  Nom i Cognoms: <span className="text-red-400">*</span>
+                </label>
                 <input
                   type="text"
                   value={modalName}
                   onChange={(e) => setModalName(e.target.value)}
-                  placeholder="Ex: Maria Garcia Rovira"
+                  placeholder="Ex: Gerard Calle Reus"
                   className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:ring-2 focus:ring-amber-500 outline-none"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1">Grup / Classe:</label>
-                <input
-                  type="text"
-                  value={modalGroup}
-                  onChange={(e) => setModalGroup(e.target.value)}
-                  placeholder="Ex: 3r ESO B"
-                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:ring-2 focus:ring-amber-500 outline-none"
-                />
+                <label className="text-xs font-bold text-slate-300 block mb-1">
+                  Grup Classe: <span className="text-red-400">*</span>
+                </label>
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                  {CLASS_GROUPS.map((grp) => (
+                    <button
+                      key={grp}
+                      type="button"
+                      onClick={() => setModalGroup(grp)}
+                      className={`py-2 rounded-xl text-xs font-black transition border ${
+                        modalGroup === grp
+                          ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-md font-bold'
+                          : 'bg-slate-900 hover:bg-slate-700 text-slate-300 border-slate-700'
+                      }`}
+                    >
+                      {grp}
+                    </button>
+                  ))}
+                </div>
+                {!modalGroup && (
+                  <span className="text-[11px] text-amber-400 mt-1 block">
+                    Selecciona el teu curs i grup (1r A, 1r B, 2n A, 2n B, 3r A o 3r B)
+                  </span>
+                )}
               </div>
 
-              <div className="pt-2 flex justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setShowStudentModal(false)}
-                  className="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white"
-                >
-                  Cancel·lar
-                </button>
+              <div className="pt-2 flex justify-end gap-2 border-t border-slate-700">
+                {isRegistered && (
+                  <button
+                    type="button"
+                    onClick={() => setShowStudentModal(false)}
+                    className="px-4 py-2.5 text-xs font-bold text-slate-400 hover:text-white"
+                  >
+                    Cancel·lar
+                  </button>
+                )}
                 <button
                   type="submit"
-                  className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition"
+                  disabled={modalName.trim().length < 3 || !modalGroup}
+                  className={`px-6 py-2.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 ${
+                    modalName.trim().length >= 3 && modalGroup
+                      ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-lg cursor-pointer'
+                      : 'bg-slate-700 text-slate-500 cursor-not-allowed'
+                  }`}
                 >
-                  Guardar Dades
+                  <CheckCircle2 size={16} />
+                  <span>Desar i Continuar</span>
                 </button>
               </div>
             </form>
