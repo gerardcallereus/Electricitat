@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Zap, Play, Pause, Info, Lightbulb, ShieldCheck } from 'lucide-react';
+import React from 'react';
+import { Zap, ShieldCheck } from 'lucide-react';
+import { WireElectronSimulation } from './components/WireElectronSimulation';
 
 export const ElectricityIntroduction: React.FC = () => {
-  const [flowing, setFlowing] = useState<boolean>(true);
 
   return (
     <div className="space-y-8 text-stone-800">
@@ -126,50 +126,7 @@ export const ElectricityIntroduction: React.FC = () => {
         </div>
 
         {/* Interactive Cable electron flow simulation */}
-        <div className="bg-stone-50 p-5 rounded-2xl border border-stone-200 space-y-3">
-          <div className="flex justify-between items-center text-xs font-semibold text-stone-600">
-            <span>Model visual del pas d'electrons dins d'un cable de coure:</span>
-            <button
-              onClick={() => setFlowing(!flowing)}
-              className="px-3 py-1 bg-stone-200 hover:bg-stone-300 text-stone-800 rounded-lg flex items-center gap-1.5 transition font-bold"
-            >
-              {flowing ? <Pause size={14} /> : <Play size={14} />}
-              {flowing ? 'Aturar corrent' : 'Activar corrent'}
-            </button>
-          </div>
-
-          {/* Copper cable illustration */}
-          <div className="relative h-20 bg-gradient-to-r from-amber-600 via-amber-700 to-amber-800 rounded-xl overflow-hidden border-4 border-amber-900 shadow-inner flex items-center px-4">
-            <span className="absolute left-2 text-[10px] font-bold text-amber-200 uppercase tracking-wider bg-black/30 px-2 py-0.5 rounded">
-              Pol (-) Pila
-            </span>
-            <span className="absolute right-2 text-[10px] font-bold text-amber-200 uppercase tracking-wider bg-black/30 px-2 py-0.5 rounded">
-              Pol (+) Pila
-            </span>
-
-            {/* Moving electrons */}
-            <div className="w-full flex justify-around items-center">
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                <div
-                  key={i}
-                  className={`w-6 h-6 rounded-full bg-sky-400 border-2 border-white shadow-md text-white font-bold flex items-center justify-center text-xs ${
-                    flowing ? 'electron-flow' : ''
-                  }`}
-                  style={{
-                    transform: flowing ? undefined : `translateX(${i % 2 === 0 ? '-4px' : '4px'})`
-                  }}
-                >
-                  e⁻
-                </div>
-              ))}
-            </div>
-          </div>
-          <p className="text-xs text-stone-500 text-center italic">
-            {flowing
-              ? '▶️ Els electrons lliures viatgen de manera coordinada cap al pol positiu generant el corrent.'
-              : '⏸️ Sense pila connectada, els electrons es mantenen desordenats i no hi ha corrent.'}
-          </p>
-        </div>
+        <WireElectronSimulation />
       </div>
 
       {/* Concept 3: Conductors vs Aïllants */}
