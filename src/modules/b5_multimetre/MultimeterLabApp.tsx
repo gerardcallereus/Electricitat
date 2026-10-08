@@ -63,7 +63,7 @@ export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <span className="px-3 py-1 bg-amber-100 text-amber-900 text-xs font-bold uppercase rounded-full tracking-wide">
-              Bloc 6 de 6 • 40 minuts • Tasca Final
+              Bloc 7 de 7 • 35 minuts • Tasca Final
             </span>
             <span className="text-xs text-stone-500 font-medium">Laboratori d'Instrumentació</span>
           </div>

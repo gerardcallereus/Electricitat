@@ -138,7 +138,7 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
       <div className="border-b border-slate-200 pb-5 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <span className="text-xs font-bold text-amber-700 uppercase tracking-widest block">
-            Bloc 6 de 6: Avaluació Pràctica Final
+            Bloc 7 de 7: Avaluació Pràctica Final
           </span>
           <h2 className="text-2xl font-black text-slate-900">
             Quadern de Pràctiques: Mesures i Càlculs amb Multímetre

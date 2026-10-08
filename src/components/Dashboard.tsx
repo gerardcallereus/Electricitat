@@ -67,70 +67,81 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const highestUnlocked = Math.max(1, ...unlockedBlocks);
 
   const getStartButtonTarget = (): ModuleId => {
-    if (highestUnlocked === 1) return 'b1-que-es-electricitat';
-    if (highestUnlocked === 2) return 'b2-transformacions';
-    if (highestUnlocked === 3) return 'b3-simbologia-circuits';
-    if (highestUnlocked === 4) return 'b4-llei-dohm';
-    if (highestUnlocked === 5) return 'b5-codi-colors';
-    return 'b6-multimetre';
+    if (highestUnlocked === 1) return 'b1-teoria-atom';
+    if (highestUnlocked === 2) return 'b2-simulador-conductors';
+    if (highestUnlocked === 3) return 'b3-transformacions';
+    if (highestUnlocked === 4) return 'b4-simbologia-circuits';
+    if (highestUnlocked === 5) return 'b5-llei-dohm';
+    if (highestUnlocked === 6) return 'b6-codi-colors';
+    return 'b7-multimetre';
   };
 
   const blocks = [
     {
       num: 1,
-      targetId: 'b1-que-es-electricitat' as ModuleId,
-      time: '25 minuts',
-      title: 'Bloc 1: Què és l\'Electricitat? Conductors i Aïllants',
+      targetId: 'b1-teoria-atom' as ModuleId,
+      time: '15 minuts',
+      title: 'Bloc 1: Teoria: L\'Àtom i el Corrent Elèctric',
       description:
-        'L\'àtom, els electrons lliures i el corrent elèctric. Experimenta quins materials permeten tancar un circuit amb el simulador ElectroConnecta.',
-      badge: 'Teoria Fonamental + Simulador',
+        'Què és l\'electricitat? L\'estructura atòmica (protons, neutrons i electrons lliures), el flux d\'electrons pel cable i per què uns materials condueixen i altres no.',
+      badge: 'Teoria Fonamental Interactiva',
       icon: Zap,
     },
     {
       num: 2,
-      targetId: 'b2-transformacions' as ModuleId,
+      targetId: 'b2-simulador-conductors' as ModuleId,
+      time: '20 minuts',
+      title: 'Bloc 2: Simulador: ElectroConnecta',
+      description:
+        'Posa a prova el que has après sobre materials conductors i aïllants. Connecta objectes quotidians al circuit i comprova quins tanquen el pas del corrent per encendre la bombeta.',
+      badge: 'Simulador Pràctic',
+      icon: Cpu,
+    },
+    {
+      num: 3,
+      targetId: 'b3-transformacions' as ModuleId,
       time: '25 minuts',
-      title: 'Bloc 2: Les Transformacions de l\'Energia Elèctrica',
+      title: 'Bloc 3: Les Transformacions de l\'Energia Elèctrica',
       description:
         'Com convertim l\'electricitat en llum, calor (efecte Joule), moviment (motors) i so. Joc interactiu de preguntes i targetes ElectroTransforma.',
       badge: 'Joc Interactiu',
       icon: Lightbulb,
     },
     {
-      num: 3,
-      targetId: 'b3-simbologia-circuits' as ModuleId,
+      num: 4,
+      targetId: 'b4-simbologia-circuits' as ModuleId,
       time: '30 minuts',
-      title: 'Bloc 3: Simbologia Normalitzada i Circuits (Sèrie / Paral·lel)',
+      title: 'Bloc 4: Simbologia Normalitzada i Circuits (Sèrie / Paral·lel)',
       description:
         'Llegeix esquemes normalitzats de circuits i descobreix el funcionament dels components en sèrie i en paral·lel amb Circuit Màgic.',
       badge: 'Biblioteca + Simulador',
       icon: Layers,
     },
     {
-      num: 4,
-      targetId: 'b4-llei-dohm' as ModuleId,
+      num: 5,
+      targetId: 'b5-llei-dohm' as ModuleId,
       time: '35 minuts',
-      title: 'Bloc 4: Les Magnituds Elèctriques i la Llei d\'Ohm',
+      title: 'Bloc 5: Les Magnituds Elèctriques i la Llei d\'Ohm',
       description:
         'Voltatge (V), Intensitat (I) i Resistència (R). Conversió de prefixos (mA, kΩ) i simulador visual de la Llei d\'Ohm (V = I · R).',
       badge: 'Conversor + Simulador Matemàtic',
       icon: Gauge,
     },
     {
-      num: 5,
-      targetId: 'b5-codi-colors' as ModuleId,
-      time: '25 minuts',
-      title: 'Bloc 5: La Resistència com a Component i Codi de Colors',
+      num: 6,
+      targetId: 'b6-codi-colors' as ModuleId,
+      time: '20 minuts',
+      title: 'Bloc 6: La Resistència com a Component i Codi de Colors',
       description:
         'Com protegeixen les resistències els components sensibles. Desxifra els 4 anells de color abans d\'entrar al laboratori.',
       badge: 'Pràctica de Càlcul',
       icon: Sliders,
     },
     {
-      num: 6,
-      targetId: 'b6-multimetre' as ModuleId,
-      time: '40 minuts',
-      title: 'Bloc 6: Tasca Final: Laboratori Virtual amb Multímetre',
+      num: 7,
+      targetId: 'b7-multimetre' as ModuleId,
+      time: '35 minuts',
+      title: 'Bloc 7: Tasca Final: Laboratori Virtual amb Multímetre',
       description:
         'L\'avaluació pràctica: utilitza el tester per mesurar resistències i caigudes de tensió reals, resol el repte de la Llei d\'Ohm i genera el teu informe.',
       badge: 'Avaluació de Laboratori',
@@ -162,7 +173,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 className="px-6 py-3.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-2xl shadow-sm flex items-center gap-2 transition"
               >
                 <span>
-                  {highestUnlocked === 1 ? 'Començar el Bloc 1: Què és l\'electricitat?' : `Continuar al Bloc ${highestUnlocked}`}
+                  {highestUnlocked === 1 ? 'Començar el Bloc 1: L\'Àtom i el Corrent' : `Continuar al Bloc ${highestUnlocked}`}
                 </span>
                 <ArrowRight size={18} />
               </button>
@@ -272,11 +283,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
             <span className="text-xs font-bold text-amber-800 uppercase tracking-widest block">
               Itinerari Seqüencial
             </span>
-            <h2 className="text-2xl font-bold text-stone-900">Els 6 Blocs d'Aprenentatge</h2>
+            <h2 className="text-2xl font-bold text-stone-900">Els 7 Blocs d'Aprenentatge</h2>
           </div>
           <div className="text-right text-xs text-stone-500">
             <span>Completats: </span>
-            <strong className="text-stone-900">{completedBlocks.length} de 6</strong>
+            <strong className="text-stone-900">{completedBlocks.length} de 7</strong>
           </div>
         </div>
 

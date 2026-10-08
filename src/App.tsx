@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { ModuleId, CLASS_GROUPS, ClassGroup } from './types';
 import { HeaderNav } from './components/HeaderNav';
 import { Dashboard } from './components/Dashboard';
-import { Bloc1View } from './modules/b1_conductors/Bloc1View';
-import { Bloc2TransformationsView } from './modules/b1_transformacions/Bloc2TransformationsView';
-import { Bloc3CircuitsView } from './modules/b2_simbologia/Bloc3CircuitsView';
-import { Bloc4OhmView } from './modules/b3_llei_dohm/Bloc4OhmView';
-import { Bloc5ResistorsView } from './modules/b4_codi_colors/Bloc5ResistorsView';
+import { Bloc1TheoryView } from './modules/b1_conductors/Bloc1TheoryView';
+import { Bloc2ConductorsView } from './modules/b1_conductors/Bloc2ConductorsView';
+import { Bloc3TransformationsView } from './modules/b1_transformacions/Bloc3TransformationsView';
+import { Bloc4CircuitsView } from './modules/b2_simbologia/Bloc4CircuitsView';
+import { Bloc5OhmView } from './modules/b3_llei_dohm/Bloc5OhmView';
+import { Bloc6ResistorsView } from './modules/b4_codi_colors/Bloc6ResistorsView';
 import { MultimeterLabApp } from './modules/b5_multimetre/MultimeterLabApp';
 import { User, X, CheckCircle2 } from 'lucide-react';
 
@@ -28,7 +29,7 @@ const App: React.FC = () => {
 
   const isRegistered = studentName.trim().length >= 3 && studentGroup.trim().length > 0;
 
-  // Sequential unlock computation (1 to 6)
+  // Sequential unlock computation (1 to 7)
   const unlockedBlocks = React.useMemo(() => {
     if (!isRegistered) return [];
     const unlocked = [1];
@@ -37,6 +38,7 @@ const App: React.FC = () => {
     if (completedBlocks.includes(3)) unlocked.push(4);
     if (completedBlocks.includes(4)) unlocked.push(5);
     if (completedBlocks.includes(5)) unlocked.push(6);
+    if (completedBlocks.includes(6)) unlocked.push(7);
     return unlocked;
   }, [isRegistered, completedBlocks]);
 
@@ -58,12 +60,13 @@ const App: React.FC = () => {
 
   const handleSelectModule = (id: ModuleId) => {
     let targetBlocNum = 0;
-    if (id === 'b1-que-es-electricitat') targetBlocNum = 1;
-    else if (id === 'b2-transformacions') targetBlocNum = 2;
-    else if (id === 'b3-simbologia-circuits') targetBlocNum = 3;
-    else if (id === 'b4-llei-dohm') targetBlocNum = 4;
-    else if (id === 'b5-codi-colors') targetBlocNum = 5;
-    else if (id === 'b6-multimetre') targetBlocNum = 6;
+    if (id === 'b1-teoria-atom') targetBlocNum = 1;
+    else if (id === 'b2-simulador-conductors') targetBlocNum = 2;
+    else if (id === 'b3-transformacions') targetBlocNum = 3;
+    else if (id === 'b4-simbologia-circuits') targetBlocNum = 4;
+    else if (id === 'b5-llei-dohm') targetBlocNum = 5;
+    else if (id === 'b6-codi-colors') targetBlocNum = 6;
+    else if (id === 'b7-multimetre') targetBlocNum = 7;
 
     if (targetBlocNum > 0) {
       if (!isRegistered) {
@@ -102,12 +105,13 @@ const App: React.FC = () => {
   useEffect(() => {
     if (currentModule !== 'dashboard') {
       let blocNum = 0;
-      if (currentModule === 'b1-que-es-electricitat') blocNum = 1;
-      else if (currentModule === 'b2-transformacions') blocNum = 2;
-      else if (currentModule === 'b3-simbologia-circuits') blocNum = 3;
-      else if (currentModule === 'b4-llei-dohm') blocNum = 4;
-      else if (currentModule === 'b5-codi-colors') blocNum = 5;
-      else if (currentModule === 'b6-multimetre') blocNum = 6;
+      if (currentModule === 'b1-teoria-atom') blocNum = 1;
+      else if (currentModule === 'b2-simulador-conductors') blocNum = 2;
+      else if (currentModule === 'b3-transformacions') blocNum = 3;
+      else if (currentModule === 'b4-simbologia-circuits') blocNum = 4;
+      else if (currentModule === 'b5-llei-dohm') blocNum = 5;
+      else if (currentModule === 'b6-codi-colors') blocNum = 6;
+      else if (currentModule === 'b7-multimetre') blocNum = 7;
 
       if (!isRegistered || !unlockedBlocks.includes(blocNum)) {
         setCurrentModule('dashboard');
@@ -152,62 +156,73 @@ const App: React.FC = () => {
           />
         )}
 
-        {currentModule === 'b1-que-es-electricitat' && (
-          <Bloc1View
+        {currentModule === 'b1-teoria-atom' && (
+          <Bloc1TheoryView
             onComplete={() => markBlockCompleted(1)}
             onNext={() => {
               markBlockCompleted(1);
-              handleSelectModule('b2-transformacions');
+              handleSelectModule('b2-simulador-conductors');
             }}
             onBackToDashboard={() => handleSelectModule('dashboard')}
           />
         )}
 
-        {currentModule === 'b2-transformacions' && (
-          <Bloc2TransformationsView
+        {currentModule === 'b2-simulador-conductors' && (
+          <Bloc2ConductorsView
             onComplete={() => markBlockCompleted(2)}
             onNext={() => {
               markBlockCompleted(2);
-              handleSelectModule('b3-simbologia-circuits');
+              handleSelectModule('b3-transformacions');
             }}
             onBackToDashboard={() => handleSelectModule('dashboard')}
           />
         )}
 
-        {currentModule === 'b3-simbologia-circuits' && (
-          <Bloc3CircuitsView
+        {currentModule === 'b3-transformacions' && (
+          <Bloc3TransformationsView
             onComplete={() => markBlockCompleted(3)}
             onNext={() => {
               markBlockCompleted(3);
-              handleSelectModule('b4-llei-dohm');
+              handleSelectModule('b4-simbologia-circuits');
             }}
             onBackToDashboard={() => handleSelectModule('dashboard')}
           />
         )}
 
-        {currentModule === 'b4-llei-dohm' && (
-          <Bloc4OhmView
+        {currentModule === 'b4-simbologia-circuits' && (
+          <Bloc4CircuitsView
             onComplete={() => markBlockCompleted(4)}
             onNext={() => {
               markBlockCompleted(4);
-              handleSelectModule('b5-codi-colors');
+              handleSelectModule('b5-llei-dohm');
             }}
             onBackToDashboard={() => handleSelectModule('dashboard')}
           />
         )}
 
-        {currentModule === 'b5-codi-colors' && (
-          <Bloc5ResistorsView
+        {currentModule === 'b5-llei-dohm' && (
+          <Bloc5OhmView
             onComplete={() => markBlockCompleted(5)}
             onNext={() => {
               markBlockCompleted(5);
-              handleSelectModule('b6-multimetre');
+              handleSelectModule('b6-codi-colors');
             }}
             onBackToDashboard={() => handleSelectModule('dashboard')}
           />
         )}
 
-        {currentModule === 'b6-multimetre' && (
+        {currentModule === 'b6-codi-colors' && (
+          <Bloc6ResistorsView
+            onComplete={() => markBlockCompleted(6)}
+            onNext={() => {
+              markBlockCompleted(6);
+              handleSelectModule('b7-multimetre');
+            }}
+            onBackToDashboard={() => handleSelectModule('dashboard')}
+          />
+        )}
+
+        {currentModule === 'b7-multimetre' && (
           <MultimeterLabApp
             studentName={studentName}
             studentGroup={studentGroup}

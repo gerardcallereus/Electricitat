@@ -5,17 +5,24 @@ Aquesta aplicació web interactiva integra en una sola plataforma educativa una 
 
 ---
 
-## 🧭 Estructura Didàctica de la Càpsula (6 Blocs Seqüencials • 180 minuts)
+## 🧭 Estructura Didàctica de la Càpsula (7 Blocs Seqüencials • 180 minuts)
 
-### **Bloc 1: Què és l'Electricitat? L'Àtom, Conductors i Aïllants (25 min)**
+### **Bloc 1: Teoria: L'Àtom i el Corrent Elèctric (15 min)**
 * **Teoria Fonamental**:
   * Què és la matèria i l'àtom: protons (+), neutrons (neutres) al nucli i electrons (-) a les òrbites.
   * Què és un electró lliure: per què els metalls deixen escapar electrons fàcilment.
   * Què és el corrent elèctric: el moviment ordenat d'electrons empesos per un generador o pila.
   * Sentit real (d'electrons, de $-$ a $+$) vs sentit convencional (de $+$ a $-$).
-* **Pràctica Interactiva - ElectroConnecta**: Experimentar amb materials conductors (coure, ferro, grafit, aigua amb sal) i aïllants (fusta, plàstic, goma) per tancar el circuit i encendre la bombeta.
+  * Materials conductors vs materials aïllants a nivell atòmic.
 
-### **Bloc 2: Com fem servir l'Electricitat? Les Transformacions d'Energia (25 min)**
+### **Bloc 2: Simulador: ElectroConnecta (20 min)**
+* **Pràctica Interactiva - ElectroConnecta**:
+  * Experimentació interactiva amb objectes quotidians.
+  * Comprovar materials conductors (clau de ferro, cable de coure, moneda, mina de llapis de grafit, aigua amb sal).
+  * Comprovar materials aïllants (regle de plàstic, goma d'esborrar, escuradents de fusta, vidre).
+  * Observar com es tanca el circuit i s'encén la bombeta.
+
+### **Bloc 3: Com fem servir l'Electricitat? Les Transformacions d'Energia (25 min)**
 * **Teoria**:
   * Principi de conservació de l'energia: l'electricitat no es crea ni es destrueix, es transforma.
   * Energia lluminosa (bombetes LED, pantalles).
@@ -25,21 +32,21 @@ Aquesta aplicació web interactiva integra en una sola plataforma educativa una 
   * Energia química (recàrrega de bateries, acumuladors).
 * **Pràctica Interactiva - ElectroTransforma**: Joc interactiu de preguntes i targetes per relacionar aparells quotidians amb les transformacions d'energia.
 
-### **Bloc 3: Simbologia i Tipus de Circuits (30 min)**
+### **Bloc 4: Simbologia i Tipus de Circuits (30 min)**
 * **Teoria**: La necessitat de normalitzar la representació gràfica dels circuits (norma IEC).
-* **Pràctica 3.1 - ElectroCircuit**: Biblioteca de símbols normalitzats (pila, bombeta, interruptor, polsador, resistència, motor...) i test d'autoavaluació.
-* **Pràctica 3.2 - Circuit Màgic**: Simulació interactiva del comportament dels receptors en **sèrie** i en **paral·lel** (què passa si es fon una bombeta? com canvia la brillantor?).
+* **Pràctica 4.1 - ElectroCircuit**: Biblioteca de símbols normalitzats (pila, bombeta, interruptor, polsador, resistència, motor...) i test d'autoavaluació.
+* **Pràctica 4.2 - Circuit Màgic**: Simulació interactiva del comportament dels receptors en **sèrie** i en **paral·lel** (què passa si es fon una bombeta? com canvia la brillantor?).
 
-### **Bloc 4: Magnituds Elèctriques i la Llei d'Ohm (35 min)**
+### **Bloc 5: Magnituds Elèctriques i la Llei d'Ohm (35 min)**
 * **Teoria**: Definició de Voltatge / Tensió ($V$), Intensitat ($I$), Resistència ($R$) i Potència ($P$). Ús de prefixos internacionals ($mA$, $k\Omega$, $mV$).
-* **Pràctica 4.1 - Conversor d'Unitats Elèctriques**: Taula de prefixos, explicacions pas a pas i mode de pràctica interactiva de conversió.
-* **Pràctica 4.2 - Simulador de la Llei d'Ohm**: Simulador visual amb potenciòmetres interactius per experimentar la relació $V = I \cdot R$ i exercicis autocorregibles.
+* **Pràctica 5.1 - Conversor d'Unitats Elèctriques**: Taula de prefixos, explicacions pas a pas i mode de pràctica interactiva de conversió.
+* **Pràctica 5.2 - Simulador de la Llei d'Ohm**: Simulador visual amb potenciòmetres interactius per experimentar la relació $V = I \cdot R$ i exercicis autocorregibles.
 
-### **Bloc 5: La Resistència com a Component i Codi de Colors (25 min)**
+### **Bloc 6: La Resistència com a Component i Codi de Colors (20 min)**
 * **Teoria**: Funció de les resistències com a limitadors del corrent i protecció de components sensibles (LEDs, xips). Lectura del codi de colors de 4 bandes.
-* **Pràctica 5.1 - Joc de Codi de Colors**: Simulador de càlcul de resistències i toleràncies a partir de les bandes de color, amb taula de referència interactiva i comptador de ratxes.
+* **Pràctica 6.1 - Joc de Codi de Colors**: Simulador de càlcul de resistències i toleràncies a partir de les bandes de color, amb taula de referència interactiva i comptador de ratxes.
 
-### **Bloc 6: Tasca Final d'Avaluació: Laboratori amb Multímetre (40 min)**
+### **Bloc 7: Tasca Final d'Avaluació: Laboratori amb Multímetre (35 min)**
 * **Simulador de Multímetre Digital (Tester)**:
   * Selector rotatori funcional amb posicions `OFF`, escales de Voltatge `DCV` ($200mV$, $2V$, $20V$, $200V$) i escales de Resistència $\Omega$ ($200\Omega$, $2k\Omega$, $20k\Omega$, $200k\Omega$, $2M\Omega$).
   * Puntes de prova vermella ($V/\Omega$) i negra ($COM$) connectables amb un clic als circuits.

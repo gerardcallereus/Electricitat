@@ -42,12 +42,13 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
 
   const navItems: { id: ModuleId; label: string; time: string; blocNum: number }[] = [
     { id: 'dashboard', label: 'Inici', time: '0m', blocNum: 0 },
-    { id: 'b1-que-es-electricitat', label: '1. Què és?', time: '25m', blocNum: 1 },
-    { id: 'b2-transformacions', label: '2. Energia', time: '25m', blocNum: 2 },
-    { id: 'b3-simbologia-circuits', label: '3. Circuits', time: '30m', blocNum: 3 },
-    { id: 'b4-llei-dohm', label: '4. Llei d\'Ohm', time: '35m', blocNum: 4 },
-    { id: 'b5-codi-colors', label: '5. Resistències', time: '25m', blocNum: 5 },
-    { id: 'b6-multimetre', label: '6. Multímetre', time: '40m', blocNum: 6 },
+    { id: 'b1-teoria-atom', label: '1. Teoria Àtom', time: '15m', blocNum: 1 },
+    { id: 'b2-simulador-conductors', label: '2. Conductors', time: '20m', blocNum: 2 },
+    { id: 'b3-transformacions', label: '3. Energia', time: '25m', blocNum: 3 },
+    { id: 'b4-simbologia-circuits', label: '4. Circuits', time: '30m', blocNum: 4 },
+    { id: 'b5-llei-dohm', label: '5. Llei d\'Ohm', time: '35m', blocNum: 5 },
+    { id: 'b6-codi-colors', label: '6. Resistències', time: '20m', blocNum: 6 },
+    { id: 'b7-multimetre', label: '7. Multímetre', time: '35m', blocNum: 7 },
   ];
 
   const handleNavClick = (item: typeof navItems[0]) => {

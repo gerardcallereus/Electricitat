@@ -1,11 +1,12 @@
 export type ModuleId =
   | 'dashboard'
-  | 'b1-que-es-electricitat'
-  | 'b2-transformacions'
-  | 'b3-simbologia-circuits'
-  | 'b4-llei-dohm'
-  | 'b5-codi-colors'
-  | 'b6-multimetre';
+  | 'b1-teoria-atom'
+  | 'b2-simulador-conductors'
+  | 'b3-transformacions'
+  | 'b4-simbologia-circuits'
+  | 'b5-llei-dohm'
+  | 'b6-codi-colors'
+  | 'b7-multimetre';
 
 export const CLASS_GROUPS = ['1r A', '1r B', '2n A', '2n B', '3r A', '3r B'] as const;
 export type ClassGroup = typeof CLASS_GROUPS[number];
@@ -17,7 +18,7 @@ export interface ModuleInfo {
   title: string;
   shortDesc: string;
   durationMin: number;
-  category: 'teoria-pràctica' | 'simulador' | 'joc' | 'tasca-final';
+  category: 'teoria' | 'simulador' | 'joc' | 'tasca-final';
   icon: string;
 }
 
@@ -53,8 +54,8 @@ export type MultimeterDialPosition =
 export interface TestPoint {
   id: string;
   label: string;
-  x: number; // percentage
-  y: number; // percentage
+  x: number;
+  y: number;
   potentialVolts: number;
   nodeGroup?: string;
 }
