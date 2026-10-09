@@ -83,7 +83,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
       time: '15 minuts',
       title: 'Bloc 1: Teoria: L\'Àtom i el Corrent Elèctric',
       description:
-        'Què és l\'electricitat? L\'estructura atòmica (protons, neutrons i electrons lliures), el flux d\'electrons pel cable i per què uns materials condueixen i altres no.',
+        'Què és l\'electricitat? L\'estructura atòmica (protons, neutrons i electrons lliures), el flux d\'electrons pel cable i com es genera el corrent elèctric.',
       badge: 'Teoria Fonamental Interactiva',
       icon: Zap,
     },
@@ -93,7 +93,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
       time: '20 minuts',
       title: 'Bloc 2: Simulador: ElectroConnecta',
       description:
-        'Posa a prova el que has après sobre materials conductors i aïllants. Connecta objectes quotidians al circuit i comprova quins tanquen el pas del corrent per encendre la bombeta.',
+        'Materials conductors i aïllants: connecta objectes quotidians al circuit i comprova quins tanquen el pas del corrent per encendre la bombeta.',
       badge: 'Simulador Pràctic',
       icon: Cpu,
     },

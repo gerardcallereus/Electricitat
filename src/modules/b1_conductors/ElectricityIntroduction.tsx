@@ -1,5 +1,4 @@
 import React from 'react';
-import { Zap, ShieldCheck } from 'lucide-react';
 import { WireElectronSimulation } from './components/WireElectronSimulation';
 
 export const ElectricityIntroduction: React.FC = () => {
@@ -127,45 +126,6 @@ export const ElectricityIntroduction: React.FC = () => {
 
         {/* Interactive Cable electron flow simulation */}
         <WireElectronSimulation />
-      </div>
-
-      {/* Concept 3: Conductors vs Aïllants */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-2xl border border-sky-200 shadow-sm space-y-3">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center font-bold">
-              <Zap size={20} />
-            </div>
-            <h4 className="text-lg font-bold text-stone-900">Materials Conductors</h4>
-          </div>
-          <p className="text-sm text-stone-600 leading-relaxed">
-            Són els materials que tenen <strong>molts electrons lliures</strong> i permeten que el corrent elèctric circuli fàcilment sense gairebé resistència.
-          </p>
-          <ul className="text-xs space-y-1.5 text-stone-700 font-medium pt-1">
-            <li className="flex items-center gap-2">✓ <strong>Coure (Cu):</strong> Usat en la gran majoria de cables elèctrics.</li>
-            <li className="flex items-center gap-2">✓ <strong>Alumini (Al):</strong> Usat en línies d'alta tensió per ser molt lleuger.</li>
-            <li className="flex items-center gap-2">✓ <strong>Or i Plata:</strong> Excel·lents conductors usats en xips electrònics.</li>
-            <li className="flex items-center gap-2">✓ <strong>Grafit:</strong> L'únic no metall que condueix el corrent (mines de llapis).</li>
-          </ul>
-        </div>
-
-        <div className="bg-white p-6 rounded-2xl border border-amber-200 shadow-sm space-y-3">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
-              <ShieldCheck size={20} />
-            </div>
-            <h4 className="text-lg font-bold text-stone-900">Materials Aïllants</h4>
-          </div>
-          <p className="text-sm text-stone-600 leading-relaxed">
-            Són els materials que tenen els <strong>electrons molt fortament lligats</strong> als seus àtoms. No deixen passar el corrent i s'utilitzen per protegir-nos de descàrregues elèctriques.
-          </p>
-          <ul className="text-xs space-y-1.5 text-stone-700 font-medium pt-1">
-            <li className="flex items-center gap-2">🛡️ <strong>Plàstic i PVC:</strong> Recobreixen els cables i endolls per seguretat.</li>
-            <li className="flex items-center gap-2">🛡️ <strong>Vidre i Ceràmica:</strong> S'utilitzen com a aïlladors en torres d'alta tensió.</li>
-            <li className="flex items-center gap-2">🛡️ <strong>Fusta seca i Goma:</strong> Materials aïllants comuns.</li>
-            <li className="flex items-center gap-2">🛡️ <strong>Aire sec:</strong> En condicions normals és un bon aïllant.</li>
-          </ul>
-        </div>
       </div>
     </div>
   );
