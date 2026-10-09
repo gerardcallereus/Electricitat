@@ -13,7 +13,7 @@ const App: React.FC = () => {
   const [status, setStatus] = useState<GameStatus>('playing');
   const [score, setScore] = useState({ correct: 0, incorrect: 0 });
   const [streak, setStreak] = useState(0);
-  const [showChart, setShowChart] = useState(false);
+  const [showChart, setShowChart] = useState(true);
 
   const generateNewResistor = useCallback(() => {
     // Band 1: No puede ser negro

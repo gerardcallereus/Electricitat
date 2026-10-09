@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import UnitatsApp from '../b3_unitats/UnitatsApp';
-import LleiDOhmApp from './LleiDOhmApp';
-import { Calculator, Sliders, ArrowRight, CheckCircle2, ArrowLeft } from 'lucide-react';
+import React from 'react';
+import UnitsTheory from '../b3_unitats/components/Theory';
+import UnitsPractice from '../b3_unitats/components/Practice';
+import { Explanation as OhmExplanation } from './components/Explanation';
+import { OhmLawSimulator } from './components/OhmLawSimulator';
+import { Exercises as OhmExercises } from './components/Exercises';
+import { Calculator, Gauge, ArrowRight, CheckCircle2, ArrowLeft, Sliders } from 'lucide-react';
 
 interface Bloc5OhmViewProps {
   onComplete: () => void;
@@ -14,10 +17,8 @@ export const Bloc5OhmView: React.FC<Bloc5OhmViewProps> = ({
   onNext,
   onBackToDashboard
 }) => {
-  const [subTab, setSubTab] = useState<'unitats' | 'llei-dohm'>('unitats');
-
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-8 text-stone-800">
+    <div className="w-full max-w-5xl mx-auto space-y-12 text-stone-800">
       {/* Block Header Banner */}
       <div className="bg-white border border-stone-200/90 rounded-3xl p-6 md:p-8 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
@@ -31,40 +32,101 @@ export const Bloc5OhmView: React.FC<Bloc5OhmViewProps> = ({
             5. Les Magnituds Elèctriques i la Llei d'Ohm
           </h1>
           <p className="text-sm text-stone-600 mt-1 max-w-2xl leading-relaxed">
-            Comprèn el Voltatge (\(V\)), la Intensitat (\(I\)) i la Resistència (\(R\)), practica els prefixos (mA, kΩ) i experimenta amb la fórmula \(V = I \cdot R\).
+            Aprèn a relacionar el Voltatge (\(V\)), la Intensitat (\(I\)) i la Resistència (\(R\)), practica els prefixos (\(mA\), \(k\Omega\)) i experimenta amb la fórmula fonamental \(V = I \cdot R\).
           </p>
         </div>
 
-        {/* Sub-activity switcher */}
-        <div className="flex gap-1.5 bg-stone-100 p-1.5 rounded-2xl border border-stone-200 shrink-0">
-          <button
-            onClick={() => setSubTab('unitats')}
-            className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition ${
-              subTab === 'unitats'
-                ? 'bg-white text-stone-900 shadow-sm'
-                : 'text-stone-600 hover:text-stone-900'
-            }`}
-          >
-            <Calculator size={16} className="text-amber-600" />
-            5.1 Conversor d'Unitats
-          </button>
-          <button
-            onClick={() => setSubTab('llei-dohm')}
-            className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition ${
-              subTab === 'llei-dohm'
-                ? 'bg-white text-stone-900 shadow-sm'
-                : 'text-stone-600 hover:text-stone-900'
-            }`}
-          >
-            <Sliders size={16} className="text-amber-600" />
-            5.2 Simulador Llei d'Ohm
-          </button>
+        <div className="px-4 py-2 bg-stone-100 rounded-2xl border border-stone-200 text-xs text-stone-600 font-medium flex items-center gap-2 shrink-0">
+          <Calculator size={16} className="text-amber-600" />
+          <span>Seqüència Lineal Completa</span>
         </div>
       </div>
 
-      {/* Main active sub-app */}
-      <div className="rounded-3xl overflow-hidden shadow-sm bg-white border border-stone-200/90 p-4 md:p-6 text-stone-900">
-        {subTab === 'unitats' ? <UnitatsApp /> : <LleiDOhmApp />}
+      {/* ========================================================
+          PART 5.1: LES MAGNITUDS I ELS PREFIXOS
+      ======================================================== */}
+      <div className="space-y-6">
+        <div className="flex items-center gap-3 border-b border-stone-200 pb-3">
+          <span className="w-8 h-8 rounded-xl bg-amber-500 text-white font-bold flex items-center justify-center text-sm shadow-sm">
+            5.1
+          </span>
+          <div>
+            <h2 className="text-xl font-bold text-stone-900">
+              Les Unitats Elèctriques i els seus Prefixos
+            </h2>
+            <p className="text-xs text-stone-500">
+              Volt (\(V\)), Ampere (\(A\)) i Ohm (\(\Omega\)): domina els múltiples i submúltiples més habituals (\(mA\), \(k\Omega\), \(M\Omega\)).
+            </p>
+          </div>
+        </div>
+
+        {/* Units Theory Table */}
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm">
+          <UnitsTheory />
+        </div>
+
+        {/* Practice directly underneath */}
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs font-bold text-amber-800 uppercase tracking-wider bg-amber-100 px-3 py-1 rounded-full">
+              Pràctica Interactiva
+            </span>
+            <h3 className="text-lg font-bold text-stone-900">
+              Conversor i Exercicis de Prefixos
+            </h3>
+          </div>
+          <UnitsPractice />
+        </div>
+      </div>
+
+      {/* ========================================================
+          PART 5.2: LA LLEI D'OHM (V = I · R)
+      ======================================================== */}
+      <div className="space-y-6 pt-4 border-t-2 border-dashed border-stone-200">
+        <div className="flex items-center gap-3 border-b border-stone-200 pb-3">
+          <span className="w-8 h-8 rounded-xl bg-sky-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
+            5.2
+          </span>
+          <div>
+            <h2 className="text-xl font-bold text-stone-900">
+              La Llei d'Ohm (\(V = I \cdot R\))
+            </h2>
+            <p className="text-xs text-stone-500">
+              La relació matemàtica fonamental que governa tots els circuits elèctrics.
+            </p>
+          </div>
+        </div>
+
+        {/* Ohm Theory & Triangle Explanation */}
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm">
+          <OhmExplanation />
+        </div>
+
+        {/* Interactive Ohm Simulator */}
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs font-bold text-sky-800 uppercase tracking-wider bg-sky-100 px-3 py-1 rounded-full">
+              Simulador Matemàtic
+            </span>
+            <h3 className="text-lg font-bold text-stone-900">
+              Experimenta amb els valors de Tensió, Corrent i Resistència
+            </h3>
+          </div>
+          <OhmLawSimulator />
+        </div>
+
+        {/* Exercises directly below */}
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider bg-emerald-100 px-3 py-1 rounded-full">
+              Posa't a prova
+            </span>
+            <h3 className="text-lg font-bold text-stone-900">
+              Exercicis de Càlcul de la Llei d'Ohm
+            </h3>
+          </div>
+          <OhmExercises />
+        </div>
       </div>
 
       {/* Completion & Navigation Footer */}

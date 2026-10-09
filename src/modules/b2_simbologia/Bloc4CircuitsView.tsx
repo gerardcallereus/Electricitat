@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import SimbologiaApp from './SimbologiaApp';
-import CircuitMagicApp from '../b2_circuits/CircuitMagicApp';
-import { Bookmark, CheckSquare, ArrowRight, CheckCircle2, ArrowLeft } from 'lucide-react';
+import React from 'react';
+import ReferenceMode from './components/ReferenceMode';
+import QuizMode from './components/QuizMode';
+import CircuitTheory from '../b2_circuits/components/Theory';
+import CircuitSimulator from '../b2_circuits/components/Simulator';
+import { Bookmark, CheckCircle2, ArrowRight, ArrowLeft, Layers, Sparkles } from 'lucide-react';
 
 interface Bloc4CircuitsViewProps {
   onComplete: () => void;
@@ -14,10 +16,8 @@ export const Bloc4CircuitsView: React.FC<Bloc4CircuitsViewProps> = ({
   onNext,
   onBackToDashboard
 }) => {
-  const [subTab, setSubTab] = useState<'simbologia' | 'circuits'>('simbologia');
-
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-8 text-stone-800">
+    <div className="w-full max-w-5xl mx-auto space-y-12 text-stone-800">
       {/* Block Header Banner */}
       <div className="bg-white border border-stone-200/90 rounded-3xl p-6 md:p-8 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
@@ -25,46 +25,94 @@ export const Bloc4CircuitsView: React.FC<Bloc4CircuitsViewProps> = ({
             <span className="px-3 py-1 bg-amber-100 text-amber-900 text-xs font-bold uppercase rounded-full tracking-wide">
               Bloc 4 de 7 • 30 minuts
             </span>
-            <span className="text-xs text-stone-500 font-medium">Dibuix Tècnic de Circuits</span>
+            <span className="text-xs text-stone-500 font-medium">Dibuix Tècnic & Circuits</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-stone-900 tracking-tight">
-            4. Simbologia Normalitzada i Circuits Sèrie / Paral·lel
+            4. Simbologia Normalitzada i Circuits (Sèrie / Paral·lel)
           </h1>
           <p className="text-sm text-stone-600 mt-1 max-w-2xl leading-relaxed">
-            Aprèn a llegir esquemes de circuits amb la normativa internacional i experimenta com es connecten els components en sèrie i en paral·lel.
+            Aprèn a llegir i dibuixar esquemes elèctrics amb la normativa internacional (IEC) i experimenta directament com es comporten els receptors en sèrie i en paral·lel.
           </p>
         </div>
 
-        {/* Sub-activity switcher */}
-        <div className="flex gap-1.5 bg-stone-100 p-1.5 rounded-2xl border border-stone-200 shrink-0">
-          <button
-            onClick={() => setSubTab('simbologia')}
-            className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition ${
-              subTab === 'simbologia'
-                ? 'bg-white text-stone-900 shadow-sm'
-                : 'text-stone-600 hover:text-stone-900'
-            }`}
-          >
-            <Bookmark size={16} className="text-amber-600" />
-            4.1 Símbols Elèctrics
-          </button>
-          <button
-            onClick={() => setSubTab('circuits')}
-            className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center gap-2 transition ${
-              subTab === 'circuits'
-                ? 'bg-white text-stone-900 shadow-sm'
-                : 'text-stone-600 hover:text-stone-900'
-            }`}
-          >
-            <CheckSquare size={16} className="text-amber-600" />
-            4.2 Sèrie vs Paral·lel
-          </button>
+        <div className="px-4 py-2 bg-stone-100 rounded-2xl border border-stone-200 text-xs text-stone-600 font-medium flex items-center gap-2 shrink-0">
+          <Layers size={16} className="text-amber-600" />
+          <span>Seqüència Lineal Completa</span>
         </div>
       </div>
 
-      {/* Main active sub-app */}
-      <div className="rounded-3xl overflow-hidden shadow-sm bg-white border border-stone-200/90 p-4 md:p-6 text-stone-900">
-        {subTab === 'simbologia' ? <SimbologiaApp /> : <CircuitMagicApp />}
+      {/* ========================================================
+          PART 4.1: SIMBOLOGIA NORMALITZADA
+      ======================================================== */}
+      <div className="space-y-6">
+        <div className="flex items-center gap-3 border-b border-stone-200 pb-3">
+          <span className="w-8 h-8 rounded-xl bg-amber-500 text-white font-bold flex items-center justify-center text-sm shadow-sm">
+            4.1
+          </span>
+          <div>
+            <h2 className="text-xl font-bold text-stone-900">
+              Biblioteca de Símbols Elèctrics Normalitzats
+            </h2>
+            <p className="text-xs text-stone-500">
+              Consulta els símbols tècnics oficials utilitzats per enginyers i instal·ladors a tot el món.
+            </p>
+          </div>
+        </div>
+
+        {/* Reference Mode Library */}
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm">
+          <ReferenceMode />
+        </div>
+
+        {/* Quiz Mode directly underneath */}
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs font-bold text-amber-800 uppercase tracking-wider bg-amber-100 px-3 py-1 rounded-full">
+              Posa't a prova
+            </span>
+            <h3 className="text-lg font-bold text-stone-900">
+              Test de Reconeixement de Símbols
+            </h3>
+          </div>
+          <QuizMode />
+        </div>
+      </div>
+
+      {/* ========================================================
+          PART 4.2: COM FUNCIONA UN CIRCUIT (SÈRIE VS PARAL·LEL)
+      ======================================================== */}
+      <div className="space-y-6 pt-4 border-t-2 border-dashed border-stone-200">
+        <div className="flex items-center gap-3 border-b border-stone-200 pb-3">
+          <span className="w-8 h-8 rounded-xl bg-sky-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
+            4.2
+          </span>
+          <div>
+            <h2 className="text-xl font-bold text-stone-900">
+              Com funciona un Circuit? Circuits en Sèrie i Paral·lel
+            </h2>
+            <p className="text-xs text-stone-500">
+              Entén el camí del corrent elèctric, els circuits oberts i tancats, i experimenta amb els interruptors.
+            </p>
+          </div>
+        </div>
+
+        {/* Theory Card */}
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm">
+          <CircuitTheory />
+        </div>
+
+        {/* Interactive Simulator directly below */}
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs font-bold text-sky-800 uppercase tracking-wider bg-sky-100 px-3 py-1 rounded-full">
+              Simulador Interactiu
+            </span>
+            <h3 className="text-lg font-bold text-stone-900">
+              Laboratori Virtual de Circuits: Circuit Màgic
+            </h3>
+          </div>
+          <CircuitSimulator />
+        </div>
       </div>
 
       {/* Completion & Navigation Footer */}
