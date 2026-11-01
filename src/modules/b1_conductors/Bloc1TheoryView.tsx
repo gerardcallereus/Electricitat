@@ -5,12 +5,14 @@ import { BookOpen, ArrowRight, CheckCircle2, ArrowLeft } from 'lucide-react';
 interface Bloc1TheoryViewProps {
   onComplete: () => void;
   onNext: () => void;
+  onPrev?: () => void;
   onBackToDashboard?: () => void;
 }
 
 export const Bloc1TheoryView: React.FC<Bloc1TheoryViewProps> = ({
   onComplete,
   onNext,
+  onPrev,
   onBackToDashboard,
 }) => {
   return (
@@ -20,7 +22,7 @@ export const Bloc1TheoryView: React.FC<Bloc1TheoryViewProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <span className="px-3 py-1 bg-amber-100 text-amber-900 text-xs font-bold uppercase rounded-full tracking-wide">
-              Bloc 1 de 7 • 15 minuts
+              Bloc 1 de 7
             </span>
             <span className="text-xs text-stone-500 font-medium">Teoria Fonamental</span>
           </div>

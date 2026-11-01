@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ModuleId } from '../types';
-import { Zap, Clock, User, CheckCircle2, Lock, Menu, X, AlertCircle } from 'lucide-react';
+import { Zap, User, CheckCircle2, Lock, Menu, X, AlertCircle } from 'lucide-react';
 
 interface HeaderNavProps {
   currentModule: ModuleId;
@@ -24,41 +24,22 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   isRegistered,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [timeRemainingSeconds, setTimeRemainingSeconds] = useState(180 * 60);
   const [lockAlert, setLockAlert] = useState<string | null>(null);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeRemainingSeconds((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (secs: number) => {
-    const h = Math.floor(secs / 3600);
-    const m = Math.floor((secs % 3600) / 60);
-    return `${h}h ${m < 10 ? '0' : ''}${m}m`;
-  };
-
-  const navItems: { id: ModuleId; label: string; time: string; blocNum: number }[] = [
-    { id: 'dashboard', label: 'Inici', time: '0m', blocNum: 0 },
-    { id: 'b1-teoria-atom', label: '1. Teoria Àtom', time: '15m', blocNum: 1 },
-    { id: 'b2-simulador-conductors', label: '2. Conductors', time: '20m', blocNum: 2 },
-    { id: 'b3-transformacions', label: '3. Energia', time: '25m', blocNum: 3 },
-    { id: 'b4-simbologia-circuits', label: '4. Circuits', time: '30m', blocNum: 4 },
-    { id: 'b5-llei-dohm', label: '5. Llei d\'Ohm', time: '35m', blocNum: 5 },
-    { id: 'b6-codi-colors', label: '6. Resistències', time: '20m', blocNum: 6 },
-    { id: 'b7-multimetre', label: '7. Multímetre', time: '35m', blocNum: 7 },
+  // 7 sequential learning blocks (NO minutes, compact labels for Chromebooks)
+  const navItems: { id: ModuleId; label: string; shortLabel: string; blocNum: number }[] = [
+    { id: 'b1-teoria-atom', label: '1. Teoria Àtom', shortLabel: '1. Àtom', blocNum: 1 },
+    { id: 'b2-simulador-conductors', label: '2. Conductors', shortLabel: '2. Conductors', blocNum: 2 },
+    { id: 'b3-transformacions', label: '3. Energia', shortLabel: '3. Energia', blocNum: 3 },
+    { id: 'b4-simbologia-circuits', label: '4. Circuits', shortLabel: '4. Circuits', blocNum: 4 },
+    { id: 'b5-llei-dohm', label: '5. Llei d\'Ohm', shortLabel: '5. Llei d\'Ohm', blocNum: 5 },
+    { id: 'b6-codi-colors', label: '6. Resistències', shortLabel: '6. Colors', blocNum: 6 },
+    { id: 'b7-multimetre', label: '7. Multímetre', shortLabel: '7. Multímetre', blocNum: 7 },
   ];
 
   const handleNavClick = (item: typeof navItems[0]) => {
-    if (item.blocNum === 0) {
-      onSelectModule('dashboard');
-      return;
-    }
-
     if (!isRegistered) {
-      setLockAlert('⚠️ Cal introduir el Nom, Cognoms i el Grup per començar la càpsula.');
+      setLockAlert('⚠️ Cal identificar-te primer per accedir als continguts.');
       setTimeout(() => setLockAlert(null), 3000);
       onEditStudent();
       return;
@@ -77,113 +58,107 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
     <header className="bg-white/95 backdrop-blur-md border-b border-stone-200 sticky top-0 z-50 shadow-sm text-stone-800">
       {/* Lock alert toast */}
       {lockAlert && (
-        <div className="bg-amber-500 text-stone-950 px-4 py-2 text-center text-xs font-bold flex items-center justify-center gap-2">
-          <AlertCircle size={16} />
+        <div className="bg-amber-500 text-stone-950 px-4 py-1.5 text-center text-xs font-bold flex items-center justify-center gap-2">
+          <AlertCircle size={15} />
           <span>{lockAlert}</span>
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2 flex items-center justify-between gap-2 sm:gap-4">
         {/* Brand & Course title */}
-        <div
-          onClick={() => onSelectModule('dashboard')}
-          className="flex items-center gap-3 cursor-pointer group shrink-0"
-        >
-          <div className="w-10 h-10 rounded-2xl bg-amber-500 text-white font-bold flex items-center justify-center shadow-sm group-hover:scale-105 transition">
-            <Zap size={22} className="fill-white" />
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-amber-500 text-white font-bold flex items-center justify-center shadow-sm">
+            <Zap size={20} className="fill-white" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-base font-bold text-stone-900 tracking-tight">
-                Càpsula d'Electricitat
-              </span>
-              <span className="text-[10px] bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded-full border border-amber-200">
-                3 HORES
-              </span>
-            </div>
-            <p className="text-[11px] text-stone-500">De l'Àtom al Multímetre</p>
+          <div className="hidden sm:block">
+            <span className="text-sm font-bold text-stone-900 tracking-tight block leading-tight">
+              Càpsula d'Electricitat
+            </span>
+            <p className="text-[11px] text-stone-500 leading-tight">Tecnologia</p>
           </div>
         </div>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1 bg-stone-100 p-1.5 rounded-2xl border border-stone-200">
+        {/* Desktop Navigation Links (Compact for Chromebook 1366x768 screens) */}
+        <nav className="hidden lg:flex items-center gap-1 bg-stone-100 p-1 rounded-2xl border border-stone-200">
           {navItems.map((item) => {
             const isActive = currentModule === item.id;
-            const isDone = item.blocNum > 0 && completedBlocks.includes(item.blocNum);
-            const isUnlocked = item.blocNum === 0 || (isRegistered && unlockedBlocks.includes(item.blocNum));
+            const isDone = completedBlocks.includes(item.blocNum);
+            const isUnlocked = isRegistered && unlockedBlocks.includes(item.blocNum);
 
             return (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                   isActive
-                    ? 'bg-white text-stone-900 shadow-sm border border-stone-200/80 font-bold'
+                    ? 'bg-white text-stone-900 shadow-sm border border-stone-200/90 font-bold'
                     : isUnlocked
                     ? 'text-stone-600 hover:text-stone-900 hover:bg-stone-200/60'
-                    : 'text-stone-400 opacity-60 cursor-not-allowed'
+                    : 'text-stone-400 opacity-50 cursor-not-allowed'
                 }`}
                 title={!isUnlocked ? `Bloc ${item.blocNum} bloquejat` : undefined}
               >
                 {isDone ? (
-                  <CheckCircle2 size={13} className="text-emerald-600" />
+                  <CheckCircle2 size={13} className="text-emerald-600 shrink-0" />
                 ) : !isUnlocked ? (
-                  <Lock size={12} className="text-stone-400" />
+                  <Lock size={12} className="text-stone-400 shrink-0" />
                 ) : null}
-                <span>{item.label}</span>
-                <span className={`text-[10px] px-1 py-0.2 rounded font-mono ${isActive ? 'bg-amber-100 text-amber-900' : 'text-stone-400'}`}>
-                  {item.time}
-                </span>
+                <span className="xl:inline hidden">{item.label}</span>
+                <span className="xl:hidden inline">{item.shortLabel}</span>
               </button>
             );
           })}
         </nav>
 
-        {/* Student Profile & 3h Timer Widget */}
-        <div className="flex items-center gap-2.5 shrink-0">
-          {/* Timer */}
-          <div className="hidden sm:flex items-center gap-1.5 bg-stone-100 px-3 py-1.5 rounded-xl border border-stone-200 text-xs font-mono text-stone-700">
-            <Clock size={14} className="text-amber-600" />
-            <span className="font-bold">{formatTime(timeRemainingSeconds)}</span>
-          </div>
-
-          {/* Student Badge */}
-          <button
-            onClick={onEditStudent}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-medium transition ${
-              isRegistered
-                ? 'bg-stone-50 hover:bg-stone-100 text-stone-800 border-stone-200'
-                : 'bg-amber-500 hover:bg-amber-600 text-white border-amber-600 font-bold animate-pulse'
-            }`}
-          >
-            <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${isRegistered ? 'bg-amber-100 text-amber-800' : 'bg-white text-amber-800'}`}>
-              <User size={12} />
-            </div>
-            <div className="text-left hidden sm:block max-w-[140px] truncate">
-              <span className="font-bold block text-[11px] truncate leading-tight">
-                {studentName || 'Identifica\'t aquí'}
-              </span>
-              <span className="text-[10px] block leading-tight truncate opacity-80 text-stone-500">
-                {studentGroup ? `Grup ${studentGroup}` : 'Falta grup (1,2,3 a/b)'}
-              </span>
-            </div>
-          </button>
+        {/* Student Profile Button */}
+        <div className="flex items-center gap-2 shrink-0">
+          {isRegistered ? (
+            <button
+              onClick={onEditStudent}
+              title="Clica per canviar d'alumne/a o editar dades"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 text-stone-800 text-xs transition"
+            >
+              <div className="w-5 h-5 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-[10px]">
+                <User size={12} />
+              </div>
+              <div className="text-left max-w-[130px] sm:max-w-[160px] truncate">
+                <span className="font-bold block text-[11px] truncate leading-tight">
+                  {studentName}
+                </span>
+                <span className="text-[10px] block leading-tight text-stone-500 font-medium truncate">
+                  Grup {studentGroup}
+                </span>
+              </div>
+            </button>
+          ) : (
+            <button
+              onClick={onEditStudent}
+              className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition animate-pulse"
+            >
+              <User size={13} />
+              <span>Identifica't</span>
+            </button>
+          )}
 
           {/* Mobile menu toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-xl bg-stone-100 text-stone-600 hover:text-stone-900 border border-stone-200"
+            className="lg:hidden p-1.5 rounded-xl bg-stone-100 text-stone-600 hover:text-stone-900 border border-stone-200"
+            aria-label="Menú"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile / Compact Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-stone-200 px-4 py-4 space-y-1.5">
+        <div className="lg:hidden bg-white border-b border-stone-200 px-3 py-3 space-y-1">
           {navItems.map((item) => {
-            const isUnlocked = item.blocNum === 0 || (isRegistered && unlockedBlocks.includes(item.blocNum));
+            const isUnlocked = isRegistered && unlockedBlocks.includes(item.blocNum);
+            const isDone = completedBlocks.includes(item.blocNum);
+            const isActive = currentModule === item.id;
+
             return (
               <button
                 key={item.id}
@@ -191,8 +166,8 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
                   handleNavClick(item);
                   setMobileMenuOpen(false);
                 }}
-                className={`w-full text-left px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-between ${
-                  currentModule === item.id
+                className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold flex items-center justify-between ${
+                  isActive
                     ? 'bg-amber-100 text-amber-900 border border-amber-200'
                     : isUnlocked
                     ? 'text-stone-700 hover:bg-stone-100'
@@ -200,10 +175,13 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
                 }`}
               >
                 <span className="flex items-center gap-2">
-                  {!isUnlocked && <Lock size={14} className="text-stone-400" />}
+                  {isDone ? (
+                    <CheckCircle2 size={13} className="text-emerald-600" />
+                  ) : !isUnlocked ? (
+                    <Lock size={13} className="text-stone-400" />
+                  ) : null}
                   {item.label}
                 </span>
-                <span className="text-xs text-stone-400 font-mono">{item.time}</span>
               </button>
             );
           })}

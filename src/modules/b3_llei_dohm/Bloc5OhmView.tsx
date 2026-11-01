@@ -9,12 +9,14 @@ import { Calculator, Gauge, ArrowRight, CheckCircle2, ArrowLeft, Sliders } from 
 interface Bloc5OhmViewProps {
   onComplete: () => void;
   onNext: () => void;
+  onPrev?: () => void;
   onBackToDashboard?: () => void;
 }
 
 export const Bloc5OhmView: React.FC<Bloc5OhmViewProps> = ({
   onComplete,
   onNext,
+  onPrev,
   onBackToDashboard
 }) => {
   return (
@@ -24,7 +26,7 @@ export const Bloc5OhmView: React.FC<Bloc5OhmViewProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <span className="px-3 py-1 bg-amber-100 text-amber-900 text-xs font-bold uppercase rounded-full tracking-wide">
-              Bloc 5 de 7 • 35 minuts
+              Bloc 5 de 7
             </span>
             <span className="text-xs text-stone-500 font-medium">Relacions Matemàtiques</span>
           </div>
@@ -131,7 +133,14 @@ export const Bloc5OhmView: React.FC<Bloc5OhmViewProps> = ({
 
       {/* Completion & Navigation Footer */}
       <div className="bg-white rounded-2xl p-6 border border-stone-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
-        {onBackToDashboard ? (
+        {onPrev ? (
+          <button
+            onClick={onPrev}
+            className="text-stone-600 hover:text-stone-900 font-bold text-xs flex items-center gap-1.5 cursor-pointer"
+          >
+            <ArrowLeft size={16} /> Bloc anterior
+          </button>
+        ) : onBackToDashboard ? (
           <button
             onClick={onBackToDashboard}
             className="text-stone-600 hover:text-stone-900 font-bold text-xs flex items-center gap-1.5"

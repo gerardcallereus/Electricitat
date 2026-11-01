@@ -9,12 +9,14 @@ import { BookOpen, Wrench, FileCheck2, Lightbulb, ArrowLeft, Layers } from 'luci
 interface MultimeterLabAppProps {
   studentName: string;
   studentGroup: string;
+  onPrev?: () => void;
   onBackToDashboard?: () => void;
 }
 
 export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
   studentName,
   studentGroup,
+  onPrev,
   onBackToDashboard,
 }) => {
   const [activeBoard, setActiveBoard] = useState<'resistors' | 'series' | 'ohm-challenge'>('resistors');
@@ -66,7 +68,7 @@ export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <span className="px-3 py-1 bg-amber-100 text-amber-900 text-xs font-bold uppercase rounded-full tracking-wide">
-              Bloc 7 de 7 • 35 minuts • Tasca Final
+              Bloc 7 de 7 • Tasca Final
             </span>
             <span className="text-xs text-stone-500 font-medium">Laboratori d'Instrumentació</span>
           </div>
@@ -216,14 +218,23 @@ export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
       </div>
 
       {/* Footer navigation */}
-      {onBackToDashboard && (
+      {(onPrev || onBackToDashboard) && (
         <div className="flex justify-start pt-2">
-          <button
-            onClick={onBackToDashboard}
-            className="text-stone-600 hover:text-stone-900 font-bold text-xs flex items-center gap-1.5"
-          >
-            <ArrowLeft size={16} /> Tornar a l'Itinerari Principal
-          </button>
+          {onPrev ? (
+            <button
+              onClick={onPrev}
+              className="text-stone-600 hover:text-stone-900 font-bold text-xs flex items-center gap-1.5 cursor-pointer"
+            >
+              <ArrowLeft size={16} /> Bloc anterior
+            </button>
+          ) : (
+            <button
+              onClick={onBackToDashboard}
+              className="text-stone-600 hover:text-stone-900 font-bold text-xs flex items-center gap-1.5"
+            >
+              <ArrowLeft size={16} /> Tornar a l'Itinerari Principal
+            </button>
+          )}
         </div>
       )}
     </div>
