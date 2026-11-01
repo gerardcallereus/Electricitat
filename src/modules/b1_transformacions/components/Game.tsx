@@ -117,34 +117,63 @@ const Game: React.FC = () => {
       </div>
 
       {/* Question Card */}
-      <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100 mb-6">
-        <div className="bg-indigo-600 p-6 text-white">
-          <h3 className="text-2xl font-bold mb-2">{currentQuestion.objectName}</h3>
-          <p className="text-indigo-100 opacity-90 text-lg">{currentQuestion.description}</p>
+      <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-stone-200 mb-6 text-stone-800">
+        <div className="flex flex-col md:flex-row bg-slate-900 text-white overflow-hidden">
+          {/* Real Device Image */}
+          {currentQuestion.imageUrl && (
+            <div className="md:w-5/12 h-48 md:h-auto min-h-[190px] relative bg-stone-800 shrink-0 overflow-hidden">
+              <img
+                src={currentQuestion.imageUrl}
+                alt={currentQuestion.objectName}
+                className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
+                loading="eager"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent md:hidden" />
+              <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider text-amber-300 border border-white/10">
+                Aparell Real
+              </div>
+            </div>
+          )}
+
+          {/* Device Name & Description */}
+          <div className="p-6 md:p-8 flex-1 flex flex-col justify-center">
+            <span className="text-amber-400 text-xs font-bold uppercase tracking-wider mb-1">
+              Pregunta d'observació
+            </span>
+            <h3 className="text-2xl sm:text-3xl font-black mb-2 text-white">
+              {currentQuestion.objectName}
+            </h3>
+            <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+              {currentQuestion.description}
+            </p>
+          </div>
         </div>
         
-        <div className="p-6">
-          <p className="text-slate-600 font-medium mb-4">Quin tipus de transformació energètica realitza principalment?</p>
+        <div className="p-6 md:p-8">
+          <p className="text-stone-700 font-bold mb-4 text-sm sm:text-base flex items-center gap-2">
+            <span>⚡</span>
+            Quin tipus de transformació energètica realitza principalment?
+          </p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {currentQuestion.options.map((option, idx) => {
               const isSelected = selectedOption === option;
               const isCorrectOption = option === currentQuestion.correctType;
               
-              let btnClass = "p-4 rounded-xl border-2 text-left font-semibold transition-all ";
+              let btnClass = "p-4 rounded-2xl border-2 text-left font-semibold transition-all text-xs sm:text-sm ";
               
               if (selectedOption) {
                 if (isSelected && isCorrectOption) {
-                  btnClass += "bg-green-50 border-green-500 text-green-700";
+                  btnClass += "bg-emerald-50 border-emerald-500 text-emerald-800 shadow-sm";
                 } else if (isSelected && !isCorrectOption) {
-                  btnClass += "bg-red-50 border-red-500 text-red-700";
+                  btnClass += "bg-red-50 border-red-500 text-red-800";
                 } else if (!isSelected && isCorrectOption) {
-                  btnClass += "bg-green-50 border-green-500 text-green-700 opacity-70";
+                  btnClass += "bg-emerald-50 border-emerald-500 text-emerald-800 opacity-80";
                 } else {
-                  btnClass += "bg-slate-50 border-slate-200 text-slate-400 opacity-50";
+                  btnClass += "bg-stone-50 border-stone-200 text-stone-400 opacity-50";
                 }
               } else {
-                btnClass += "bg-white border-slate-200 hover:border-indigo-400 hover:bg-indigo-50 text-slate-700 hover:shadow-md cursor-pointer";
+                btnClass += "bg-white border-stone-200 hover:border-amber-400 hover:bg-amber-50/50 text-stone-700 hover:shadow-md cursor-pointer";
               }
 
               return (
@@ -163,27 +192,27 @@ const Game: React.FC = () => {
         
         {/* Feedback Section */}
         {selectedOption && (
-          <div className={`p-6 border-t ${isCorrect ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'} animate-fade-in`}>
+          <div className={`p-6 border-t ${isCorrect ? 'bg-emerald-50/80 border-emerald-100' : 'bg-red-50/80 border-red-100'} animate-fade-in`}>
             <div className="flex items-start gap-3">
               {isCorrect ? (
-                <CheckCircle className="text-green-600 shrink-0 mt-1" size={24} />
+                <CheckCircle className="text-emerald-600 shrink-0 mt-1" size={24} />
               ) : (
                 <XCircle className="text-red-600 shrink-0 mt-1" size={24} />
               )}
               <div>
-                <h4 className={`font-bold text-lg ${isCorrect ? 'text-green-800' : 'text-red-800'}`}>
-                  {isCorrect ? 'Correcte!' : 'Incorrecte'}
+                <h4 className={`font-bold text-lg ${isCorrect ? 'text-emerald-900' : 'text-red-900'}`}>
+                  {isCorrect ? 'Correcte! Molt ben observat!' : 'Incorrecte! Fixa\'t en el funcionament:'}
                 </h4>
-                <p className="text-slate-700 mt-1 mb-4 leading-relaxed">
+                <p className="text-stone-700 mt-1 mb-4 leading-relaxed text-sm">
                   {currentQuestion.explanation}
                 </p>
                 <button
                   onClick={nextQuestion}
-                  className={`flex items-center gap-2 px-6 py-2 rounded-lg font-bold text-white transition-transform active:scale-95 ${
-                    isCorrect ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'
+                  className={`flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-white transition-transform active:scale-95 shadow-md cursor-pointer text-sm ${
+                    isCorrect ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-red-600 hover:bg-red-700'
                   }`}
                 >
-                  Següent <ArrowRight size={18} />
+                  Següent pregunta <ArrowRight size={18} />
                 </button>
               </div>
             </div>

@@ -6,26 +6,28 @@ import { ArrowRight, RefreshCw, CheckCircle, XCircle, Trophy } from 'lucide-reac
 
 const Switch: React.FC<{ x: number; y: number; isOpen: boolean; label?: string; vertical?: boolean }> = ({ x, y, isOpen, label, vertical }) => (
   <g transform={`translate(${x}, ${y}) ${vertical ? 'rotate(90)' : ''}`}>
-    {/* Label with background to ensure visibility */}
+    {/* Label with status badge to ensure complete clarity */}
     {label && (
       <g transform={vertical ? 'rotate(-90)' : ''}>
          <rect 
-           x={vertical ? 40 : -40} 
-           y={vertical ? -10 : 30} 
-           width="80" 
-           height="20" 
-           fill="rgba(255,255,255,0.8)" 
-           rx="4" 
+           x={vertical ? 40 : -55} 
+           y={vertical ? -12 : 30} 
+           width={vertical ? 95 : 110} 
+           height="22" 
+           fill="rgba(255,255,255,0.95)" 
+           rx="6" 
+           stroke={isOpen ? "#FCA5A5" : "#86EFAC"}
+           strokeWidth="1"
          />
          <text 
             x={vertical ? 45 : 0} 
-            y={vertical ? 5 : 44} 
+            y={vertical ? 4 : 45} 
             textAnchor={vertical ? "start" : "middle"} 
-            fontSize="12" 
-            fill="#64748B" 
+            fontSize="11" 
+            fill={isOpen ? "#DC2626" : "#16A34A"} 
             fontWeight="bold"
         >
-          {label}
+          {label}: {isOpen ? 'OBERT ✕' : 'TANCAT ✓'}
         </text>
       </g>
     )}
@@ -36,40 +38,69 @@ const Switch: React.FC<{ x: number; y: number; isOpen: boolean; label?: string; 
     
     {/* Blade Group */}
     <g 
-      transform={isOpen ? "rotate(-30, -20, 0)" : "rotate(0, -20, 0)"} 
+      transform={isOpen ? "rotate(-35, -20, 0)" : "rotate(0, -20, 0)"} 
       className="transition-transform duration-300 ease-out"
     >
-      {/* The Blade: Solid bar */}
-      <rect x="-20" y="-3" width="42" height="6" rx="3" fill={isOpen ? "#EF4444" : "#22C55E"} stroke="#1E293B" strokeWidth="0.5" />
-      {/* Handle detail */}
-      <circle cx="16" cy="0" r="2" fill="rgba(255,255,255,0.5)" />
+      <rect x="-20" y="-3.5" width="42" height="7" rx="3.5" fill={isOpen ? "#EF4444" : "#22C55E"} stroke="#1E293B" strokeWidth="0.5" />
+      <circle cx="16" cy="0" r="2.5" fill="rgba(255,255,255,0.7)" />
     </g>
+
+    {/* Clear red gap indicator when open */}
+    {isOpen && (
+      <g>
+        <line x1="-10" y1="12" x2="16" y2="12" stroke="#EF4444" strokeWidth="1.5" strokeDasharray="2 2" />
+        <text x="3" y="21" fontSize="9" fill="#DC2626" textAnchor="middle" fontWeight="bold">TALLAT</text>
+      </g>
+    )}
   </g>
 );
 
 const Bulb: React.FC<{ x: number; y: number; isOn: boolean; isBroken?: boolean; label?: string }> = ({ x, y, isOn, isBroken, label }) => (
   <g transform={`translate(${x}, ${y})`}>
+    {/* Broken halo & warning banner when broken */}
+    {isBroken && (
+      <g>
+        <circle cx="0" cy="0" r="26" fill="#FEE2E2" stroke="#EF4444" strokeWidth="2" strokeDasharray="4 3" opacity="0.9" />
+        <g transform="translate(0, -32)">
+          <rect x="-42" y="-9" width="84" height="18" rx="9" fill="#DC2626" />
+          <text x="0" y="3.5" textAnchor="middle" fontSize="9" fill="white" fontWeight="bold">✕ FOSA / TALL</text>
+        </g>
+      </g>
+    )}
+
     {/* Label positioned to the right with background */}
     {label && (
       <g>
-        <rect x="30" y="-12" width="100" height="24" fill="rgba(255,255,255,0.8)" rx="4" />
-        <text x="35" y="5" textAnchor="start" fontSize="12" fill="#64748B" fontWeight="600">{label}</text>
+        <rect x="30" y="-12" width="115" height="24" fill="rgba(255,255,255,0.9)" rx="4" stroke={isBroken ? "#FCA5A5" : "#CBD5E1"} strokeWidth="1" />
+        <text x="35" y="5" textAnchor="start" fontSize="11" fill={isBroken ? "#DC2626" : "#475569"} fontWeight="bold">
+          {label} {isBroken ? '(Trencada)' : ''}
+        </text>
       </g>
     )}
 
     {isOn && !isBroken && <circle cx="0" cy="0" r="30" fill="url(#glow)" opacity="0.6" />}
     <circle 
       cx="0" cy="0" r="20" 
-      fill={isOn && !isBroken ? "#FDE047" : "#E2E8F0"} 
-      stroke={isOn && !isBroken ? "#EAB308" : "#94A3B8"} 
-      strokeWidth="2"
+      fill={isOn && !isBroken ? "#FDE047" : isBroken ? "#F1F5F9" : "#E2E8F0"} 
+      stroke={isOn && !isBroken ? "#EAB308" : isBroken ? "#DC2626" : "#94A3B8"} 
+      strokeWidth={isBroken ? "2.5" : "2"}
     />
     <rect x="-8" y="16" width="16" height="10" fill="#64748B" rx="1" />
+
     {isBroken ? (
-      <path d="M -6 14 L -2 8 M 2 8 L 6 14" stroke="#475569" fill="none" strokeWidth="1.5" />
+      <g>
+        {/* Broken filament gap */}
+        <path d="M -7 14 L -4 8" stroke="#DC2626" fill="none" strokeWidth="2" strokeLinecap="round" />
+        <path d="M 4 8 L 7 14" stroke="#DC2626" fill="none" strokeWidth="2" strokeLinecap="round" />
+        <circle cx="-4" cy="8" r="2" fill="#DC2626" />
+        <circle cx="4" cy="8" r="2" fill="#DC2626" />
+        {/* Crack lines on glass */}
+        <path d="M -10 -4 L -2 3 L -8 10 M 2 -10 L 5 -2 L 1 5" stroke="#EF4444" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      </g>
     ) : (
       <path d="M -6 14 Q 0 0 6 14" stroke="#475569" fill="none" strokeWidth="1.5" />
     )}
+
     {isOn && !isBroken && (
       <g stroke="#EAB308" strokeWidth="2" strokeLinecap="round">
         <line x1="-28" y1="-28" x2="-22" y2="-22" />
@@ -296,9 +327,38 @@ const Exercises: React.FC = () => {
         <div className="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style={{ width: `${((currentIdx + 1) / exercises.length) * 100}%` }}></div>
       </div>
 
-      <div className="text-center mb-6 animate-fade-in">
+      <div className="text-center mb-4 animate-fade-in">
         <span className="text-sm font-bold text-slate-400 uppercase tracking-wider">Exercici {currentIdx + 1} de {exercises.length}</span>
-        <h2 className="text-2xl font-bold text-slate-800 mt-2">{exercise.title}</h2>
+        <h2 className="text-2xl font-bold text-slate-800 mt-1">{exercise.title}</h2>
+      </div>
+
+      {/* Circuit Status Banner (Clear indicator of open/closed circuit) */}
+      <div className={`w-full max-w-3xl px-4 py-3 rounded-2xl mb-4 border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 shadow-sm ${
+        (Object.values(exercise.switches).some(v => v === false) || !!exercise.bulbBroken)
+          ? 'bg-red-50/90 border-red-200 text-red-900'
+          : 'bg-emerald-50/90 border-emerald-200 text-emerald-900'
+      }`}>
+        <div className="flex items-center gap-2.5 font-bold text-xs sm:text-sm">
+          <span className={`w-3.5 h-3.5 rounded-full flex items-center justify-center text-[10px] text-white shrink-0 ${
+            (Object.values(exercise.switches).some(v => v === false) || !!exercise.bulbBroken) ? 'bg-red-600' : 'bg-emerald-600'
+          }`}>
+            {(Object.values(exercise.switches).some(v => v === false) || !!exercise.bulbBroken) ? '✕' : '✓'}
+          </span>
+          <span>
+            {(Object.values(exercise.switches).some(v => v === false) || !!exercise.bulbBroken)
+              ? 'CIRCUIT OBERT / INTERROMPUT'
+              : 'CIRCUIT TANCAT / COMPLET'}
+          </span>
+        </div>
+        <div className="text-xs text-stone-600 font-medium">
+          {Object.values(exercise.switches).some(v => v === false) && !!exercise.bulbBroken
+            ? "⚠️ Hi ha un interruptor obert i a més una bombeta fosa (tall doble)."
+            : Object.values(exercise.switches).some(v => v === false)
+            ? "⚠️ L'interruptor està obert (talla el pas del corrent elèctric)."
+            : !!exercise.bulbBroken
+            ? "⚠️ La bombeta té el filament fos (el circuit s'obre en aquest punt)."
+            : "✅ Camí continu sense interrupcions: el corrent pot circular."}
+        </div>
       </div>
 
       {/* Interactive Canvas */}

@@ -31,6 +31,12 @@ const App: React.FC = () => {
   // Sequential unlock computation (1 to 7)
   const unlockedBlocks = React.useMemo(() => {
     if (!isRegistered) return [];
+
+    // Mode professor: Si el nom és 'teacher' (sense distinció de majúscules), desbloqueja tots els nivells
+    if (studentName.trim().toLowerCase() === 'teacher') {
+      return [1, 2, 3, 4, 5, 6, 7];
+    }
+
     const unlocked = [1];
     if (completedBlocks.includes(1)) unlocked.push(2);
     if (completedBlocks.includes(2)) unlocked.push(3);
@@ -39,7 +45,7 @@ const App: React.FC = () => {
     if (completedBlocks.includes(5)) unlocked.push(6);
     if (completedBlocks.includes(6)) unlocked.push(7);
     return unlocked;
-  }, [isRegistered, completedBlocks]);
+  }, [isRegistered, completedBlocks, studentName]);
 
   const [currentModule, setCurrentModule] = useState<ModuleId>(() => {
     const saved = localStorage.getItem('electricitat_current_module') as ModuleId | null;

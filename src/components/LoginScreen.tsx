@@ -36,6 +36,13 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
       setError('Si us plau, introdueix el teu nom.');
       return;
     }
+
+    // Accés directe per a professors si el nom és "teacher"
+    if (cleanFirst.toLowerCase() === 'teacher') {
+      onLogin('teacher', group || '1r A');
+      return;
+    }
+
     if (!cleanLast) {
       setError('Si us plau, introdueix els teus cognoms.');
       return;
@@ -94,7 +101,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
         {/* Cognoms */}
         <div>
           <label className="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1.5">
-            Cognoms: <span className="text-amber-600">*</span>
+            Cognoms: {firstName.trim().toLowerCase() === 'teacher' ? <span className="text-stone-400 font-normal">(Opcional per a mode teacher)</span> : <span className="text-amber-600">*</span>}
           </label>
           <input
             type="text"
@@ -104,7 +111,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
               if (error) setError(null);
             }}
             placeholder="Ex: Garcia Puig"
-            required
+            required={firstName.trim().toLowerCase() !== 'teacher'}
             autoComplete="family-name"
             className="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-2.5 text-sm text-stone-900 focus:bg-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
           />

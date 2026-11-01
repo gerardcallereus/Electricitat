@@ -3,7 +3,7 @@ import ReferenceMode from './components/ReferenceMode';
 import QuizMode from './components/QuizMode';
 import CircuitTheory from '../b2_circuits/components/Theory';
 import CircuitSimulator from '../b2_circuits/components/Simulator';
-import { Bookmark, CheckCircle2, ArrowRight, ArrowLeft, Layers, Sparkles } from 'lucide-react';
+import { Layers, CheckCircle2, ArrowRight, ArrowLeft } from 'lucide-react';
 
 interface Bloc4CircuitsViewProps {
   onComplete: () => void;
@@ -27,13 +27,13 @@ export const Bloc4CircuitsView: React.FC<Bloc4CircuitsViewProps> = ({
             <span className="px-3 py-1 bg-amber-100 text-amber-900 text-xs font-bold uppercase rounded-full tracking-wide">
               Bloc 4 de 7
             </span>
-            <span className="text-xs text-stone-500 font-medium">Dibuix Tècnic & Circuits</span>
+            <span className="text-xs text-stone-500 font-medium">Circuits & Dibuix Tècnic</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-stone-900 tracking-tight">
-            4. Simbologia Normalitzada i Circuits (Sèrie / Paral·lel)
+            4. Circuits Elèctrics (Sèrie / Paral·lel) i Simbologia Normalitzada
           </h1>
           <p className="text-sm text-stone-600 mt-1 max-w-2xl leading-relaxed">
-            Aprèn a llegir i dibuixar esquemes elèctrics amb la normativa internacional (IEC) i experimenta directament com es comporten els receptors en sèrie i en paral·lel.
+            Aprèn com funciona el camí del corrent, per què els circuits s'obren o es tanquen, la diferència clau entre circuits en sèrie i paral·lel, i els símbols tècnics normalitzats (IEC).
           </p>
         </div>
 
@@ -44,7 +44,8 @@ export const Bloc4CircuitsView: React.FC<Bloc4CircuitsViewProps> = ({
       </div>
 
       {/* ========================================================
-          PART 4.1: SIMBOLOGIA NORMALITZADA
+          PART 4.1: COM FUNCIONA UN CIRCUIT (SÈRIE VS PARAL·LEL)
+          (PUJAT A DALT SEGONS LA PETICIÓ DE L'USUARI)
       ======================================================== */}
       <div className="space-y-6">
         <div className="flex items-center gap-3 border-b border-stone-200 pb-3">
@@ -53,47 +54,10 @@ export const Bloc4CircuitsView: React.FC<Bloc4CircuitsViewProps> = ({
           </span>
           <div>
             <h2 className="text-xl font-bold text-stone-900">
-              Biblioteca de Símbols Elèctrics Normalitzats
-            </h2>
-            <p className="text-xs text-stone-500">
-              Consulta els símbols tècnics oficials utilitzats per enginyers i instal·ladors a tot el món.
-            </p>
-          </div>
-        </div>
-
-        {/* Reference Mode Library */}
-        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm">
-          <ReferenceMode />
-        </div>
-
-        {/* Quiz Mode directly underneath */}
-        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm space-y-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs font-bold text-amber-800 uppercase tracking-wider bg-amber-100 px-3 py-1 rounded-full">
-              Posa't a prova
-            </span>
-            <h3 className="text-lg font-bold text-stone-900">
-              Test de Reconeixement de Símbols
-            </h3>
-          </div>
-          <QuizMode />
-        </div>
-      </div>
-
-      {/* ========================================================
-          PART 4.2: COM FUNCIONA UN CIRCUIT (SÈRIE VS PARAL·LEL)
-      ======================================================== */}
-      <div className="space-y-6 pt-4 border-t-2 border-dashed border-stone-200">
-        <div className="flex items-center gap-3 border-b border-stone-200 pb-3">
-          <span className="w-8 h-8 rounded-xl bg-sky-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
-            4.2
-          </span>
-          <div>
-            <h2 className="text-xl font-bold text-stone-900">
               Com funciona un Circuit? Circuits en Sèrie i Paral·lel
             </h2>
             <p className="text-xs text-stone-500">
-              Entén el camí del corrent elèctric, els circuits oberts i tancats, i experimenta amb els interruptors.
+              Entén el camí del corrent, quan un circuit està tancat o trencat, i per què les bombetes es comporten diferent en sèrie i en paral·lel.
             </p>
           </div>
         </div>
@@ -114,6 +78,43 @@ export const Bloc4CircuitsView: React.FC<Bloc4CircuitsViewProps> = ({
             </h3>
           </div>
           <CircuitSimulator />
+        </div>
+      </div>
+
+      {/* ========================================================
+          PART 4.2: SIMBOLOGIA NORMALITZADA
+      ======================================================== */}
+      <div className="space-y-6 pt-4 border-t-2 border-dashed border-stone-200">
+        <div className="flex items-center gap-3 border-b border-stone-200 pb-3">
+          <span className="w-8 h-8 rounded-xl bg-sky-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
+            4.2
+          </span>
+          <div>
+            <h2 className="text-xl font-bold text-stone-900">
+              Biblioteca de Símbols Elèctrics Normalitzats
+            </h2>
+            <p className="text-xs text-stone-500">
+              Consulta els símbols tècnics oficials utilitzats per enginyers i instal·ladors a tot el món i posa't a prova.
+            </p>
+          </div>
+        </div>
+
+        {/* Reference Mode Library */}
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm">
+          <ReferenceMode />
+        </div>
+
+        {/* Quiz Mode directly underneath */}
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs font-bold text-amber-800 uppercase tracking-wider bg-amber-100 px-3 py-1 rounded-full">
+              Posa't a prova
+            </span>
+            <h3 className="text-lg font-bold text-stone-900">
+              Test de Reconeixement de Símbols
+            </h3>
+          </div>
+          <QuizMode />
         </div>
       </div>
 
@@ -143,7 +144,7 @@ export const Bloc4CircuitsView: React.FC<Bloc4CircuitsViewProps> = ({
           className="px-6 py-3.5 bg-stone-900 hover:bg-stone-800 text-white font-bold rounded-2xl text-sm flex items-center gap-2 shadow-md transition"
         >
           <CheckCircle2 size={18} className="text-amber-400" />
-          <span>Completar el Bloc 4 i anar al Bloc 5: Magnituds i Llei d'Ohm</span>
+          <span>Completar el Bloc 4 i anar al Bloc 5: Llei d'Ohm</span>
           <ArrowRight size={18} />
         </button>
       </div>

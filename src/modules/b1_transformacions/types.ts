@@ -14,6 +14,7 @@ export interface Question {
   correctType: string;
   options: string[];
   explanation: string;
+  imageUrl?: string;
 }
 
 export interface GameState {

@@ -1,10 +1,8 @@
 import React from 'react';
-import UnitsTheory from '../b3_unitats/components/Theory';
-import UnitsPractice from '../b3_unitats/components/Practice';
 import { Explanation as OhmExplanation } from './components/Explanation';
 import { OhmLawSimulator } from './components/OhmLawSimulator';
 import { Exercises as OhmExercises } from './components/Exercises';
-import { Calculator, Gauge, ArrowRight, CheckCircle2, ArrowLeft, Sliders } from 'lucide-react';
+import { Calculator, ArrowRight, CheckCircle2, ArrowLeft } from 'lucide-react';
 
 interface Bloc5OhmViewProps {
   onComplete: () => void;
@@ -31,74 +29,23 @@ export const Bloc5OhmView: React.FC<Bloc5OhmViewProps> = ({
             <span className="text-xs text-stone-500 font-medium">Relacions Matemàtiques</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-stone-900 tracking-tight">
-            5. Les Magnituds Elèctriques i la Llei d'Ohm
+            5. La Llei d'Ohm: \(V = I \cdot R\)
           </h1>
           <p className="text-sm text-stone-600 mt-1 max-w-2xl leading-relaxed">
-            Aprèn a relacionar el Voltatge (\(V\)), la Intensitat (\(I\)) i la Resistència (\(R\)), practica els prefixos (\(mA\), \(k\Omega\)) i experimenta amb la fórmula fonamental \(V = I \cdot R\).
+            Aprèn a relacionar el Voltatge (\(V\)), la Intensitat (\(I\)) i la Resistència (\(R\)), descobreix el triangle d'Ohm i experimenta amb la fórmula fonamental dels circuits.
           </p>
         </div>
 
         <div className="px-4 py-2 bg-stone-100 rounded-2xl border border-stone-200 text-xs text-stone-600 font-medium flex items-center gap-2 shrink-0">
           <Calculator size={16} className="text-amber-600" />
-          <span>Seqüència Lineal Completa</span>
+          <span>Seqüència Lineal: Teoria + Simulador + Càlcul</span>
         </div>
       </div>
 
       {/* ========================================================
-          PART 5.1: LES MAGNITUDS I ELS PREFIXOS
+          LA LLEI D'OHM (V = I · R)
       ======================================================== */}
       <div className="space-y-6">
-        <div className="flex items-center gap-3 border-b border-stone-200 pb-3">
-          <span className="w-8 h-8 rounded-xl bg-amber-500 text-white font-bold flex items-center justify-center text-sm shadow-sm">
-            5.1
-          </span>
-          <div>
-            <h2 className="text-xl font-bold text-stone-900">
-              Les Unitats Elèctriques i els seus Prefixos
-            </h2>
-            <p className="text-xs text-stone-500">
-              Volt (\(V\)), Ampere (\(A\)) i Ohm (\(\Omega\)): domina els múltiples i submúltiples més habituals (\(mA\), \(k\Omega\), \(M\Omega\)).
-            </p>
-          </div>
-        </div>
-
-        {/* Units Theory Table */}
-        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm">
-          <UnitsTheory />
-        </div>
-
-        {/* Practice directly underneath */}
-        <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm space-y-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs font-bold text-amber-800 uppercase tracking-wider bg-amber-100 px-3 py-1 rounded-full">
-              Pràctica Interactiva
-            </span>
-            <h3 className="text-lg font-bold text-stone-900">
-              Conversor i Exercicis de Prefixos
-            </h3>
-          </div>
-          <UnitsPractice />
-        </div>
-      </div>
-
-      {/* ========================================================
-          PART 5.2: LA LLEI D'OHM (V = I · R)
-      ======================================================== */}
-      <div className="space-y-6 pt-4 border-t-2 border-dashed border-stone-200">
-        <div className="flex items-center gap-3 border-b border-stone-200 pb-3">
-          <span className="w-8 h-8 rounded-xl bg-sky-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
-            5.2
-          </span>
-          <div>
-            <h2 className="text-xl font-bold text-stone-900">
-              La Llei d'Ohm (\(V = I \cdot R\))
-            </h2>
-            <p className="text-xs text-stone-500">
-              La relació matemàtica fonamental que governa tots els circuits elèctrics.
-            </p>
-          </div>
-        </div>
-
         {/* Ohm Theory & Triangle Explanation */}
         <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm">
           <OhmExplanation />
