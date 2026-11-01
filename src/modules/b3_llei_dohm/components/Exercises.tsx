@@ -67,10 +67,11 @@ export const Exercises: React.FC = () => {
             } else {
                 correctAnswer = ex.voltage! / ex.current!;
             }
-            const userAnswer = parseFloat(userAnswers[ex.id]);
+            const userAnswer = parseFloat((userAnswers[ex.id] || '').replace(',', '.'));
+            const roundedCorrect = round(correctAnswer);
             newResults[ex.id] = {
-                correct: Math.abs(userAnswer - correctAnswer) < 0.01,
-                correctAnswer: round(correctAnswer)
+                correct: !isNaN(userAnswer) && Math.abs(userAnswer - roundedCorrect) <= 0.05,
+                correctAnswer: roundedCorrect
             };
         });
         setResults(newResults);
@@ -81,6 +82,14 @@ export const Exercises: React.FC = () => {
         if (variable === Variable.Current) return 'A';
         return 'Ω';
     }
+
+    const formatGivenVariables = (ex: Exercise) => {
+        const parts: string[] = [];
+        if (ex.voltage !== null) parts.push(`una tensió de ${ex.voltage} V`);
+        if (ex.current !== null) parts.push(`un corrent de ${ex.current} A`);
+        if (ex.resistance !== null) parts.push(`una resistència de ${ex.resistance} Ω`);
+        return parts.join(' i ');
+    };
 
     return (
         <div className="animate-fade-in">
@@ -97,10 +106,7 @@ export const Exercises: React.FC = () => {
                     <div key={ex.id} className={`p-4 rounded-lg border transition-all ${results[ex.id] ? (results[ex.id]?.correct ? 'bg-green-50 border-green-300' : 'bg-red-50 border-red-300') : 'bg-white border-slate-200'}`}>
                         <div className="grid md:grid-cols-4 gap-4 items-center">
                             <p className="md:col-span-3 text-slate-700">
-                                <strong>{index + 1}.</strong> Si un circuit té
-                                {ex.voltage !== null ? ` una tensió de ${ex.voltage} V` : ''}
-                                {ex.current !== null ? ` i un corrent de ${ex.current} A` : ''}
-                                {ex.resistance !== null ? ` i una resistència de ${ex.resistance} Ω` : ''},
+                                <strong>{index + 1}.</strong> Si un circuit té {formatGivenVariables(ex)},
                                 quin és el valor de la <strong>{translateVariable(ex.solveFor)}</strong>?
                             </p>
                             <div className="flex items-center space-x-2">

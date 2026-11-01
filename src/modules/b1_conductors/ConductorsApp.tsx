@@ -29,7 +29,7 @@ const ConductorsApp: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-slate-900 rounded-3xl p-4 md:p-6 shadow-xl border border-slate-800">
+        <div className="bg-stone-50 rounded-3xl p-4 md:p-6 shadow-sm border border-stone-200">
           <Game />
         </div>
       </div>

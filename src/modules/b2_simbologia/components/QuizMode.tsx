@@ -48,7 +48,7 @@ const QuizMode: React.FC = () => {
   if (!currentQuestion) return <div className="p-8 text-center">Carregant...</div>;
 
   return (
-    <div className="pb-24 pt-4 px-4 max-w-md mx-auto h-full flex flex-col">
+    <div className="py-4 px-2 max-w-md mx-auto h-full flex flex-col">
       <div className="flex justify-between items-center mb-6 bg-white p-4 rounded-lg shadow-sm border border-slate-200">
         <div>
           <p className="text-xs text-slate-500 uppercase tracking-wide">Puntuació</p>

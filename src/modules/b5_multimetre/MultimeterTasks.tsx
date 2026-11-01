@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CheckCircle2, XCircle, Award, Printer, RotateCcw, HelpCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -177,7 +177,7 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
             </button>
           </div>
           <p className="text-sm text-slate-600 mb-3">
-            Connecta les dues puntes del multímetre als extrems de la <strong>Resistència R1</strong> (vermell-vermell-marró) i posa el selector en una escala adequada de resistència (com <strong>2kΩ</strong> o <strong>20kΩ</strong>). Quin valor en Ohms ($\Omega$) marca?
+            Connecta les dues puntes del multímetre als extrems de la <strong>Resistència R1</strong> (vermell-vermell-marró) i posa el selector en una escala adequada de resistència (com <strong>2kΩ</strong> o <strong>20kΩ</strong>). Quin valor en Ohms (Ω) marca?
           </p>
 
           <div className="flex flex-wrap items-center gap-3">
@@ -188,7 +188,7 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
               onChange={(e) => setQ1(e.target.value)}
               className="px-4 py-2 border rounded-xl font-mono text-sm w-40 focus:ring-2 focus:ring-amber-500 outline-none"
             />
-            <span className="text-sm font-bold text-slate-700">$\Omega$</span>
+            <span className="text-sm font-bold text-slate-700">Ω</span>
             <button
               onClick={checkQ1}
               className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm transition"
@@ -213,7 +213,7 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
             </h3>
           </div>
           <p className="text-sm text-slate-600 mb-3">
-            Intenta mesurar la <strong>Resistència R2</strong> ($1.000\,\Omega = 1\,k\Omega$) col·locant el selector a l'escala de <strong>200Ω</strong>. Què passa a la pantalla del multímetre?
+            Intenta mesurar la <strong>Resistència R2</strong> (1.000 Ω = 1 kΩ) col·locant el selector a l'escala de <strong>200Ω</strong>. Què passa a la pantalla del multímetre?
           </p>
 
           <div className="space-y-2 mb-3 text-sm">
@@ -321,7 +321,7 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
             </h3>
           </div>
           <p className="text-sm text-slate-600 mb-3">
-            Amb l'interruptor tancat, mesura el voltatge als extrems de R1 ($V_1$) i als extrems de R2 ($V_2$). Després calcula la suma $V_1 + V_2$:
+            Amb l'interruptor tancat, mesura el voltatge als extrems de R1 (V1) i als extrems de R2 (V2). Després calcula la suma V1 + V2:
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
@@ -389,11 +389,11 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
           <div className="flex items-center gap-2 mb-2">
             <span className="w-6 h-6 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center">5</span>
             <h3 className="font-bold text-slate-900 text-base">
-              Càlcul d'Intensitat amb la Llei d'Ohm ($I = V / R$)
+              Càlcul d'Intensitat amb la Llei d'Ohm (I = V / R)
             </h3>
           </div>
           <p className="text-sm text-slate-600 mb-3">
-            Hem mesurat que la tensió que cau a R1 és \(V_1 = 2,20\text{ V}\) i sabem que la resistència és \(R_1 = 220\,\Omega\). Aplica la fórmula de la Llei d'Ohm \(I = \frac{V}{R}\) per calcular quants <strong>mil·liamperes (mA)</strong> circulen pel circuit:
+            Hem mesurat que la tensió que cau a R1 és <strong>V1 = 2,20 V</strong> i sabem que la resistència és <strong>R1 = 220 Ω</strong>. Aplica la fórmula de la Llei d'Ohm (<strong>I = V / R</strong>) per calcular quants <strong>mil·liamperes (mA)</strong> circulen pel circuit:
           </p>
 
           <div className="flex flex-wrap items-center gap-3">
@@ -437,7 +437,7 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
             </button>
           </div>
           <p className="text-sm text-slate-600 mb-3">
-            Ves al <strong>Banc 3 (Repte Llei d'Ohm)</strong>. Mesura amb el multímetre la tensió \(V_x\) a la resistència desconeguda Rx. L'amperímetre del banc indica que circulen \(I = 40\text{ mA} = 0,040\text{ A}\). Aplica la Llei d'Ohm \(R = \frac{V}{I}\) i descobreix el valor de \(R_x\) en Ohms ($\Omega$):
+            Ves al <strong>Banc 3 (Repte Llei d'Ohm)</strong>. Mesura amb el multímetre la tensió <strong>Vx</strong> a la resistència desconeguda Rx. L'amperímetre del banc indica que circulen <strong>I = 40 mA = 0,040 A</strong>. Aplica la Llei d'Ohm (<strong>R = V / I</strong>) i descobreix el valor de <strong>Rx</strong> en Ohms (Ω):
           </p>
 
           <div className="flex flex-wrap items-center gap-3">
@@ -448,7 +448,7 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
               onChange={(e) => setQ6(e.target.value)}
               className="px-4 py-2 border rounded-xl font-mono text-sm w-40 focus:ring-2 focus:ring-amber-500 outline-none"
             />
-            <span className="text-sm font-bold text-slate-700">$\Omega$</span>
+            <span className="text-sm font-bold text-slate-700">Ω</span>
             <button
               onClick={checkQ6}
               className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm transition"

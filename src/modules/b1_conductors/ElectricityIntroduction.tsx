@@ -40,7 +40,7 @@ export const ElectricityIntroduction: React.FC = () => {
               <div>
                 <strong className="text-stone-900 block font-semibold">El Nucli (centre):</strong>
                 <span className="text-stone-600">
-                  Format per <strong>protons</strong> (amb càrrega elèctrica positiva, \(+\)) i <strong>neutrons</strong> (sense càrrega). No es mouen mai en els circuits elèctrics.
+                  Format per <strong>protons</strong> (amb càrrega elèctrica positiva, +) i <strong>neutrons</strong> (sense càrrega). No es mouen mai en els circuits elèctrics.
                 </span>
               </div>
             </div>
@@ -52,7 +52,7 @@ export const ElectricityIntroduction: React.FC = () => {
               <div>
                 <strong className="text-stone-900 block font-semibold">L'Escorça (al voltant):</strong>
                 <span className="text-stone-600">
-                  Formada per <strong>electrons</strong> (amb càrrega elèctrica negativa, \(-\)), que giren a gran velocitat en diferents òrbites al voltant del nucli.
+                  Formada per <strong>electrons</strong> (amb càrrega elèctrica negativa, −), que giren a gran velocitat en diferents òrbites al voltant del nucli.
                 </span>
               </div>
             </div>

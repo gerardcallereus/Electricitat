@@ -29,10 +29,10 @@ export const Bloc5OhmView: React.FC<Bloc5OhmViewProps> = ({
             <span className="text-xs text-stone-500 font-medium">Relacions Matemàtiques</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold text-stone-900 tracking-tight">
-            5. La Llei d'Ohm: \(V = I \cdot R\)
+            5. La Llei d'Ohm: V = I · R
           </h1>
           <p className="text-sm text-stone-600 mt-1 max-w-2xl leading-relaxed">
-            Aprèn a relacionar el Voltatge (\(V\)), la Intensitat (\(I\)) i la Resistència (\(R\)), descobreix el triangle d'Ohm i experimenta amb la fórmula fonamental dels circuits.
+            Aprèn a relacionar el Voltatge (V), la Intensitat (I) i la Resistència (R), descobreix el triangle d'Ohm i experimenta amb la fórmula fonamental dels circuits.
           </p>
         </div>
 

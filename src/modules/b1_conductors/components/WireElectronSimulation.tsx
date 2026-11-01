@@ -549,11 +549,11 @@ export const WireElectronSimulation: React.FC = () => {
         <p>
           {mode === 'real' ? (
             <span>
-              🔬 <strong>Sentit Real (física real):</strong> La matèria està plena d'electrons lliures amb càrrega negativa (\(e^-\)). Quan s'aplica una diferència de potencial, el pol negatiu (\(-\)) els <strong>repel·leix</strong> i el pol positiu (\(+\)) els <strong>atrau</strong>. Per tant, els electrons es mouen físicament <strong>de \(-\) cap a \(+\)</strong> esquivant els àtoms de coure fixos.
+              🔬 <strong>Sentit Real (física real):</strong> La matèria està plena d'electrons lliures amb càrrega negativa (e⁻). Quan s'aplica una diferència de potencial, el pol negatiu (−) els <strong>repel·leix</strong> i el pol positiu (+) els <strong>atrau</strong>. Per tant, els electrons es mouen físicament <strong>de − cap a +</strong> esquivant els àtoms de coure fixos.
             </span>
           ) : (
             <span>
-              📜 <strong>Sentit Convencional (enginyeria i circuits):</strong> Al segle XVIII, Benjamin Franklin va suposar que l'electricitat era un fluid invisible que viatjava <strong>de \(+\) cap a \(-\)</strong>. Quan dècades després es va descobrir l'electró, es va mantenir aquesta convenció per comoditat en tots els esquemes i fletxes de corrent \(I\).
+              📜 <strong>Sentit Convencional (enginyeria i circuits):</strong> Al segle XVIII, Benjamin Franklin va suposar que l'electricitat era un fluid invisible que viatjava <strong>de + cap a −</strong>. Quan dècades després es va descobrir l'electró, es va mantenir aquesta convenció per comoditat en tots els esquemes i fletxes de corrent (I).
             </span>
           )}
         </p>

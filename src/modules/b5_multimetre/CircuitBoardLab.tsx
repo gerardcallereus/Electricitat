@@ -313,15 +313,15 @@ export const CircuitBoardLab: React.FC<CircuitBoardLabProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs bg-white p-4 rounded-2xl border border-stone-200 text-stone-600">
             <div>
               <strong className="text-stone-900 block mb-0.5">Mesura 1: Tensió de Pila</strong>
-              Vermella a <strong>Born (+)</strong> i Negra a <strong>Born (-)</strong> (\(\approx 9.0\text{ V}\)).
+              Vermella a <strong>Born (+)</strong> i Negra a <strong>Born (-)</strong> (≈ 9.0 V).
             </div>
             <div>
               <strong className="text-stone-900 block mb-0.5">Mesura 2: Caiguda a R1</strong>
-              Vermella a <strong>Entrada R1</strong> i Negra a <strong>Punt Mig</strong> (\(\approx 2.20\text{ V}\)).
+              Vermella a <strong>Entrada R1</strong> i Negra a <strong>Punt Mig</strong> (≈ 2.20 V).
             </div>
             <div>
               <strong className="text-stone-900 block mb-0.5">Mesura 3: Caiguda a R2</strong>
-              Vermella a <strong>Punt Mig</strong> i Negra a <strong>Retorn (-)</strong> (\(\approx 6.80\text{ V}\)). Comprova que \(V_1 + V_2 = 9\text{V}\)!
+              Vermella a <strong>Punt Mig</strong> i Negra a <strong>Retorn (-)</strong> (≈ 6.80 V). Comprova que V1 + V2 = 9V!
             </div>
           </div>
         </div>

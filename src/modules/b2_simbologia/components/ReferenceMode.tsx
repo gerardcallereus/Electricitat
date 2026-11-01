@@ -3,7 +3,7 @@ import { CIRCUIT_ELEMENTS } from '../constants';
 
 const ReferenceMode: React.FC = () => {
   return (
-    <div className="pb-24 pt-4 px-4 max-w-4xl mx-auto">
+    <div className="py-4 px-2 max-w-4xl mx-auto">
       <h2 className="text-2xl font-bold text-slate-800 mb-6 text-center">Biblioteca de Símbols</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {CIRCUIT_ELEMENTS.map((element) => (

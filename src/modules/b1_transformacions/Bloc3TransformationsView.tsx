@@ -1,6 +1,6 @@
 import React from 'react';
 import Game from './components/Game';
-import { Flame, Sun, Cog, Volume2, ArrowRight, CheckCircle2, ArrowLeft, Lightbulb, Gamepad2 } from 'lucide-react';
+import { Flame, Sun, Cog, Volume2, BatteryCharging, ArrowRight, CheckCircle2, ArrowLeft, Lightbulb, Gamepad2 } from 'lucide-react';
 
 interface Bloc3TransformationsViewProps {
   onComplete: () => void;
@@ -116,6 +116,20 @@ export const Bloc3TransformationsView: React.FC<Bloc3TransformationsViewProps> =
                 Exemples: Altaveus, auriculars, timbres de porta, brunzidors d'alarma.
               </div>
             </div>
+
+            {/* 5. Química */}
+            <div className="p-5 rounded-2xl border border-stone-200 bg-stone-50/50 hover:border-amber-400 transition space-y-2 md:col-span-2">
+              <div className="flex items-center gap-2.5 text-emerald-700 font-bold text-base">
+                <BatteryCharging size={20} className="text-emerald-600" />
+                <span>Energia Química (Emmagatzematge i Reaccions)</span>
+              </div>
+              <p className="text-xs text-stone-600 leading-relaxed">
+                L'electricitat provoca reaccions químiques que permeten guardar l'energia als enllaços atòmics (com quan carreguem una bateria de liti) o descompondre substàncies (electròlisi).
+              </p>
+              <div className="text-[11px] text-stone-500 font-mono bg-white p-2 rounded-lg border border-stone-200">
+                Exemples: Càrrega de bateria de mòbil o patinet elèctric, electròlisi de l'aigua.
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -131,7 +145,7 @@ export const Bloc3TransformationsView: React.FC<Bloc3TransformationsViewProps> =
               Joc Interactiu: ElectroTransforma
             </h3>
             <p className="text-xs text-stone-500">
-              Ara que coneixes les 4 transformacions, posa't a prova i respon a quina forma d'energia correspon cada aparell!
+              Ara que coneixes les 5 transformacions, posa't a prova i respon a quina forma d'energia correspon cada aparell!
             </p>
           </div>
         </div>

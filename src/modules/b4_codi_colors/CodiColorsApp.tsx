@@ -25,7 +25,7 @@ const App: React.FC = () => {
     // Band 4: Tolerancia
     const band4 = TOLERANCE_BAND_COLORS[Math.floor(Math.random() * TOLERANCE_BAND_COLORS.length)];
 
-    const resistance = (band1.value! * 10 + band2.value!) * band3.multiplier!;
+    const resistance = Number(((band1.value! * 10 + band2.value!) * band3.multiplier!).toPrecision(10));
     const tolerance = band4.tolerance!;
 
     setCurrentResistor({ bands: [band1, band2, band3, band4], resistance, tolerance });
@@ -40,33 +40,33 @@ const App: React.FC = () => {
 
   const formatResistance = (value: number): string => {
     if (value >= 1000000) {
-      return `${value / 1000000} MΩ`;
+      return `${Number((value / 1000000).toPrecision(10))} MΩ`;
     }
     if (value >= 1000) {
-      return `${value / 1000} kΩ`;
+      return `${Number((value / 1000).toPrecision(10))} kΩ`;
     }
-    return `${value} Ω`;
+    return `${Number(value.toPrecision(10))} Ω`;
   };
 
   const parseUserResistance = (input: string): number => {
-    const cleanedInput = input.trim().toLowerCase();
+    const cleanedInput = input.trim().toLowerCase().replace(',', '.');
     const value = parseFloat(cleanedInput);
     if (isNaN(value)) return NaN;
 
     if (cleanedInput.includes('m')) {
-      return value * 1000000;
+      return Number((value * 1000000).toPrecision(10));
     }
     if (cleanedInput.includes('k')) {
-      return value * 1000;
+      return Number((value * 1000).toPrecision(10));
     }
-    return value;
+    return Number(value.toPrecision(10));
   };
 
   const handleCheck = () => {
     if (!currentResistor) return;
     const parsedUserValue = parseUserResistance(userResistance);
 
-    if (parsedUserValue === currentResistor.resistance && userTolerance === currentResistor.tolerance) {
+    if (!isNaN(parsedUserValue) && Math.abs(parsedUserValue - currentResistor.resistance) < 1e-5 && userTolerance === currentResistor.tolerance) {
       setStatus('correct');
       setScore(s => ({ ...s, correct: s.correct + 1 }));
       setStreak(s => s + 1);
