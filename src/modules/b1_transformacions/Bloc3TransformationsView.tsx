@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Game from './components/Game';
-import { Flame, Sun, Cog, Volume2, BatteryCharging, ArrowRight, CheckCircle2, ArrowLeft, Lightbulb, Gamepad2 } from 'lucide-react';
+import { Flame, Sun, Cog, Volume2, BatteryCharging, ArrowRight, CheckCircle2, ArrowLeft, Lightbulb, Gamepad2, Lock } from 'lucide-react';
 
 interface Bloc3TransformationsViewProps {
   onComplete: () => void;
   onNext: () => void;
   onPrev?: () => void;
   onBackToDashboard?: () => void;
+  isCompleted?: boolean;
+  isTeacher?: boolean;
 }
 
 export const Bloc3TransformationsView: React.FC<Bloc3TransformationsViewProps> = ({
   onComplete,
   onNext,
   onPrev,
-  onBackToDashboard
+  onBackToDashboard,
+  isCompleted = false,
+  isTeacher = false,
 }) => {
+  const [practiceCompleted, setPracticeCompleted] = useState(false);
+  const canAdvance = isCompleted || isTeacher || practiceCompleted;
   return (
     <div className="w-full max-w-5xl mx-auto space-y-10 text-stone-800">
       {/* Block Header Banner */}
@@ -151,7 +157,12 @@ export const Bloc3TransformationsView: React.FC<Bloc3TransformationsViewProps> =
         </div>
 
         <div className="bg-white rounded-3xl p-4 md:p-6 border border-stone-200/90 shadow-sm">
-          <Game />
+          <Game
+            onSuccess={() => {
+              setPracticeCompleted(true);
+              onComplete();
+            }}
+          />
         </div>
       </div>
 
@@ -174,15 +185,29 @@ export const Bloc3TransformationsView: React.FC<Bloc3TransformationsViewProps> =
         ) : <div />}
 
         <button
+          disabled={!canAdvance}
           onClick={() => {
             onComplete();
             onNext();
           }}
-          className="px-6 py-3.5 bg-stone-900 hover:bg-stone-800 text-white font-bold rounded-2xl text-sm flex items-center gap-2 shadow-md transition"
+          className={`px-6 py-3.5 font-bold rounded-2xl text-sm flex items-center gap-2 shadow-md transition ${
+            canAdvance
+              ? 'bg-stone-900 hover:bg-stone-800 text-white cursor-pointer'
+              : 'bg-stone-200 text-stone-500 cursor-not-allowed'
+          }`}
         >
-          <CheckCircle2 size={18} className="text-amber-400" />
-          <span>Completar el Bloc 3 i anar al Bloc 4: Simbologia i Circuits</span>
-          <ArrowRight size={18} />
+          {canAdvance ? (
+            <>
+              <CheckCircle2 size={18} className="text-amber-400" />
+              <span>Completar el Bloc 3 i anar al Bloc 4: Circuits i Simbologia</span>
+              <ArrowRight size={18} />
+            </>
+          ) : (
+            <>
+              <Lock size={16} />
+              <span>Aconsegueix almenys 5 encerts a ElectroTransforma per desbloquejar el Bloc 4</span>
+            </>
+          )}
         </button>
       </div>
     </div>

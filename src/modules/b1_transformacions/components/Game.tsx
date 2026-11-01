@@ -3,7 +3,11 @@ import { getRandomQuestions } from '../services/questionService';
 import { Question, GameState } from '../types';
 import { CheckCircle, XCircle, RefreshCw, Trophy, ArrowRight, Loader2 } from 'lucide-react';
 
-const Game: React.FC = () => {
+interface GameProps {
+  onSuccess?: () => void;
+}
+
+const Game: React.FC<GameProps> = ({ onSuccess }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
   const [gameState, setGameState] = useState<GameState>({
@@ -12,19 +16,29 @@ const Game: React.FC = () => {
     isGameOver: false,
     streak: 0,
   });
+  const [correctCount, setCorrectCount] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [imgError, setImgError] = useState<boolean>(false);
 
   useEffect(() => {
     loadGame();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if ((correctCount >= 5 || gameState.isGameOver) && onSuccess) {
+      onSuccess();
+    }
+  }, [correctCount, gameState.isGameOver, onSuccess]);
+
   const loadGame = async () => {
     setLoading(true);
     setGameState({ score: 0, currentQuestionIndex: 0, isGameOver: false, streak: 0 });
+    setCorrectCount(0);
     setSelectedOption(null);
     setIsCorrect(null);
+    setImgError(false);
     
     // Use the local service to get questions
     const qs = await getRandomQuestions(10);
@@ -42,6 +56,7 @@ const Game: React.FC = () => {
     setIsCorrect(correct);
 
     if (correct) {
+      setCorrectCount(prev => prev + 1);
       setGameState(prev => ({
         ...prev,
         score: prev.score + 100 + (prev.streak * 10),
@@ -62,6 +77,7 @@ const Game: React.FC = () => {
       setGameState(prev => ({ ...prev, currentQuestionIndex: prev.currentQuestionIndex + 1 }));
       setSelectedOption(null);
       setIsCorrect(null);
+      setImgError(false);
     }
   };
 
@@ -110,6 +126,10 @@ const Game: React.FC = () => {
           <span className="text-xs font-bold text-slate-400 uppercase">Pregunta</span>
           <p className="text-xl font-bold text-slate-700">{gameState.currentQuestionIndex + 1} <span className="text-slate-400 text-sm">/ {questions.length}</span></p>
         </div>
+        <div className="text-center">
+          <span className="text-xs font-bold text-slate-400 uppercase">Encerts (Mín. 5)</span>
+          <p className={`text-xl font-bold ${correctCount >= 5 ? 'text-emerald-600' : 'text-amber-600'}`}>{correctCount} / 5</p>
+        </div>
         <div className="text-right">
           <span className="text-xs font-bold text-slate-400 uppercase">Punts</span>
           <p className="text-xl font-bold text-indigo-600">{gameState.score}</p>
@@ -120,11 +140,12 @@ const Game: React.FC = () => {
       <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-stone-200 mb-6 text-stone-800">
         <div className="flex flex-col md:flex-row bg-slate-900 text-white overflow-hidden">
           {/* Real Device Image */}
-          {currentQuestion.imageUrl && (
+          {currentQuestion.imageUrl && !imgError && (
             <div className="md:w-5/12 h-48 md:h-auto min-h-[190px] relative bg-stone-800 shrink-0 overflow-hidden">
               <img
                 src={currentQuestion.imageUrl}
                 alt={currentQuestion.objectName}
+                onError={() => setImgError(true)}
                 className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
                 loading="eager"
               />

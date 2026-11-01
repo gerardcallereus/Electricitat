@@ -1,9 +1,13 @@
 import React from 'react';
 import { Game } from './components/Game';
 import { Theory } from './components/Theory';
-import { Sparkles, Gamepad2 } from 'lucide-react';
+import { Gamepad2 } from 'lucide-react';
 
-const ConductorsApp: React.FC = () => {
+interface ConductorsAppProps {
+  onSuccess?: () => void;
+}
+
+const ConductorsApp: React.FC<ConductorsAppProps> = ({ onSuccess }) => {
   return (
     <div className="w-full space-y-8 text-stone-800">
       {/* 1. Theory Section */}
@@ -23,14 +27,14 @@ const ConductorsApp: React.FC = () => {
                 Simulador de Circuit: ElectroConnecta
               </h3>
               <p className="text-xs text-stone-500">
-                Posa a prova el que acabes de llegir: connecta diferents materials per tancar el circuit i encendre la bombeta!
+                Posa a prova el que acabes de llegir: classifica tots els materials per tancar el circuit i desbloquejar el següent bloc!
               </p>
             </div>
           </div>
         </div>
 
         <div className="bg-stone-50 rounded-3xl p-4 md:p-6 shadow-sm border border-stone-200">
-          <Game />
+          <Game onSuccess={onSuccess} />
         </div>
       </div>
     </div>

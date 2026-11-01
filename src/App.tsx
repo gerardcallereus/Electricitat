@@ -27,13 +27,14 @@ const App: React.FC = () => {
   });
 
   const isRegistered = studentName.trim().length >= 3 && studentGroup.trim().length > 0;
+  const isTeacher = studentName.trim().toLowerCase() === 'teacher';
 
   // Sequential unlock computation (1 to 7)
   const unlockedBlocks = React.useMemo(() => {
     if (!isRegistered) return [];
 
     // Mode professor: Si el nom és 'teacher' (sense distinció de majúscules), desbloqueja tots els nivells
-    if (studentName.trim().toLowerCase() === 'teacher') {
+    if (isTeacher) {
       return [1, 2, 3, 4, 5, 6, 7];
     }
 
@@ -180,6 +181,8 @@ const App: React.FC = () => {
               handleSelectModule('b3-transformacions');
             }}
             onPrev={() => handleSelectModule('b1-teoria-atom')}
+            isCompleted={completedBlocks.includes(2)}
+            isTeacher={isTeacher}
           />
         )}
 
@@ -191,6 +194,8 @@ const App: React.FC = () => {
               handleSelectModule('b4-simbologia-circuits');
             }}
             onPrev={() => handleSelectModule('b2-simulador-conductors')}
+            isCompleted={completedBlocks.includes(3)}
+            isTeacher={isTeacher}
           />
         )}
 
@@ -202,6 +207,8 @@ const App: React.FC = () => {
               handleSelectModule('b5-llei-dohm');
             }}
             onPrev={() => handleSelectModule('b3-transformacions')}
+            isCompleted={completedBlocks.includes(4)}
+            isTeacher={isTeacher}
           />
         )}
 
@@ -213,6 +220,8 @@ const App: React.FC = () => {
               handleSelectModule('b6-codi-colors');
             }}
             onPrev={() => handleSelectModule('b4-simbologia-circuits')}
+            isCompleted={completedBlocks.includes(5)}
+            isTeacher={isTeacher}
           />
         )}
 
@@ -224,6 +233,8 @@ const App: React.FC = () => {
               handleSelectModule('b7-multimetre');
             }}
             onPrev={() => handleSelectModule('b5-llei-dohm')}
+            isCompleted={completedBlocks.includes(6)}
+            isTeacher={isTeacher}
           />
         )}
 
@@ -237,7 +248,7 @@ const App: React.FC = () => {
       </main>
 
       {/* Clean, light footer */}
-      <footer className="bg-white border-t border-stone-200 py-4 text-center text-xs text-stone-500">
+      <footer className="bg-white border-t border-stone-200 py-4 text-center text-xs text-stone-500 print:hidden">
         <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
           <p>
             ⚡ <strong>Càpsula Didàctica d'Electricitat</strong> • Guia d'aprenentatge seqüencial amb autosave.

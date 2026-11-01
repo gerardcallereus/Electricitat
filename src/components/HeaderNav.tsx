@@ -55,7 +55,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({
   };
 
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-stone-200 sticky top-0 z-50 shadow-sm text-stone-800">
+    <header className="bg-white/95 backdrop-blur-md border-b border-stone-200 sticky top-0 z-50 shadow-sm text-stone-800 print:hidden">
       {/* Lock alert toast */}
       {lockAlert && (
         <div className="bg-amber-500 text-stone-950 px-4 py-1.5 text-center text-xs font-bold flex items-center justify-center gap-2">

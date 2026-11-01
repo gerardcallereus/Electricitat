@@ -1,23 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReferenceMode from './components/ReferenceMode';
 import QuizMode from './components/QuizMode';
 import CircuitTheory from '../b2_circuits/components/Theory';
 import CircuitSimulator from '../b2_circuits/components/Simulator';
-import { Layers, CheckCircle2, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Layers, CheckCircle2, ArrowRight, ArrowLeft, Lock } from 'lucide-react';
 
 interface Bloc4CircuitsViewProps {
   onComplete: () => void;
   onNext: () => void;
   onPrev?: () => void;
   onBackToDashboard?: () => void;
+  isCompleted?: boolean;
+  isTeacher?: boolean;
 }
 
 export const Bloc4CircuitsView: React.FC<Bloc4CircuitsViewProps> = ({
   onComplete,
   onNext,
   onPrev,
-  onBackToDashboard
+  onBackToDashboard,
+  isCompleted = false,
+  isTeacher = false,
 }) => {
+  const [circuitDone, setCircuitDone] = useState(false);
+  const [symbolsDone, setSymbolsDone] = useState(false);
+
+  const canAdvance = isCompleted || isTeacher || (circuitDone && symbolsDone);
+
+  useEffect(() => {
+    if (circuitDone && symbolsDone) {
+      onComplete();
+    }
+  }, [circuitDone, symbolsDone, onComplete]);
+
   return (
     <div className="w-full max-w-5xl mx-auto space-y-12 text-stone-800">
       {/* Block Header Banner */}
@@ -45,7 +60,6 @@ export const Bloc4CircuitsView: React.FC<Bloc4CircuitsViewProps> = ({
 
       {/* ========================================================
           PART 4.1: COM FUNCIONA UN CIRCUIT (SÈRIE VS PARAL·LEL)
-          (PUJAT A DALT SEGONS LA PETICIÓ DE L'USUARI)
       ======================================================== */}
       <div className="space-y-6">
         <div className="flex items-center gap-3 border-b border-stone-200 pb-3">
@@ -69,15 +83,20 @@ export const Bloc4CircuitsView: React.FC<Bloc4CircuitsViewProps> = ({
 
         {/* Interactive Simulator directly below */}
         <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm space-y-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs font-bold text-sky-800 uppercase tracking-wider bg-sky-100 px-3 py-1 rounded-full">
-              Simulador Interactiu
+          <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-sky-800 uppercase tracking-wider bg-sky-100 px-3 py-1 rounded-full">
+                Simulador Interactiu
+              </span>
+              <h3 className="text-lg font-bold text-stone-900">
+                Laboratori Virtual de Circuits: Circuit Màgic
+              </h3>
+            </div>
+            <span className={`text-xs font-bold px-3 py-1 rounded-full ${circuitDone || isCompleted ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-100 text-stone-600'}`}>
+              {circuitDone || isCompleted ? '✓ Repte de circuits superat' : 'Objectiu: 5 encerts'}
             </span>
-            <h3 className="text-lg font-bold text-stone-900">
-              Laboratori Virtual de Circuits: Circuit Màgic
-            </h3>
           </div>
-          <CircuitSimulator />
+          <CircuitSimulator onSuccess={() => setCircuitDone(true)} />
         </div>
       </div>
 
@@ -106,15 +125,20 @@ export const Bloc4CircuitsView: React.FC<Bloc4CircuitsViewProps> = ({
 
         {/* Quiz Mode directly underneath */}
         <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm space-y-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs font-bold text-amber-800 uppercase tracking-wider bg-amber-100 px-3 py-1 rounded-full">
-              Posa't a prova
+          <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-amber-800 uppercase tracking-wider bg-amber-100 px-3 py-1 rounded-full">
+                Posa't a prova
+              </span>
+              <h3 className="text-lg font-bold text-stone-900">
+                Test de Reconeixement de Símbols
+              </h3>
+            </div>
+            <span className={`text-xs font-bold px-3 py-1 rounded-full ${symbolsDone || isCompleted ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-100 text-stone-600'}`}>
+              {symbolsDone || isCompleted ? '✓ Repte de símbols superat' : 'Objectiu: 3 encerts'}
             </span>
-            <h3 className="text-lg font-bold text-stone-900">
-              Test de Reconeixement de Símbols
-            </h3>
           </div>
-          <QuizMode />
+          <QuizMode onSuccess={() => setSymbolsDone(true)} />
         </div>
       </div>
 
@@ -137,15 +161,31 @@ export const Bloc4CircuitsView: React.FC<Bloc4CircuitsViewProps> = ({
         ) : <div />}
 
         <button
+          disabled={!canAdvance}
           onClick={() => {
             onComplete();
             onNext();
           }}
-          className="px-6 py-3.5 bg-stone-900 hover:bg-stone-800 text-white font-bold rounded-2xl text-sm flex items-center gap-2 shadow-md transition"
+          className={`px-6 py-3.5 font-bold rounded-2xl text-sm flex items-center gap-2 shadow-md transition ${
+            canAdvance
+              ? 'bg-stone-900 hover:bg-stone-800 text-white cursor-pointer'
+              : 'bg-stone-200 text-stone-500 cursor-not-allowed'
+          }`}
         >
-          <CheckCircle2 size={18} className="text-amber-400" />
-          <span>Completar el Bloc 4 i anar al Bloc 5: Llei d'Ohm</span>
-          <ArrowRight size={18} />
+          {canAdvance ? (
+            <>
+              <CheckCircle2 size={18} className="text-amber-400" />
+              <span>Completar el Bloc 4 i anar al Bloc 5: Llei d'Ohm</span>
+              <ArrowRight size={18} />
+            </>
+          ) : (
+            <>
+              <Lock size={16} />
+              <span>
+                Supera el Circuit Màgic ({circuitDone ? '✓' : 'pendent'}) i el Test de Símbols ({symbolsDone ? '✓' : 'pendent'}) per desbloquejar el Bloc 5
+              </span>
+            </>
+          )}
         </button>
       </div>
     </div>

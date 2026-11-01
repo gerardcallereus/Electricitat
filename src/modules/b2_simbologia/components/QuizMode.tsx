@@ -2,15 +2,28 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { CIRCUIT_ELEMENTS } from '../constants';
 import { CircuitElement, QuizQuestion } from '../types';
 
-const QuizMode: React.FC = () => {
+interface QuizModeProps {
+  onSuccess?: () => void;
+}
+
+const QuizMode: React.FC<QuizModeProps> = ({ onSuccess }) => {
   const [currentQuestion, setCurrentQuestion] = useState<QuizQuestion | null>(null);
   const [score, setScore] = useState(0);
   const [attempts, setAttempts] = useState(0);
   const [feedback, setFeedback] = useState<'correct' | 'incorrect' | null>(null);
 
-  const generateQuestion = useCallback(() => {
-    const randomIdx = Math.floor(Math.random() * CIRCUIT_ELEMENTS.length);
-    const target = CIRCUIT_ELEMENTS[randomIdx];
+  useEffect(() => {
+    if (score >= 3 && onSuccess) {
+      onSuccess();
+    }
+  }, [score, onSuccess]);
+
+  const generateQuestion = useCallback((prevId?: string) => {
+    const pool = prevId
+      ? CIRCUIT_ELEMENTS.filter(e => e.id !== prevId)
+      : CIRCUIT_ELEMENTS;
+    const randomIdx = Math.floor(Math.random() * pool.length);
+    const target = pool[randomIdx];
 
     // Generate 3 distractors
     const distractors = CIRCUIT_ELEMENTS
@@ -34,14 +47,15 @@ const QuizMode: React.FC = () => {
   const handleAnswer = (selected: CircuitElement) => {
     if (!currentQuestion || feedback) return;
 
+    const prevId = currentQuestion.targetElement.id;
     setAttempts(p => p + 1);
-    if (selected.id === currentQuestion.targetElement.id) {
+    if (selected.id === prevId) {
       setScore(s => s + 1);
       setFeedback('correct');
-      setTimeout(generateQuestion, 1500);
+      setTimeout(() => generateQuestion(prevId), 1400);
     } else {
       setFeedback('incorrect');
-      setTimeout(generateQuestion, 1500);
+      setTimeout(() => generateQuestion(prevId), 1500);
     }
   };
 

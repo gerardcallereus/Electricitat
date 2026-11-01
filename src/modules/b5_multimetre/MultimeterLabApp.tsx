@@ -64,7 +64,7 @@ export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
   return (
     <div className="w-full max-w-7xl mx-auto flex flex-col gap-10 text-stone-800">
       {/* Top Banner */}
-      <div className="bg-white border border-stone-200/90 rounded-3xl p-6 md:p-8 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="bg-white border border-stone-200/90 rounded-3xl p-6 md:p-8 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4 print:hidden">
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <span className="px-3 py-1 bg-amber-100 text-amber-900 text-xs font-bold uppercase rounded-full tracking-wide">
@@ -89,7 +89,7 @@ export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
       {/* ========================================================
           1. GUIA D'ÚS DEL MULTÍMETRE (TEORIA DEL TESTER)
       ======================================================== */}
-      <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm space-y-6">
+      <div className="bg-white rounded-3xl p-6 md:p-8 border border-stone-200/90 shadow-sm space-y-6 print:hidden">
         <div className="border-b border-stone-200 pb-3 flex items-center gap-3">
           <span className="w-8 h-8 rounded-xl bg-amber-500 text-white font-bold flex items-center justify-center text-sm shadow-sm">
             7.1
@@ -137,7 +137,7 @@ export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
       {/* ========================================================
           2. BANCS DE PROVA I SIMULADOR DE MULTÍMETRE
       ======================================================== */}
-      <div id="workbench-section" className="space-y-4">
+      <div id="workbench-section" className="space-y-4 print:hidden">
         <div className="flex items-center gap-3 border-b border-stone-200 pb-3">
           <span className="w-8 h-8 rounded-xl bg-sky-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
             7.2
@@ -195,8 +195,8 @@ export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
       {/* ========================================================
           3. QUADERN D'AVALUACIÓ PRÀCTICA FINAL (DIRECTAMENT A SOTA)
       ======================================================== */}
-      <div className="space-y-4 pt-4 border-t-2 border-dashed border-stone-200">
-        <div className="flex items-center gap-3 border-b border-stone-200 pb-3">
+      <div className="space-y-4 pt-4 border-t-2 border-dashed border-stone-200 print:border-none print:pt-0 print:space-y-0">
+        <div className="flex items-center gap-3 border-b border-stone-200 pb-3 print:hidden">
           <span className="w-8 h-8 rounded-xl bg-emerald-600 text-white font-bold flex items-center justify-center text-sm shadow-sm">
             7.3
           </span>
@@ -219,7 +219,7 @@ export const MultimeterLabApp: React.FC<MultimeterLabAppProps> = ({
 
       {/* Footer navigation */}
       {(onPrev || onBackToDashboard) && (
-        <div className="flex justify-start pt-2">
+        <div className="flex justify-start pt-2 print:hidden">
           {onPrev ? (
             <button
               onClick={onPrev}

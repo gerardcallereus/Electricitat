@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ExerciseScenario } from '../types';
 import { ArrowRight, RefreshCw, CheckCircle, XCircle, Trophy } from 'lucide-react';
 
@@ -213,13 +213,23 @@ const exercises: ExerciseScenario[] = [
 
 // --- MAIN COMPONENT ---
 
-const Exercises: React.FC = () => {
+interface ExercisesProps {
+  onSuccess?: () => void;
+}
+
+const Exercises: React.FC<ExercisesProps> = ({ onSuccess }) => {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [hasAnswered, setHasAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [simulationActive, setSimulationActive] = useState(false);
   const [score, setScore] = useState(0);
   const [showSummary, setShowSummary] = useState(false);
+
+  useEffect(() => {
+    if ((score >= 5 || showSummary) && onSuccess) {
+      onSuccess();
+    }
+  }, [score, showSummary, onSuccess]);
 
   const exercise = exercises[currentIdx];
 

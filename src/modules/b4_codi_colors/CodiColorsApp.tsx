@@ -6,7 +6,11 @@ import { Scoreboard } from './components/Scoreboard';
 import { Feedback } from './components/Feedback';
 import { ColorCodeChart } from './components/ColorCodeChart';
 
-const App: React.FC = () => {
+interface CodiColorsAppProps {
+  onSuccess?: () => void;
+}
+
+const App: React.FC<CodiColorsAppProps> = ({ onSuccess }) => {
   const [currentResistor, setCurrentResistor] = useState<ResistorData | null>(null);
   const [userResistance, setUserResistance] = useState<string>('');
   const [userTolerance, setUserTolerance] = useState<number>(TOLERANCE_BAND_COLORS[6].tolerance!);
@@ -14,6 +18,12 @@ const App: React.FC = () => {
   const [score, setScore] = useState({ correct: 0, incorrect: 0 });
   const [streak, setStreak] = useState(0);
   const [showChart, setShowChart] = useState(true);
+
+  useEffect(() => {
+    if ((streak >= 3 || score.correct >= 5) && onSuccess) {
+      onSuccess();
+    }
+  }, [streak, score.correct, onSuccess]);
 
   const generateNewResistor = useCallback(() => {
     // Band 1: No puede ser negro
@@ -88,11 +98,11 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-slate-900 font-sans">
+    <div className="w-full flex flex-col items-center justify-center p-2 sm:p-4 bg-slate-900 rounded-2xl font-sans">
       <main className="w-full max-w-2xl mx-auto">
-        <header className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-cyan-400 mb-2">Joc de Resistències</h1>
-          <p className="text-lg text-slate-400">Calcula el valor de la resistència segons els seus colors.</p>
+        <header className="text-center mb-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-cyan-400 mb-1">Simulador de Resistències</h2>
+          <p className="text-sm text-slate-400">Calcula el valor de la resistència segons els seus colors.</p>
         </header>
         
         <div className="bg-slate-800 p-6 sm:p-8 rounded-2xl shadow-2xl shadow-cyan-500/10 border border-slate-700">
@@ -146,21 +156,21 @@ const App: React.FC = () => {
               {status === 'playing' ? (
                 <button
                   onClick={handleCheck}
-                  className="w-full bg-cyan-500 text-slate-900 font-bold py-3 px-6 rounded-lg hover:bg-cyan-400 focus:outline-none focus:ring-4 focus:ring-cyan-500/50 transition-all duration-300 transform hover:scale-105"
+                  className="w-full bg-cyan-500 text-slate-900 font-bold py-3 px-6 rounded-lg hover:bg-cyan-400 focus:outline-none focus:ring-4 focus:ring-cyan-500/50 transition-all duration-300 transform hover:scale-105 cursor-pointer"
                 >
                   Comprovar
                 </button>
               ) : (
                 <button
                   onClick={generateNewResistor}
-                  className="w-full bg-green-500 text-slate-900 font-bold py-3 px-6 rounded-lg hover:bg-green-400 focus:outline-none focus:ring-4 focus:ring-green-500/50 transition-all duration-300 transform hover:scale-105"
+                  className="w-full bg-green-500 text-slate-900 font-bold py-3 px-6 rounded-lg hover:bg-green-400 focus:outline-none focus:ring-4 focus:ring-green-500/50 transition-all duration-300 transform hover:scale-105 cursor-pointer"
                 >
                   Següent Resistència
                 </button>
               )}
                <button 
                   onClick={() => setShowChart(!showChart)}
-                  className="w-full sm:w-auto bg-slate-700 text-slate-200 font-bold py-3 px-6 rounded-lg hover:bg-slate-600 focus:outline-none focus:ring-4 focus:ring-slate-500/50 transition-colors duration-300 flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto bg-slate-700 text-slate-200 font-bold py-3 px-6 rounded-lg hover:bg-slate-600 focus:outline-none focus:ring-4 focus:ring-slate-500/50 transition-colors duration-300 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
@@ -172,10 +182,6 @@ const App: React.FC = () => {
         </div>
 
         {showChart && <ColorCodeChart />}
-        
-        <footer className="text-center mt-8 text-slate-500 text-sm">
-            <p>Creat amb React, TypeScript i Tailwind CSS.</p>
-        </footer>
       </main>
     </div>
   );

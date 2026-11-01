@@ -133,9 +133,30 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
   };
 
   return (
-    <div className="w-full bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-xl text-slate-800">
-      {/* Task Header */}
-      <div className="border-b border-slate-200 pb-5 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="w-full bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-xl text-slate-800 print:shadow-none print:border-none print:p-0">
+      {/* Official Printable Report Header (Print only) */}
+      <div className="hidden print:block border-b-2 border-stone-800 pb-3 mb-4">
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-xl font-black text-stone-900 tracking-tight uppercase">
+              Informe de Pràctiques: Laboratori d'Electricitat
+            </h1>
+            <p className="text-xs text-stone-600 mt-0.5">
+              Departament de Tecnologia • Mesures i Càlculs amb Multímetre Digital
+            </p>
+          </div>
+          <div className="text-right text-xs bg-stone-50 p-2.5 rounded-lg border border-stone-300 min-w-[200px]">
+            <div><strong>Alumne/a:</strong> {studentName || 'Sense especificar'}</div>
+            <div><strong>Grup:</strong> {studentGroup || 'General'}</div>
+            <div className="font-bold text-stone-900 mt-1 border-t border-stone-200 pt-1">
+              Qualificació: <span className="text-sm font-black text-amber-700">{grade}</span> / 10 ({totalCorrect} / 6 tasques)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Task Header (Interactive only) */}
+      <div className="border-b border-slate-200 pb-5 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 print:hidden">
         <div>
           <span className="text-xs font-bold text-amber-700 uppercase tracking-widest block">
             Bloc 7 de 7: Avaluació Pràctica Final
@@ -159,44 +180,47 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
       </div>
 
       {/* Task List */}
-      <div className="space-y-6">
+      <div className="space-y-6 print:space-y-3">
         {/* TASK 1 */}
-        <div className={`p-5 rounded-2xl border-2 transition ${q1Res.answered ? (q1Res.isCorrect ? 'border-emerald-400 bg-emerald-50/50' : 'border-red-300 bg-red-50/50') : 'border-slate-200 bg-slate-50'}`}>
+        <div className={`p-5 rounded-2xl border-2 transition print:p-3 print:rounded-xl print:border print:border-stone-300 print:bg-white print:break-inside-avoid ${q1Res.answered ? (q1Res.isCorrect ? 'border-emerald-400 bg-emerald-50/50' : 'border-red-300 bg-red-50/50') : 'border-slate-200 bg-slate-50'}`}>
           <div className="flex justify-between items-start mb-2">
             <div className="flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center">1</span>
-              <h3 className="font-bold text-slate-900 text-base">
+              <span className="w-6 h-6 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center print:bg-black">1</span>
+              <h3 className="font-bold text-slate-900 text-base print:text-sm">
                 Mesura de la Resistència R1 amb l'Ohímetre
               </h3>
             </div>
             <button
               onClick={() => onJumpToBoard('resistors')}
-              className="text-xs text-amber-600 hover:text-amber-700 font-bold underline"
+              className="text-xs text-amber-600 hover:text-amber-700 font-bold underline print:hidden"
             >
               Ves al Banc de Resistències
             </button>
           </div>
-          <p className="text-sm text-slate-600 mb-3">
+          <p className="text-sm text-slate-600 mb-3 print:text-xs print:mb-2">
             Connecta les dues puntes del multímetre als extrems de la <strong>Resistència R1</strong> (vermell-vermell-marró) i posa el selector en una escala adequada de resistència (com <strong>2kΩ</strong> o <strong>20kΩ</strong>). Quin valor en Ohms (Ω) marca?
           </p>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 print:gap-2">
             <input
               type="text"
               placeholder="Ex: 219"
               value={q1}
               onChange={(e) => setQ1(e.target.value)}
-              className="px-4 py-2 border rounded-xl font-mono text-sm w-40 focus:ring-2 focus:ring-amber-500 outline-none"
+              className="px-4 py-2 border rounded-xl font-mono text-sm w-40 focus:ring-2 focus:ring-amber-500 outline-none print:hidden"
             />
-            <span className="text-sm font-bold text-slate-700">Ω</span>
+            <span className="hidden print:inline-block font-mono font-bold text-xs bg-stone-100 px-2.5 py-1 rounded border border-stone-300">
+              Resposta: {q1 ? `${q1} Ω` : 'Sense resposta'}
+            </span>
+            <span className="text-sm font-bold text-slate-700 print:hidden">Ω</span>
             <button
               onClick={checkQ1}
-              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm transition"
+              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm transition print:hidden"
             >
               Comprova
             </button>
             {q1Res.answered && (
-              <span className={`text-xs font-bold flex items-center gap-1 ${q1Res.isCorrect ? 'text-emerald-700' : 'text-red-600'}`}>
+              <span className={`text-xs font-bold flex items-center gap-1 print:text-[11px] ${q1Res.isCorrect ? 'text-emerald-700' : 'text-red-600'}`}>
                 {q1Res.isCorrect ? <CheckCircle2 size={16} /> : <XCircle size={16} />}
                 {q1Res.isCorrect ? 'Correcte! R1 té un valor nominal de 220 Ω (amb tolerància).' : 'Revisa el valor: connecta vermella i negra als extrems de R1 i tria l\'escala de 2kΩ.'}
               </span>
@@ -205,18 +229,18 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
         </div>
 
         {/* TASK 2 */}
-        <div className={`p-5 rounded-2xl border-2 transition ${q2Res.answered ? (q2Res.isCorrect ? 'border-emerald-400 bg-emerald-50/50' : 'border-red-300 bg-red-50/50') : 'border-slate-200 bg-slate-50'}`}>
+        <div className={`p-5 rounded-2xl border-2 transition print:p-3 print:rounded-xl print:border print:border-stone-300 print:bg-white print:break-inside-avoid ${q2Res.answered ? (q2Res.isCorrect ? 'border-emerald-400 bg-emerald-50/50' : 'border-red-300 bg-red-50/50') : 'border-slate-200 bg-slate-50'}`}>
           <div className="flex items-center gap-2 mb-2">
-            <span className="w-6 h-6 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center">2</span>
-            <h3 className="font-bold text-slate-900 text-base">
+            <span className="w-6 h-6 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center print:bg-black">2</span>
+            <h3 className="font-bold text-slate-900 text-base print:text-sm">
               Interpretació de Sobrecàrrega d'Escala (Overload)
             </h3>
           </div>
-          <p className="text-sm text-slate-600 mb-3">
+          <p className="text-sm text-slate-600 mb-3 print:text-xs print:mb-2">
             Intenta mesurar la <strong>Resistència R2</strong> (1.000 Ω = 1 kΩ) col·locant el selector a l'escala de <strong>200Ω</strong>. Què passa a la pantalla del multímetre?
           </p>
 
-          <div className="space-y-2 mb-3 text-sm">
+          <div className="space-y-2 mb-3 text-sm print:space-y-1 print:text-xs">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="radio"
@@ -228,7 +252,7 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
               />
               <span>Marca 0.0 Ω perquè és massa gran.</span>
             </label>
-            <label className="flex items-center gap-2 cursor-pointer">
+            <label className="flex items-center gap-2 cursor-pointer font-medium">
               <input
                 type="radio"
                 name="q2"
@@ -255,12 +279,12 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
           <div className="flex items-center gap-3">
             <button
               onClick={checkQ2}
-              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm transition"
+              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm transition print:hidden"
             >
               Comprova
             </button>
             {q2Res.answered && (
-              <span className={`text-xs font-bold flex items-center gap-1 ${q2Res.isCorrect ? 'text-emerald-700' : 'text-red-600'}`}>
+              <span className={`text-xs font-bold flex items-center gap-1 print:text-[11px] ${q2Res.isCorrect ? 'text-emerald-700' : 'text-red-600'}`}>
                 {q2Res.isCorrect ? <CheckCircle2 size={16} /> : <XCircle size={16} />}
                 {q2Res.isCorrect ? 'Exacte! El símbol "1 ." en un tester digital significa que el valor supera l\'escala seleccionada.' : 'Incorrecte. Prova-ho tu mateix al multímetre posant el selector a 200Ω sobre R2.'}
               </span>
@@ -269,42 +293,45 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
         </div>
 
         {/* TASK 3 */}
-        <div className={`p-5 rounded-2xl border-2 transition ${q3Res.answered ? (q3Res.isCorrect ? 'border-emerald-400 bg-emerald-50/50' : 'border-red-300 bg-red-50/50') : 'border-slate-200 bg-slate-50'}`}>
+        <div className={`p-5 rounded-2xl border-2 transition print:p-3 print:rounded-xl print:border print:border-stone-300 print:bg-white print:break-inside-avoid ${q3Res.answered ? (q3Res.isCorrect ? 'border-emerald-400 bg-emerald-50/50' : 'border-red-300 bg-red-50/50') : 'border-slate-200 bg-slate-50'}`}>
           <div className="flex justify-between items-start mb-2">
             <div className="flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center">3</span>
-              <h3 className="font-bold text-slate-900 text-base">
+              <span className="w-6 h-6 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center print:bg-black">3</span>
+              <h3 className="font-bold text-slate-900 text-base print:text-sm">
                 Mesura de la Tensió de la Pila (Volts DC)
               </h3>
             </div>
             <button
               onClick={() => onJumpToBoard('series')}
-              className="text-xs text-amber-600 hover:text-amber-700 font-bold underline"
+              className="text-xs text-amber-600 hover:text-amber-700 font-bold underline print:hidden"
             >
               Ves al Circuit Sèrie 9V
             </button>
           </div>
-          <p className="text-sm text-slate-600 mb-3">
+          <p className="text-sm text-slate-600 mb-3 print:text-xs print:mb-2">
             Canvia el selector a <strong>DCV 20V</strong>. Connecta la punta vermella al <strong>Born (+)</strong> i la negra al <strong>Born (-)</strong> de la pila. Quin voltatge mesura el voltímetre?
           </p>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 print:gap-2">
             <input
               type="text"
               placeholder="Ex: 9.00"
               value={q3}
               onChange={(e) => setQ3(e.target.value)}
-              className="px-4 py-2 border rounded-xl font-mono text-sm w-40 focus:ring-2 focus:ring-amber-500 outline-none"
+              className="px-4 py-2 border rounded-xl font-mono text-sm w-40 focus:ring-2 focus:ring-amber-500 outline-none print:hidden"
             />
-            <span className="text-sm font-bold text-slate-700">V</span>
+            <span className="hidden print:inline-block font-mono font-bold text-xs bg-stone-100 px-2.5 py-1 rounded border border-stone-300">
+              Resposta: {q3 ? `${q3} V` : 'Sense resposta'}
+            </span>
+            <span className="text-sm font-bold text-slate-700 print:hidden">V</span>
             <button
               onClick={checkQ3}
-              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm transition"
+              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm transition print:hidden"
             >
               Comprova
             </button>
             {q3Res.answered && (
-              <span className={`text-xs font-bold flex items-center gap-1 ${q3Res.isCorrect ? 'text-emerald-700' : 'text-red-600'}`}>
+              <span className={`text-xs font-bold flex items-center gap-1 print:text-[11px] ${q3Res.isCorrect ? 'text-emerald-700' : 'text-red-600'}`}>
                 {q3Res.isCorrect ? <CheckCircle2 size={16} /> : <XCircle size={16} />}
                 {q3Res.isCorrect ? 'Molt bé! La pila proporciona una diferència de potencial de 9.0 V.' : 'Revisa la mesura: posa la punta vermella al + i negra al - amb escala 20V DCV.'}
               </span>
@@ -313,18 +340,18 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
         </div>
 
         {/* TASK 4 */}
-        <div className={`p-5 rounded-2xl border-2 transition ${q4Res.answered ? (q4Res.isCorrect ? 'border-emerald-400 bg-emerald-50/50' : 'border-red-300 bg-red-50/50') : 'border-slate-200 bg-slate-50'}`}>
+        <div className={`p-5 rounded-2xl border-2 transition print:p-3 print:rounded-xl print:border print:border-stone-300 print:bg-white print:break-inside-avoid ${q4Res.answered ? (q4Res.isCorrect ? 'border-emerald-400 bg-emerald-50/50' : 'border-red-300 bg-red-50/50') : 'border-slate-200 bg-slate-50'}`}>
           <div className="flex items-center gap-2 mb-2">
-            <span className="w-6 h-6 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center">4</span>
-            <h3 className="font-bold text-slate-900 text-base">
+            <span className="w-6 h-6 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center print:bg-black">4</span>
+            <h3 className="font-bold text-slate-900 text-base print:text-sm">
               Caiguda de Tensió en un Circuit Sèrie (Llei de Tensions)
             </h3>
           </div>
-          <p className="text-sm text-slate-600 mb-3">
+          <p className="text-sm text-slate-600 mb-3 print:text-xs print:mb-2">
             Amb l'interruptor tancat, mesura el voltatge als extrems de R1 (V1) i als extrems de R2 (V2). Després calcula la suma V1 + V2:
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3 print:gap-2 print:mb-2">
             <div>
               <label className="text-xs font-bold text-slate-700 block mb-1">Tensió a R1 (V1):</label>
               <div className="flex items-center gap-2">
@@ -333,9 +360,12 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
                   placeholder="Ex: 2.20"
                   value={q4V1}
                   onChange={(e) => setQ4V1(e.target.value)}
-                  className="px-3 py-1.5 border rounded-lg font-mono text-sm w-full focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="px-3 py-1.5 border rounded-lg font-mono text-sm w-full focus:ring-2 focus:ring-amber-500 outline-none print:hidden"
                 />
-                <span className="text-xs font-bold">V</span>
+                <span className="hidden print:inline-block font-mono font-bold text-xs bg-stone-100 px-2 py-0.5 rounded border border-stone-300 w-full">
+                  {q4V1 ? `${q4V1} V` : '___ V'}
+                </span>
+                <span className="text-xs font-bold print:hidden">V</span>
               </div>
             </div>
 
@@ -347,9 +377,12 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
                   placeholder="Ex: 6.80"
                   value={q4V2}
                   onChange={(e) => setQ4V2(e.target.value)}
-                  className="px-3 py-1.5 border rounded-lg font-mono text-sm w-full focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="px-3 py-1.5 border rounded-lg font-mono text-sm w-full focus:ring-2 focus:ring-amber-500 outline-none print:hidden"
                 />
-                <span className="text-xs font-bold">V</span>
+                <span className="hidden print:inline-block font-mono font-bold text-xs bg-stone-100 px-2 py-0.5 rounded border border-stone-300 w-full">
+                  {q4V2 ? `${q4V2} V` : '___ V'}
+                </span>
+                <span className="text-xs font-bold print:hidden">V</span>
               </div>
             </div>
 
@@ -361,9 +394,12 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
                   placeholder="Ex: 9.00"
                   value={q4Sum}
                   onChange={(e) => setQ4Sum(e.target.value)}
-                  className="px-3 py-1.5 border rounded-lg font-mono text-sm w-full focus:ring-2 focus:ring-amber-500 outline-none"
+                  className="px-3 py-1.5 border rounded-lg font-mono text-sm w-full focus:ring-2 focus:ring-amber-500 outline-none print:hidden"
                 />
-                <span className="text-xs font-bold">V</span>
+                <span className="hidden print:inline-block font-mono font-bold text-xs bg-stone-100 px-2 py-0.5 rounded border border-stone-300 w-full">
+                  {q4Sum ? `${q4Sum} V` : '___ V'}
+                </span>
+                <span className="text-xs font-bold print:hidden">V</span>
               </div>
             </div>
           </div>
@@ -371,12 +407,12 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
           <div className="flex items-center gap-3">
             <button
               onClick={checkQ4}
-              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm transition"
+              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm transition print:hidden"
             >
               Comprova les caigudes de tensió
             </button>
             {q4Res.answered && (
-              <span className={`text-xs font-bold flex items-center gap-1 ${q4Res.isCorrect ? 'text-emerald-700' : 'text-red-600'}`}>
+              <span className={`text-xs font-bold flex items-center gap-1 print:text-[11px] ${q4Res.isCorrect ? 'text-emerald-700' : 'text-red-600'}`}>
                 {q4Res.isCorrect ? <CheckCircle2 size={16} /> : <XCircle size={16} />}
                 {q4Res.isCorrect ? 'Fantàstic! En un circuit sèrie la tensió total és la suma de les caigudes de tensió parcials (2.2V + 6.8V = 9.0V).' : 'Revisa: V1 cau ~2.2V i V2 cau ~6.8V. La suma ha de donar 9.0V.'}
               </span>
@@ -385,34 +421,37 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
         </div>
 
         {/* TASK 5 */}
-        <div className={`p-5 rounded-2xl border-2 transition ${q5Res.answered ? (q5Res.isCorrect ? 'border-emerald-400 bg-emerald-50/50' : 'border-red-300 bg-red-50/50') : 'border-slate-200 bg-slate-50'}`}>
+        <div className={`p-5 rounded-2xl border-2 transition print:p-3 print:rounded-xl print:border print:border-stone-300 print:bg-white print:break-inside-avoid ${q5Res.answered ? (q5Res.isCorrect ? 'border-emerald-400 bg-emerald-50/50' : 'border-red-300 bg-red-50/50') : 'border-slate-200 bg-slate-50'}`}>
           <div className="flex items-center gap-2 mb-2">
-            <span className="w-6 h-6 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center">5</span>
-            <h3 className="font-bold text-slate-900 text-base">
+            <span className="w-6 h-6 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center print:bg-black">5</span>
+            <h3 className="font-bold text-slate-900 text-base print:text-sm">
               Càlcul d'Intensitat amb la Llei d'Ohm (I = V / R)
             </h3>
           </div>
-          <p className="text-sm text-slate-600 mb-3">
+          <p className="text-sm text-slate-600 mb-3 print:text-xs print:mb-2">
             Hem mesurat que la tensió que cau a R1 és <strong>V1 = 2,20 V</strong> i sabem que la resistència és <strong>R1 = 220 Ω</strong>. Aplica la fórmula de la Llei d'Ohm (<strong>I = V / R</strong>) per calcular quants <strong>mil·liamperes (mA)</strong> circulen pel circuit:
           </p>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 print:gap-2">
             <input
               type="text"
               placeholder="Ex: 10"
               value={q5}
               onChange={(e) => setQ5(e.target.value)}
-              className="px-4 py-2 border rounded-xl font-mono text-sm w-40 focus:ring-2 focus:ring-amber-500 outline-none"
+              className="px-4 py-2 border rounded-xl font-mono text-sm w-40 focus:ring-2 focus:ring-amber-500 outline-none print:hidden"
             />
-            <span className="text-sm font-bold text-slate-700">mA</span>
+            <span className="hidden print:inline-block font-mono font-bold text-xs bg-stone-100 px-2.5 py-1 rounded border border-stone-300">
+              Resposta: {q5 ? `${q5} mA` : 'Sense resposta'}
+            </span>
+            <span className="text-sm font-bold text-slate-700 print:hidden">mA</span>
             <button
               onClick={checkQ5}
-              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm transition"
+              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm transition print:hidden"
             >
               Comprova Càlcul
             </button>
             {q5Res.answered && (
-              <span className={`text-xs font-bold flex items-center gap-1 ${q5Res.isCorrect ? 'text-emerald-700' : 'text-red-600'}`}>
+              <span className={`text-xs font-bold flex items-center gap-1 print:text-[11px] ${q5Res.isCorrect ? 'text-emerald-700' : 'text-red-600'}`}>
                 {q5Res.isCorrect ? <CheckCircle2 size={16} /> : <XCircle size={16} />}
                 {q5Res.isCorrect ? 'Excel·lent! 2.2V / 220Ω = 0.010 A = 10 mA.' : 'Pista: 2.2 / 220 = 0.01 A. Multiplica per 1000 per passar a mA (10 mA).'}
               </span>
@@ -421,42 +460,45 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
         </div>
 
         {/* TASK 6 */}
-        <div className={`p-5 rounded-2xl border-2 transition ${q6Res.answered ? (q6Res.isCorrect ? 'border-emerald-400 bg-emerald-50/50' : 'border-red-300 bg-red-50/50') : 'border-slate-200 bg-slate-50'}`}>
+        <div className={`p-5 rounded-2xl border-2 transition print:p-3 print:rounded-xl print:border print:border-stone-300 print:bg-white print:break-inside-avoid ${q6Res.answered ? (q6Res.isCorrect ? 'border-emerald-400 bg-emerald-50/50' : 'border-red-300 bg-red-50/50') : 'border-slate-200 bg-slate-50'}`}>
           <div className="flex justify-between items-start mb-2">
             <div className="flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center">6</span>
-              <h3 className="font-bold text-slate-900 text-base">
+              <span className="w-6 h-6 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center print:bg-black">6</span>
+              <h3 className="font-bold text-slate-900 text-base print:text-sm">
                 Repte de Laboratori: Deducció de la Resistència Incògnita Rx
               </h3>
             </div>
             <button
               onClick={() => onJumpToBoard('ohm-challenge')}
-              className="text-xs text-amber-600 hover:text-amber-700 font-bold underline"
+              className="text-xs text-amber-600 hover:text-amber-700 font-bold underline print:hidden"
             >
               Ves al Repte Llei d'Ohm
             </button>
           </div>
-          <p className="text-sm text-slate-600 mb-3">
+          <p className="text-sm text-slate-600 mb-3 print:text-xs print:mb-2">
             Ves al <strong>Banc 3 (Repte Llei d'Ohm)</strong>. Mesura amb el multímetre la tensió <strong>Vx</strong> a la resistència desconeguda Rx. L'amperímetre del banc indica que circulen <strong>I = 40 mA = 0,040 A</strong>. Aplica la Llei d'Ohm (<strong>R = V / I</strong>) i descobreix el valor de <strong>Rx</strong> en Ohms (Ω):
           </p>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 print:gap-2">
             <input
               type="text"
               placeholder="Ex: 300"
               value={q6}
               onChange={(e) => setQ6(e.target.value)}
-              className="px-4 py-2 border rounded-xl font-mono text-sm w-40 focus:ring-2 focus:ring-amber-500 outline-none"
+              className="px-4 py-2 border rounded-xl font-mono text-sm w-40 focus:ring-2 focus:ring-amber-500 outline-none print:hidden"
             />
-            <span className="text-sm font-bold text-slate-700">Ω</span>
+            <span className="hidden print:inline-block font-mono font-bold text-xs bg-stone-100 px-2.5 py-1 rounded border border-stone-300">
+              Resposta: {q6 ? `${q6} Ω` : 'Sense resposta'}
+            </span>
+            <span className="text-sm font-bold text-slate-700 print:hidden">Ω</span>
             <button
               onClick={checkQ6}
-              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm transition"
+              className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-sm transition print:hidden"
             >
               Deduir Rx
             </button>
             {q6Res.answered && (
-              <span className={`text-xs font-bold flex items-center gap-1 ${q6Res.isCorrect ? 'text-emerald-700' : 'text-red-600'}`}>
+              <span className={`text-xs font-bold flex items-center gap-1 print:text-[11px] ${q6Res.isCorrect ? 'text-emerald-700' : 'text-red-600'}`}>
                 {q6Res.isCorrect ? <CheckCircle2 size={16} /> : <XCircle size={16} />}
                 {q6Res.isCorrect ? 'MOLT FELICITATS! Has deduït que Rx = 12V / 0.040A = 300 Ω!' : 'Pista: La tensió és 12V i el corrent 0.040A. Fes 12 / 0.040.'}
               </span>
@@ -466,11 +508,11 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
       </div>
 
       {/* Final Evaluation & Certificate */}
-      <div className="mt-8 pt-6 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4 bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-2xl border border-amber-200">
+      <div className="mt-8 pt-6 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4 bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-2xl border border-amber-200 print:mt-4 print:p-4 print:bg-stone-50 print:border-stone-300 print:rounded-xl print:break-inside-avoid">
         <div>
           <div className="flex items-center gap-2">
-            <Award className="text-amber-600" size={28} />
-            <h4 className="text-lg font-black text-slate-900">Informe Final de la Tasca</h4>
+            <Award className="text-amber-600 print:text-black" size={28} />
+            <h4 className="text-lg font-black text-slate-900 print:text-sm">Informe Final de la Tasca</h4>
           </div>
           <p className="text-xs text-slate-600 mt-1">
             Has completat les preguntes de laboratori. La teva qualificació final és de <strong>{grade} sobre 10</strong>.
@@ -479,11 +521,23 @@ export const MultimeterTasks: React.FC<MultimeterTasksProps> = ({
 
         <button
           onClick={handlePrint}
-          className="px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-sm flex items-center gap-2 shadow-lg transition"
+          className="px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-sm flex items-center gap-2 shadow-lg transition cursor-pointer print:hidden"
         >
           <Printer size={18} />
           Imprimir / Guardar en PDF
         </button>
+      </div>
+
+      {/* Signature space for print only */}
+      <div className="hidden print:grid grid-cols-2 gap-8 mt-6 pt-4 border-t border-dashed border-stone-300 text-xs text-stone-600">
+        <div>
+          <p className="font-semibold text-stone-800">Signatura de l'Alumne/a:</p>
+          <div className="h-12 border-b border-stone-400 mt-2"></div>
+        </div>
+        <div>
+          <p className="font-semibold text-stone-800">Vist-i-plau del Professorat / Valoració:</p>
+          <div className="h-12 border-b border-stone-400 mt-2"></div>
+        </div>
       </div>
     </div>
   );
